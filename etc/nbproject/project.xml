@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>zeitgeist</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. -->
+            <name>zeitgeist</name>
+            <properties>
+                <property name="project.dir">..</property>
+                <property name="ant.script">${project.dir}/build.xml</property>
+            </properties>
+            <folders>
+                <source-folder>
+                    <label>zeitgeist</label>
+                    <location>${project.dir}</location>
+                </source-folder>
+                <source-folder>
+                    <label>zeitgeist</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>core/src/java/main</label>
+                    <type>java</type>
+                    <location>${project.dir}/core/src/java/main</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>core/src/java/resources</label>
+                    <type>java</type>
+                    <location>${project.dir}/core/src/java/resources</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>core/src/java/test</label>
+                    <type>java</type>
+                    <location>${project.dir}/core/src/java/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>publisher/src/java/main</label>
+                    <type>java</type>
+                    <location>${project.dir}/publisher/src/java/main</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>publisher/src/java/test</label>
+                    <type>java</type>
+                    <location>${project.dir}/publisher/src/java/test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>publisher/src/java/test</label>
+                    <location>${project.dir}/publisher/src/java/test</location>
+                </source-folder>
+                <source-folder>
+                    <label>publisher/src/java/main</label>
+                    <location>${project.dir}/publisher/src/java/main</location>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <script>${ant.script}</script>
+                    <target>dist</target>
+                </action>
+                <action name="clean">
+                    <script>${ant.script}</script>
+                    <target>clean</target>
+                </action>
+                <action name="test">
+                    <script>${ant.script}</script>
+                    <target>test</target>
+                </action>
+                <action name="rebuild">
+                    <script>${ant.script}</script>
+                    <target>clean</target>
+                    <target>dist</target>
+                </action>
+            </ide-actions>
+            <export>
+                <type>jar</type>
+                <location>${project.dir}/core/build/uncommons-zeitgeist-0.1pre.jar</location>
+                <script>${ant.script}</script>
+                <build-target>dist</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>core/src/java/main</label>
+                        <location>${project.dir}/core/src/java/main</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>core/src/java/resources</label>
+                        <location>${project.dir}/core/src/java/resources</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>core/src/java/test</label>
+                        <location>${project.dir}/core/src/java/test</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>publisher/src/java/main</label>
+                        <location>${project.dir}/publisher/src/java/main</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>publisher/src/java/test</label>
+                        <location>${project.dir}/publisher/src/java/test</location>
+                    </source-folder>
+                    <source-file>
+                        <location>${ant.script}</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="test"/>
+                </context-menu>
+            </view>
+            <subprojects/>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
+            <compilation-unit>
+                <package-root>${project.dir}/core/src/java/main</package-root>
+                <classpath mode="compile">${project.dir}/core/lib/runtime/Jama-1.0.2.jar:${project.dir}/core/lib/runtime/jdom.jar:${project.dir}/core/lib/runtime/rome-1.0.jar:${project.dir}/core/lib/runtime/rome-fetcher-1.0.jar</classpath>
+                <built-to>${project.dir}/core/build/uncommons-zeitgeist-0.1pre.jar</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/core/src/java/resources</package-root>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/core/src/java/test</package-root>
+                <unit-tests/>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/publisher/src/java/main</package-root>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>${project.dir}/publisher/src/java/test</package-root>
+                <unit-tests/>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>
