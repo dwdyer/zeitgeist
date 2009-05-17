@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
  */
 public class Zeitgeist
 {
-    private static final int MINIMUM_ARTICLES_PER_THEME = 4;
+    private static final int MINIMUM_ARTICLES_PER_THEME = 3;
     private static final Random RNG = new Random();    
 
     private final List<URL> feeds;
@@ -55,7 +55,7 @@ public class Zeitgeist
     }
 
 
-    public List<WeightedItem<Theme>> getThemes()
+    public List<Theme> getThemes()
     {
         List<Article> articles = downloadArticles();
 
@@ -119,9 +119,9 @@ public class Zeitgeist
     }
 
 
-    private List<WeightedItem<Theme>> extractThemes(List<Article> articles,
-                                                    Matrix weights,
-                                                    Matrix features)
+    private List<Theme> extractThemes(List<Article> articles,
+                                      Matrix weights,
+                                      Matrix features)
     {
         int featureCount = features.getRowCount();
 
@@ -159,21 +159,16 @@ public class Zeitgeist
             }
         }
 
-        List<WeightedItem<Theme>> themes = new ArrayList<WeightedItem<Theme>>();
+        List<Theme> themes = new ArrayList<Theme>();
         for (List<WeightedItem<Article>> theme : themeArticles)
         {
             if (theme.size() >= MINIMUM_ARTICLES_PER_THEME)
             {
-                double themeWeight = 0;
-                for (WeightedItem<Article> article : theme)
-                {
-                    themeWeight += article.getWeight();
-                }
-                themes.add(new WeightedItem<Theme>(themeWeight, new Theme(theme)));
+                themes.add(new Theme(theme));
             }
         }
 
-        Collections.sort(themes, Collections.reverseOrder());
+        Collections.sort(themes, Collections.reverseOrder(new ThemeArticleCountComparator()));
         return themes;
     }
 

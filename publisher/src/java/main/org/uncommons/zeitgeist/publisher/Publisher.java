@@ -1,15 +1,15 @@
 package org.uncommons.zeitgeist.publisher;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,7 +17,6 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.uncommons.zeitgeist.Theme;
-import org.uncommons.zeitgeist.WeightedItem;
 import org.uncommons.zeitgeist.Zeitgeist;
 
 /**
@@ -28,7 +27,7 @@ public class Publisher
     private static final String ENCODING = "UTF-8";
 
 
-    public static void publish(List<WeightedItem<Theme>> themes,
+    public static void publish(List<Theme> themes,
                                String title) throws IOException
     {
         StringTemplateGroup group = new StringTemplateGroup("group");
@@ -124,7 +123,7 @@ public class Publisher
             }
             Date cutoffDate = new Date(System.currentTimeMillis() - 172800000); // 2 days ago.
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
-            List<WeightedItem<Theme>> themes = zeitgeist.getThemes();
+            List<Theme> themes = zeitgeist.getThemes();
             System.out.println(themes.size() + " themes identified.");
             publish(themes, args[1]);
         }

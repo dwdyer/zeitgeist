@@ -222,7 +222,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="project:///Users/dan/Projects/zeitgeist/etc/intellij/zeitgeist.ipr" />
+    <option name="state" value="http://localhost/subversion/zeitgeist/trunk/etc/intellij/zeitgeist.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -246,7 +246,7 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>

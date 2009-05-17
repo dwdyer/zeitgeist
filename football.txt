@@ -5,8 +5,6 @@ http://www.mirror.co.uk/sport/football/rss.xml
 http://feeds.guardian.co.uk/theguardian/football/rss
 http://www.skysports.com/rss/0,20514,11095,00.xml
 http://www.teamtalk.com/rss/0,16039,2483,00.xml
-http://www.uefa.com/rssfeed/index.xml
-http://www.fifa.com/rss/index.xml
 http://feeds.reuters.com/reuters/UKFootballNews
 http://feeds.reuters.com/reuters/UKEuropeanFootballNews
 http://rss.cnn.com/rss/edition_football.rss

@@ -6,6 +6,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../..">
       <excludeFolder url="file://$MODULE_DIR$/../../core" />
+      <excludeFolder url="file://$MODULE_DIR$/../../dist" />
       <excludeFolder url="file://$MODULE_DIR$/../../publisher" />
     </content>
     <orderEntry type="inheritedJdk" />

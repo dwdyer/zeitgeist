@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project relativePaths="false" version="4">
   <component name="ChangeListManager">
-    <list default="true" name="Default" comment="" />
-    <ignored path="zeitgeist.iws" />
+    <list default="true" readonly="true" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zeitgeist.iws" afterPath="$PROJECT_DIR$/zeitgeist.iws" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist/football.txt" afterPath="/Users/dan/Projects/zeitgeist/football.txt" />
+      <change type="NEW" beforePath="" afterPath="/Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/ThemeArticleCountComparator.java" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Zeitgeist.java" afterPath="/Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Zeitgeist.java" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist/publisher/src/java/resources/theme.st" afterPath="/Users/dan/Projects/zeitgeist/publisher/src/java/resources/theme.st" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zeitgeist.ipr" afterPath="$PROJECT_DIR$/zeitgeist.ipr" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist" afterPath="/Users/dan/Projects/zeitgeist" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist/core" afterPath="/Users/dan/Projects/zeitgeist/core" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist/publisher" afterPath="/Users/dan/Projects/zeitgeist/publisher" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/global.iml" afterPath="$PROJECT_DIR$/global.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/publisher.iml" afterPath="$PROJECT_DIR$/publisher.iml" />
+      <change type="MODIFICATION" beforePath="/Users/dan/Projects/zeitgeist/publisher/src/java/main/org/uncommons/zeitgeist/publisher/Publisher.java" afterPath="/Users/dan/Projects/zeitgeist/publisher/src/java/main/org/uncommons/zeitgeist/publisher/Publisher.java" />
+    </list>
     <ignored path=".idea/workspace.xml" />
+    <ignored path="zeitgeist.iws" />
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="Commander">
@@ -76,19 +89,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Theme.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Theme.java">
+      <file leaf-file-name="Zeitgeist.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Zeitgeist.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="60" selection-start="198" selection-end="198" vertical-scroll-proportion="0.0">
+            <state line="25" column="59" selection-start="661" selection-end="661" vertical-scroll-proportion="0.14555256">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Zeitgeist.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Zeitgeist.java">
+      <file leaf-file-name="ThemeArticleCountComparator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/ThemeArticleCountComparator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="73" column="26" selection-start="2143" selection-end="2143" vertical-scroll-proportion="0.0">
+            <state line="10" column="64" selection-start="288" selection-end="288" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,10 +116,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="football.txt" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="football.txt" pinned="false" current="false" current-in-tab="false">
         <entry file="file:///Users/dan/Projects/zeitgeist/football.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="43" selection-start="539" selection-end="582" vertical-scroll-proportion="0.17437252">
+            <state line="7" column="0" selection-start="363" selection-end="363" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -133,7 +146,7 @@
       <file leaf-file-name="Publisher.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file:///Users/dan/Projects/zeitgeist/publisher/src/java/main/org/uncommons/zeitgeist/publisher/Publisher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="35" selection-start="3295" selection-end="3295" vertical-scroll-proportion="0.0">
+            <state line="29" column="41" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -142,7 +155,7 @@
       <file leaf-file-name="theme.st" pinned="false" current="false" current-in-tab="false">
         <entry file="file:///Users/dan/Projects/zeitgeist/publisher/src/java/resources/theme.st">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="106" selection-start="348" selection-end="348" vertical-scroll-proportion="0.0">
+            <state line="4" column="13" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -275,20 +288,6 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="publisher" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="publisher" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="zeitgeist" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
           <option name="myItemId" value="global" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
@@ -348,96 +347,6 @@
           <option name="myItemId" value="core" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="java" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="test" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="zeitgeist" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="zeitgeist" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="java" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="zeitgeist" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="java" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="main" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="zeitgeist" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="zeitgeist" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="core" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="lib" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="runtime" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
       </PATH>
     </subPane>
   </component>
@@ -472,7 +381,7 @@
     <property name="dynamic.classpath" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="options.lastSelected" value="preferences.sourceCode.Code Generation" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="RunManagerConfig.showSettingsBeforeRunnig" value="true" />
   </component>
@@ -618,22 +527,22 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="927" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18344156" sideWeight="0.6691542" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18344156" sideWeight="0.66169155" order="0" side_tool="false" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329602" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32125604" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32089552" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12662338" sideWeight="0.6691542" order="1" side_tool="false" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Ant Build" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.125" sideWeight="0.66169155" order="1" side_tool="false" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329602" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46517414" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39925373" sideWeight="0.5" order="3" side_tool="false" />
@@ -684,13 +593,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///Users/dan/Projects/zeitgeist/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="16" selection-start="3636" selection-end="3636" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///Users/dan/Projects/zeitgeist/cricket.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -735,16 +637,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Zeitgeist.java">
+    <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/ThemeArticleCountComparator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="26" selection-start="2143" selection-end="2143" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="10" column="64" selection-start="288" selection-end="288" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/FeedDownloadTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="57" column="47" selection-start="2196" selection-end="2196" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Users/dan/Projects/zeitgeist/football.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="0" selection-start="363" selection-end="363" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -765,14 +676,16 @@
     </entry>
     <entry file="file:///Users/dan/Projects/zeitgeist/publisher/src/java/main/org/uncommons/zeitgeist/publisher/Publisher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="35" selection-start="3295" selection-end="3295" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="29" column="41" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file:///Users/dan/Projects/zeitgeist/publisher/src/java/resources/theme.st">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="106" selection-start="348" selection-end="348" vertical-scroll-proportion="0.0">
+        <state line="4" column="13" selection-start="245" selection-end="245" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -791,9 +704,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Users/dan/Projects/zeitgeist/football.txt">
+    <entry file="file:///Users/dan/Projects/zeitgeist/core/src/java/main/org/uncommons/zeitgeist/Zeitgeist.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="43" selection-start="539" selection-end="582" vertical-scroll-proportion="0.17437252">
+        <state line="25" column="59" selection-start="661" selection-end="661" vertical-scroll-proportion="0.14555256">
           <folding />
         </state>
       </provider>
