@@ -38,7 +38,7 @@
            classpathref="tool.path"/>
 
 
-  <property name="version" value="0.1pre"/>
+  <property name="version" value="0.1"/>
   <property name="artifact.identifier" value="uncommons-zeitgeist-${version}"/>
 
   <!-- This is the minimum coverage percentage (for both lines and
@@ -76,7 +76,7 @@
     <uncommons:compile module="core" />
     <uncommons:jar module="core"
                    jarfile="${ant.project.name}-core-${version}.jar"
-                   classpath="rome-1.0.jar rome-fetcher-1.0.jar jdom.jar Jama-1.0.2.jar"
+                   classpath="rome-1.0.jar rome-fetcher-1.0.jar jdom.jar"
                    mainclass="org.uncommons.zeitgeist.Zeitgeist" />
   </target>
 
@@ -115,12 +115,7 @@
   <target name="test"
           depends="dist"
           description="Run the unit test suite.">
-    <!-- Don't run FEST tests in a headless environment (they will fail) -->
-    <condition property="tests.file" value="testng-headless.xml" else="testng.xml">
-      <isset property="headless" />
-    </condition>
-    <uncommons:test suites="${conf.dir}/${tests.file}"
-                    headless="${headless}"
+    <uncommons:test suites="${conf.dir}/testng.xml"
                     title="Uncommons Zeitgeist Unit Test Report"
                     mincoverage="${minimum.coverage}" />
   </target>

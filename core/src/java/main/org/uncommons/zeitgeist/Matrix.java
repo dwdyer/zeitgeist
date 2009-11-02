@@ -18,6 +18,8 @@ package org.uncommons.zeitgeist;
 import java.util.Random;
 
 /**
+ * Simple matrix implementation that supports specific operations required by the
+ * non-negative matrix factorisation algorithm.
  * @author Daniel Dyer
  */
 public final class Matrix
