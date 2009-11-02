@@ -16,6 +16,7 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../publisher/lib/runtime/stringtemplate.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../publisher/lib/runtime/antlr-2.7.7.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -7,7 +7,9 @@
     <content url="file://$MODULE_DIR$/../..">
       <excludeFolder url="file://$MODULE_DIR$/../../core" />
       <excludeFolder url="file://$MODULE_DIR$/../../dist" />
+      <excludeFolder url="file://$MODULE_DIR$/../../docs" />
       <excludeFolder url="file://$MODULE_DIR$/../../publisher" />
+      <excludeFolder url="file://$MODULE_DIR$/../../temp" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

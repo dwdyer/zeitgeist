@@ -4,7 +4,6 @@ http://rss.feedsportal.com/c/266/f/3785/index.rss
 http://www.mirror.co.uk/sport/football/rss.xml
 http://feeds.guardian.co.uk/theguardian/football/rss
 http://www.skysports.com/rss/0,20514,11095,00.xml
-http://www.teamtalk.com/rss/0,16039,2483,00.xml
 http://feeds.reuters.com/reuters/UKFootballNews
 http://feeds.reuters.com/reuters/UKEuropeanFootballNews
 http://rss.cnn.com/rss/edition_football.rss
@@ -14,10 +13,11 @@ http://www.independent.ie/sport/soccer/rss
 http://sport.scotsman.com/getfeed.aspx?sectionid=6991&format=rss
 http://www.dailyrecord.co.uk/football/england/rss.xml
 http://www.sportinglife.com/rss/football.xml
-http://www.itv.com//RSS/PremierLeagueGeneralnews.xml
-http://www.itv.com//RSS/ChampionsLeagueGeneralnews.xml
 http://www.goal.com/en/feeds/news?fmt=rss
 http://www.thesun.co.uk/sol/homepage/feeds/rss/article247739.ece
-http://rss.feedsportal.com/feed/metro/43
 http://feeds.teletext.co.uk/sport/football/stories
-http://feeds.nytimes.com/nyt/rss/Soccer
+http://www.sundaymail.co.uk/sport-news/scottish-football/english-football/rss.xml
+http://www.newsoftheworld.co.uk/feeds/rss/article186490.ece
+http://www.uefa.com/rssfeed/footballeurope/index.xml
+http://fourfourtwo.com/rss/
+http://resources.sportingo.com/Sportingo_RSS/Section/Football.xml

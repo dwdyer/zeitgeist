@@ -1,3 +1,18 @@
+// ============================================================================
+//   Copyright 2009 Daniel W. Dyer
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+// ============================================================================
 package org.uncommons.zeitgeist;
 
 import java.net.URL;
@@ -19,11 +34,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
+ * Identifies common themes across multiple articles from multiple RSS feeds.
+ * Based on the non-negative matrix factorisation example in the book Programming
+ * Collective Intelligence by Toby Segaran. 
  * @author Daniel Dyer
  */
 public class Zeitgeist
 {
-    private static final int MINIMUM_ARTICLES_PER_THEME = 3;
+    private static final int MINIMUM_ARTICLES_PER_THEME = 4;
+    private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
     private static final Random RNG = new Random();    
 
     private final List<URL> feeds;
@@ -145,7 +164,7 @@ public class Zeitgeist
                     themeIndex = j;
                 }
             }
-            if (maxWeight >= 8) // Don't include articles with only tenuous links to the main theme.
+            if (maxWeight >= MINIMUM_ARTICLE_RELEVANCE) // Don't include articles with only tenuous links to the main theme.
             {
                 WeightedItem<Article> weightedArticle = new WeightedItem<Article>(maxWeight, articles.get(i));
                 int index = Collections.binarySearch(themeArticles.get(themeIndex),
@@ -189,6 +208,17 @@ public class Zeitgeist
     }
 
 
+    /**
+     * Factorise the given word count matrix (using the non-negative matrix factorisation
+     * algorithm). The result is a pair of matrices (weights and features) that,
+     * when multiplied, approximate the word count matrix.
+     * @param matrix A matrix that records how many times certain keywords occur in each
+     * article.
+     * @param featureCount An estimate of how many distinct features there are to be
+     * discovered. 
+     * @return A 2-element list containing a matrix of weights (first element) and
+     * a matrix of features (second element).
+     */
     private List<Matrix> factorise(Matrix matrix, int featureCount)
     {
         Matrix weights = new Matrix(matrix.getRowCount(), featureCount, RNG);

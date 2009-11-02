@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +27,7 @@ import org.uncommons.zeitgeist.Zeitgeist;
 public class Publisher
 {
     private static final String ENCODING = "UTF-8";
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE d MMMM yyyy / HH:mm z");
 
 
     public static void publish(List<Theme> themes,
@@ -34,6 +37,7 @@ public class Publisher
         StringTemplate template = group.getInstanceOf("news");
         template.setAttribute("themes", themes);
         template.setAttribute("title", title);
+        template.setAttribute("datetime", DATE_FORMAT.format(new Date()));
         Writer writer = new OutputStreamWriter(new FileOutputStream("news.html"), ENCODING);
         try
         {
