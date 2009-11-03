@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Holds all of the information (title, date, contents) about a single article.
  * @author Daniel Dyer
  */
 public class Article
@@ -85,7 +87,7 @@ public class Article
         this.text = text;
         this.articleURL = link;
         this.date = date;
-        this.images = images;
+        this.images = Collections.unmodifiableList(images);
     }
 
 
@@ -121,8 +123,17 @@ public class Article
 
     public Map<String, Integer> getWordCounts()
     {
-        Map<String, Integer> wordCounts = extractWords(headline);
-        wordCounts.putAll(extractWords(text));
+        Map<String, Integer> wordCounts = extractWords(text);
+        // Add headline words to the word counts from the content text.
+        for (Map.Entry<String, Integer> entry : extractWords(headline).entrySet())
+        {
+            Integer count = wordCounts.get(entry.getKey());
+            if (count == null)
+            {
+                count = 0;
+            }
+            wordCounts.put(entry.getKey(), count + entry.getValue());
+        }
         return wordCounts;
     }
 

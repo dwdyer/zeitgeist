@@ -17,7 +17,6 @@ package org.uncommons.zeitgeist;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +24,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -43,7 +41,6 @@ public class Zeitgeist
 {
     private static final int MINIMUM_ARTICLES_PER_THEME = 4;
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
-    private static final Random RNG = new Random();    
 
     private final List<URL> feeds;
     private final Date cutoffDate;
@@ -92,7 +89,7 @@ public class Zeitgeist
         Matrix matrix = makeMatrix(articles);
         int themeCount = 40;//(int) Math.ceil(Math.sqrt(articles.size()));
         System.out.println("Estimating number of themes is " + themeCount);
-        List<Matrix> factors = factorise(matrix, themeCount);
+        List<Matrix> factors = matrix.factorise(themeCount);
         return extractThemes(articles, factors.get(0), factors.get(1));
     }
 
@@ -191,60 +188,6 @@ public class Zeitgeist
         return themes;
     }
 
-
-
-    private double diffCost(Matrix matrix1, Matrix matrix2)
-    {
-        double diff = 0;
-        for (int i = 0; i < matrix1.getRowCount(); i++)
-        {
-            for (int j = 0; j < matrix1.getColumnCount(); j++)
-            {
-                double delta = matrix1.get(i, j) - matrix2.get(i, j);
-                diff += delta * delta;
-            }
-        }
-        return diff;
-    }
-
-
-    /**
-     * Factorise the given word count matrix (using the non-negative matrix factorisation
-     * algorithm). The result is a pair of matrices (weights and features) that,
-     * when multiplied, approximate the word count matrix.
-     * @param matrix A matrix that records how many times certain keywords occur in each
-     * article.
-     * @param featureCount An estimate of how many distinct features there are to be
-     * discovered. 
-     * @return A 2-element list containing a matrix of weights (first element) and
-     * a matrix of features (second element).
-     */
-    private List<Matrix> factorise(Matrix matrix, int featureCount)
-    {
-        Matrix weights = new Matrix(matrix.getRowCount(), featureCount, RNG);
-        Matrix features = new Matrix(featureCount, matrix.getColumnCount(), RNG);
-
-        double oldCost = Double.MAX_VALUE;
-        Matrix product = weights.multiply(features);
-        double cost = diffCost(matrix, product);
-        while (cost / oldCost < 0.99) // Once improvement is less than 1%, stop iterating.
-        {
-            Matrix hn = weights.multiplyTransposeLeft(matrix);
-            Matrix hd = weights.multiplyTransposeLeft(weights).multiply(features);
-            features.elementMultiplyAndDivide(hn, hd);
-
-            Matrix wn = matrix.multiplyTransposeRight(features);
-            Matrix wd = weights.multiply(features).multiplyTransposeRight(features);
-            weights.elementMultiplyAndDivide(wn, wd);
-
-            product = weights.multiply(features);
-            oldCost = cost;
-            cost = diffCost(matrix, product);
-        }
-        System.out.println(cost);
-
-        return Arrays.asList(weights, features);
-    }
 
 
     private Matrix makeMatrix(List<Article> articles)

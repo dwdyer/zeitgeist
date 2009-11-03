@@ -15,6 +15,7 @@
 // ============================================================================
 package org.uncommons.zeitgeist;
 
+import java.util.List;
 import org.testng.annotations.Test;
 
 /**
@@ -68,5 +69,48 @@ public class MatrixTest
         assert product.get(0, 0) == 4 : "Wrong value at (0, 0): " + product.get(0, 0);
         assert product.get(0, 1) == 11 : "Wrong value at (0, 1): " + product.get(0, 1);
         assert product.get(0, 2) == -15 : "Wrong value at (0, 2): " + product.get(0, 2);
+    }
+
+
+    @Test
+    public void testElementMultiplyAndDivide()
+    {
+        Matrix a = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}});
+        Matrix b = new Matrix(new double[][]{{6, 6, 6}, {8, 8, 8}});
+        Matrix c = new Matrix(new double[][]{{3, 3, 3}, {2, 2, 2}});
+
+        a.elementMultiplyAndDivide(b, c);
+        assert a.get(0, 0) == 2 : "Wrong value at (0, 0):" + a.get(0, 0);
+        assert a.get(0, 1) == 4 : "Wrong value at (0, 1):" + a.get(0, 1);
+        assert a.get(0, 2) == 6 : "Wrong value at (0, 2):" + a.get(0, 2);
+        assert a.get(1, 0) == 16 : "Wrong value at (1, 0):" + a.get(1, 0);
+        assert a.get(1, 1) == 20 : "Wrong value at (1, 1):" + a.get(1, 1);
+        assert a.get(1, 2) == 24 : "Wrong value at (1, 2):" + a.get(1, 2);
+    }
+
+
+    @Test
+    public void testElementMultiplyZeroDivisor()
+    {
+        Matrix a = new Matrix(new double[][]{{1, 2}, {3, 4}});
+        Matrix b = new Matrix(new double[][]{{1, 1}, {1, 1}});
+        Matrix c = new Matrix(new double[][]{{1, 1}, {1, 0}});
+
+        a.elementMultiplyAndDivide(b, c);
+        // Should be no divide by zero exception and value should be sensible.
+        double value = a.get(1, 1);
+        assert value > 4 && value <= Double.POSITIVE_INFINITY : "Wrong value at (1, 1): " + value;
+    }
+
+
+    @Test
+    public void testFactorise()
+    {
+        Matrix a = new Matrix(new double[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}});
+        List<Matrix> factors = a.factorise(2);
+        Matrix weights = factors.get(0);
+        Matrix features = factors.get(1);
+        assert features.getRowCount() == 2 : "Wrong number of features: " + features.getRowCount();
+        assert weights.getColumnCount() == 2 : "Wrong number of weights: " + weights.getColumnCount();
     }
 }
