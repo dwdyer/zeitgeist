@@ -29,7 +29,6 @@ public class ArticleTest
     @Test
     public void testTitleWordCounts()
     {
-        // For clarity, deliberately choosing words that won't get truncated by the stemmer.
         Article article = new Article("fish fish yeah", "", null, new Date(), Collections.<Image>emptyList());
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
@@ -40,7 +39,6 @@ public class ArticleTest
     @Test
     public void testContentWordCounts()
     {
-        // For clarity, deliberately choosing words that won't get truncated by the stemmer.
         Article article = new Article("", "dog cat rabbit cat", null, new Date(), Collections.<Image>emptyList());
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 3 : "Should be 3 words, is " + wordCounts.size();
@@ -56,7 +54,6 @@ public class ArticleTest
     @Test
     public void testCombinedWordCounts()
     {
-        // For clarity, deliberately choosing words that won't get truncated by the stemmer.
         Article article = new Article("dog magic", "fish magic rabbit magic", null, new Date(), Collections.<Image>emptyList());
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 4 : "Should be 4 words, is " + wordCounts.size();
@@ -64,5 +61,17 @@ public class ArticleTest
         assert wordCounts.get("fish") == 1 : "Count should be 2 is " + wordCounts.get("fish");
         assert wordCounts.get("rabbit") == 1 : "Count should be 1 is " + wordCounts.get("rabbit");
         assert wordCounts.get("magic") == 3 : "Count should be 3 is " + wordCounts.get("magic");
+    }
+
+
+    @Test
+    public void testOmitLowValueWords()
+    {
+        Article article = new Article("the title is a headline", "", null, new Date(), Collections.<Image>emptyList());
+        Map<String, Integer> wordCounts = article.getWordCounts();
+        assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
+        assert !wordCounts.containsKey("the") : "Low value word 'the' should be omitted.";
+        assert !wordCounts.containsKey("is") : "Low value word 'is' should be omitted.";
+        assert !wordCounts.containsKey("a") : "Low value word 'a' should be omitted.";
     }
 }

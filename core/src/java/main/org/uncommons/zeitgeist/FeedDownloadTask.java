@@ -98,27 +98,6 @@ class FeedDownloadTask implements Callable<List<Article>>
             textBuffer.append('\n');
             textBuffer.append(content.getValue());
         }
-        return stripMarkUp(textBuffer.toString());
-    }
-
-
-    /**
-     * Naive and inefficient conversion of HTML to plain text.
-     */
-    private String stripMarkUp(String text)
-    {
-        // Remove all tags.
-        String result = text.replaceAll("<.*?>"," ");
-        // Expand entities.
-        result = result.replaceAll("&#39;", "'");
-        result = result.replaceAll("&#160;", " ");
-        result = result.replaceAll("&amp;", "&");
-        result = result.replaceAll("&#163;", "£");
-        result = result.replaceAll("&pound;", "£");
-        result = result.replaceAll("&euro;", "€");
-        result = result.replaceAll("&ccedil;", "ç");
-        result = result.replaceAll("&lt;", "<");
-        result = result.replaceAll("&gt;", ">");
-        return result.trim();
+        return textBuffer.toString();
     }
 }

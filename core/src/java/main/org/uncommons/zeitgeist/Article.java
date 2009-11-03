@@ -45,10 +45,10 @@ public class Article
         {
             for (String word = wordReader.readLine(); word != null; word = wordReader.readLine())
             {
-                if (word.trim().length() > 0)
+                String trimmed = word.trim();
+                if (trimmed.length() > 0)
                 {
-                    String stem = new Stemmer().stem(word);
-                    LOW_VALUE_WORDS.add(stem);
+                    LOW_VALUE_WORDS.add(trimmed);
                 }
             }
         }
@@ -123,9 +123,9 @@ public class Article
 
     public Map<String, Integer> getWordCounts()
     {
-        Map<String, Integer> wordCounts = extractWords(text);
+        Map<String, Integer> wordCounts = extractWords(FeedUtils.stripMarkUpAndPunctuation(text));
         // Add headline words to the word counts from the content text.
-        for (Map.Entry<String, Integer> entry : extractWords(headline).entrySet())
+        for (Map.Entry<String, Integer> entry : extractWords(FeedUtils.stripMarkUpAndPunctuation(headline)).entrySet())
         {
             Integer count = wordCounts.get(entry.getKey());
             if (count == null)
@@ -144,12 +144,10 @@ public class Article
         String[] words = text.split("\\W+");
         for (String word : words)
         {
-            String lower = word.toLowerCase();
-            String stem = new Stemmer().stem(lower);
-            if (lower.length() >= 3 && !LOW_VALUE_WORDS.contains(stem))
+            if (word.length() > 0 && !LOW_VALUE_WORDS.contains(word))
             {
-                Integer count = wordCounts.get(stem);
-                wordCounts.put(stem, count == null ? 1 : ++count);
+                Integer count = wordCounts.get(word);
+                wordCounts.put(word, count == null ? 1 : ++count);
             }
         }
         return wordCounts;
