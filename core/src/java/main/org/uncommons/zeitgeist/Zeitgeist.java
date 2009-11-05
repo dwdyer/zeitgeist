@@ -107,7 +107,7 @@ public class Zeitgeist
             List<Callable<List<Article>>> tasks = new ArrayList<Callable<List<Article>>>(feeds.size());
             for (final URL feedURL : feeds)
             {
-                tasks.add(new FeedDownloadTask(feedURL, false));
+                tasks.add(new FeedDownloadTask(feedURL, true));
             }
 
             List<Future<List<Article>>> results = executor.invokeAll(tasks);
