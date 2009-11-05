@@ -135,8 +135,9 @@ class FeedDownloadTask implements Callable<List<Article>>
             while (matcher.find())
             {
                 String imageLink = matcher.group(1);
-                System.out.println("Found embedded image: " + imageLink);
-                if (!images.containsKey(imageLink))
+                // We only use JPG images because others are more likely to be
+                // not related to the story (e.g. icons and adverts).
+                if (imageLink.toLowerCase().endsWith(".jpg") && !images.containsKey(imageLink))
                 {
                     images.put(imageLink,
                                new Image(new URL(imageLink), new URL(entry.getLink())));

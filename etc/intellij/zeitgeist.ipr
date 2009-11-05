@@ -222,13 +222,13 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="http://localhost/subversion/zeitgeist/trunk/etc/intellij/zeitgeist.ipr" />
+    <option name="state" value="project:///Users/dan/Projects/zeitgeist/etc/intellij/zeitgeist.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/core.iml" filepath="$PROJECT_DIR$/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core.iml" filepath="$PROJECT_DIR$/core.iml" group="modules" />
       <module fileurl="file://$PROJECT_DIR$/global.iml" filepath="$PROJECT_DIR$/global.iml" />
-      <module fileurl="file://$PROJECT_DIR$/publisher.iml" filepath="$PROJECT_DIR$/publisher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/publisher.iml" filepath="$PROJECT_DIR$/publisher.iml" group="modules" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
@@ -247,20 +247,6 @@
         <entry key="/Users/dan/Projects/zeitgeist">
           <value>
             <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="http://localhost/subversion/zeitgeist/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="http://localhost/subversion/zeitgeist/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
               <option name="branchUrls">
                 <list>
                   <option value="http://localhost/subversion/zeitgeist/branches" />
@@ -277,7 +263,7 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="svn" />
+    <mapping directory="" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>

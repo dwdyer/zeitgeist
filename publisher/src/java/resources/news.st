@@ -6,6 +6,7 @@
   </head>
   <body>
     <h1>$title$</h1>
+    <p class="datetime">$datetime$</p>
     $themes:theme()$
   </body>
 </html>
