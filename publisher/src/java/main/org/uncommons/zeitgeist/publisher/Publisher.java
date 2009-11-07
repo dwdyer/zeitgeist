@@ -22,6 +22,7 @@ import org.uncommons.zeitgeist.Theme;
 import org.uncommons.zeitgeist.Zeitgeist;
 
 /**
+ * Simple HTML publisher for a set of themes.
  * @author Daniel Dyer
  */
 public class Publisher

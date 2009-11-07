@@ -75,19 +75,22 @@ public class Article
     private final URL articleURL;
     private final Date date;
     private final List<Image> images;
+    private final Image feedLogo;
 
 
     public Article(String headline,
                    String text,
                    URL link,
                    Date date,
-                   List<Image> images)
+                   List<Image> images,
+                   Image feedLogo)
     {
         this.headline = headline;
         this.text = text;
         this.articleURL = link;
         this.date = date;
         this.images = Collections.unmodifiableList(images);
+        this.feedLogo = feedLogo;
     }
 
 
@@ -121,11 +124,17 @@ public class Article
     }
 
 
+    public Image getFeedLogo()
+    {
+        return feedLogo;
+    }
+
+
     public Map<String, Integer> getWordCounts()
     {
-        Map<String, Integer> wordCounts = extractWords(FeedUtils.stripMarkUpAndPunctuation(text));
+        Map<String, Integer> wordCounts = countWords(FeedUtils.stripMarkUpAndPunctuation(text));
         // Add headline words to the word counts from the content text.
-        for (Map.Entry<String, Integer> entry : extractWords(FeedUtils.stripMarkUpAndPunctuation(headline)).entrySet())
+        for (Map.Entry<String, Integer> entry : countWords(FeedUtils.stripMarkUpAndPunctuation(headline)).entrySet())
         {
             Integer count = wordCounts.get(entry.getKey());
             if (count == null)
@@ -138,7 +147,13 @@ public class Article
     }
 
 
-    private Map<String, Integer> extractWords(String text)
+    /**
+     * Count how many times each word occurs in the specified text.  Excludes words that are on
+     * the "low value words" list (words like "the" and "it").
+     * @param text The text to count the words of.
+     * @return A map of word counts.
+     */
+    private Map<String, Integer> countWords(String text)
     {
         Map<String, Integer> wordCounts = new HashMap<String, Integer>();
         String[] words = text.split("\\W+");

@@ -37,3 +37,7 @@ a img {border: 0;}
 .picture {float: left;
           margin-bottom: 1.8em;
           max-width: 100%;}
+
+.logo {max-height: 30px;
+       max-width: 150px;
+       vertical-align: middle;}

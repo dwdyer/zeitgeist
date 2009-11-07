@@ -68,12 +68,16 @@ class FeedDownloadTask implements Callable<List<Article>>
             
             Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
             List<Image> images = extractImages(entry);
+            Image feedLogo = feed.getImage() != null
+                             ? new Image(new URL(feed.getImage().getUrl()), new URL(feed.getImage().getLink()))
+                             : null;
 
             feedArticles.add(new Article(entry.getTitle(),
                                          text,
                                          new URL(entry.getLink()),
                                          articleDate,
-                                         images));
+                                         images,
+                                         feedLogo));
         }
         return feedArticles;
     }
