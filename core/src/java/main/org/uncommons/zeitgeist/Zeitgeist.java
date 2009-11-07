@@ -46,8 +46,6 @@ public class Zeitgeist
     private final Date cutoffDate;
     // Which words appear in which articles and how many times.
     private final Map<Article, Map<String, Integer>> articleWordCounts = new HashMap<Article, Map<String, Integer>>();
-    // How many articles does each word appear in.
-    private final Map<String, Integer> globalWordCounts = new TreeMap<String, Integer>();
 
 
     /**
@@ -192,6 +190,9 @@ public class Zeitgeist
 
     private Matrix makeMatrix(List<Article> articles)
     {
+        // How many articles does each word appear in.
+        Map<String, Integer> globalWordCounts = new TreeMap<String, Integer>();
+
         for (Article article : articles)
         {
             Map<String, Integer> wordCounts = article.getWordCounts();

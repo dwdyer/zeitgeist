@@ -156,7 +156,7 @@ public class Article
     private Map<String, Integer> countWords(String text)
     {
         Map<String, Integer> wordCounts = new HashMap<String, Integer>();
-        String[] words = text.split("\\W+");
+        String[] words = text.split("\\s+");
         for (String word : words)
         {
             if (word.length() > 0 && !LOW_VALUE_WORDS.contains(word))

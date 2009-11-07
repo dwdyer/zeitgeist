@@ -36,10 +36,10 @@ public class FeedUtilsTest
     public void testExpandEntities()
     {
         String text = "&pound;&amp;&quot;&#163;&uuml;";
-        // Pounds signs (&pound; and &#163;) and 'u' with umlaut should be expanded, other
-        // entities should be ignored (replaced with whitespace).
+        // Pounds signs (&pound; and &#163;) and 'u' with umlaut should be expanded to a plain u,
+        // other entities should be ignored (replaced with whitespace).
         String stripped = FeedUtils.stripMarkUpAndPunctuation(text);
-        assert stripped.equals("\u00A3 \u00A3\u00FC") : "Stripped text is wrong: " + stripped; 
+        assert stripped.equals("\u00A3 \u00A3u") : "Stripped text is wrong: " + stripped; 
     }
 
 

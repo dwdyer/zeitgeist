@@ -34,51 +34,57 @@ class FeedUtils
     {
         // Remove all tags.
         String result = text.replaceAll("<.*?>"," ");
+        result = anglicise(result);
         result = expandEntities(result);
         return stripPunctuation(result).toLowerCase();
     }
 
 
+    /**
+     * For accented characters, we strip the accents.  This is because we deal mostly
+     * with English text and sometimes foreign terms are used with the accents and
+     * sometimes without.  If this happens they are treated as different words which
+     * means the algorithm will not detect the similarity in the articles.
+     */
+    private static String anglicise(String text)
+    {
+        String result = text.replaceAll("&Agrave;|&#192;|&agrave;|&#224;\u00E0", "a");
+        result = result.replaceAll("&Aacute;|&#193;|&aacute;|&#225;\u00E1", "a");
+        result = result.replaceAll("&Acirc;|&#194;|&acirc;|&#226;\u00E2", "a");
+        result = result.replaceAll("&Atilde;|&#195;|&atilde;|&#227;\u00E3", "a");
+        result = result.replaceAll("&Auml;|&#196;|&auml;|&#228;\u00E4", "a");
+        result = result.replaceAll("&Aring;|&#197;|&aring;|&#229;\u00E5", "a");
+        result = result.replaceAll("&Ccedil;|&#199;|&ccedil;|&#231;\u00E7", "c");
+        result = result.replaceAll("&Egrave;|&#200;|&egrave;|&#232;\u00E8", "e");
+        result = result.replaceAll("&Eacute;|&#201;|&eacute;|&#233;\u00E9", "e");
+        result = result.replaceAll("&Ecirc;|&#202;|&ecirc;|&#234;\u00EA", "e");
+        result = result.replaceAll("&Euml;|&#203;|&euml;|&#235;\u00EB", "e");
+        result = result.replaceAll("&Igrave;|&#204;|&igrave;|&#236;\u00EC", "i");
+        result = result.replaceAll("&Iacute;|&#205;|&iacute;|&#237;\u00ED", "i");
+        result = result.replaceAll("&Icirc;|&#206;|&icirc;|&#238;\u00EE", "i");
+        result = result.replaceAll("&Iuml;|&#207;|&iuml;|&#239;\u00EF", "i");
+        result = result.replaceAll("&Ntilde;|&#209;|&ntilde;|&#241;\u00F1", "n");
+        result = result.replaceAll("&Ograve;|&#210;|&agrave;|&#242;\u00F2", "o");
+        result = result.replaceAll("&Oacute;|&#211;|&aacute;|&#243;\u00F3", "o");
+        result = result.replaceAll("&Ocirc;|&#212;|&acirc;|&#244;\u00F4", "o");
+        result = result.replaceAll("&Otilde;|&#213;|&atilde;|&#245;\u00F5", "o");
+        result = result.replaceAll("&Ouml;|&#214;|&auml;|&#246;\u00F6", "o");
+        result = result.replaceAll("&Oslash;|&#216;|&oslash;|&#248;\u00F8", "o");
+        result = result.replaceAll("&Ugrave;|&#217;|&ugrave;|&#249;\u00F9", "u");
+        result = result.replaceAll("&Uacute;|&#218;|&uacute;|&#250;\u00FA", "u");
+        result = result.replaceAll("&Ucirc;|&#219;|&ucirc;|&#251;\u00FB", "u");
+        result = result.replaceAll("&Uuml;|&#220;|&uuml;|&#252;\u00FC", "u");
+        result = result.replaceAll("&Yacute;|&#221;|&yacute;|&#253;\u00FA", "y");
+        result = result.replaceAll("&yuml;|&#255;\u00FF", "y");
+        result = result.replaceAll("&szlig;|&#223;\u00DF", "ss");
+        return result;
+    }
+
+
     private static String expandEntities(String text)
     {
-        // Expand accented characters, apostrophes and currency symbols.
-        // We don't care about case, so we'll just use lower case characters throughout.
-
-        // For accented character, we strip the accents.  This is because we deal mostly
-        // with English text and sometimes foreign terms are used with the accents and
-        // sometimes without.  If this happens they are treated as different words which
-        // means the algorithm will not detect the similarity in the articles.
-        String result = text.replaceAll("&Agrave;|&#192;|&agrave;|&#224;", "a");
-        result = result.replaceAll("&Aacute;|&#193;|&aacute;|&#225;", "a");
-        result = result.replaceAll("&Acirc;|&#194;|&acirc;|&#226;", "a");
-        result = result.replaceAll("&Atilde;|&#195;|&atilde;|&#227;", "a");
-        result = result.replaceAll("&Auml;|&#196;|&auml;|&#228;", "a");
-        result = result.replaceAll("&Aring;|&#197;|&aring;|&#229;", "a");
-        result = result.replaceAll("&Ccedil;|&#199;|&ccedil;|&#231;", "c");
-        result = result.replaceAll("&Egrave;|&#200;|&egrave;|&#232;", "e");
-        result = result.replaceAll("&Eacute;|&#201;|&eacute;|&#233;", "e");
-        result = result.replaceAll("&Ecirc;|&#202;|&ecirc;|&#234;", "e");
-        result = result.replaceAll("&Euml;|&#203;|&euml;|&#235;", "e");
-        result = result.replaceAll("&Igrave;|&#204;|&igrave;|&#236;", "i");
-        result = result.replaceAll("&Iacute;|&#205;|&iacute;|&#237;", "i");
-        result = result.replaceAll("&Icirc;|&#206;|&icirc;|&#238;", "i");
-        result = result.replaceAll("&Iuml;|&#207;|&iuml;|&#239;", "i");
-        result = result.replaceAll("&Ntilde;|&#209;|&ntilde;|&#241;", "n");
-        result = result.replaceAll("&Ograve;|&#210;|&agrave;|&#242;", "o");
-        result = result.replaceAll("&Oacute;|&#211;|&aacute;|&#243;", "o");
-        result = result.replaceAll("&Ocirc;|&#212;|&acirc;|&#244;", "o");
-        result = result.replaceAll("&Otilde;|&#213;|&atilde;|&#245;", "o");
-        result = result.replaceAll("&Ouml;|&#214;|&auml;|&#246;", "o");
-        result = result.replaceAll("&Oslash;|&#216;|&oslash;|&#248;", "o");
-        result = result.replaceAll("&Ugrave;|&#217;|&ugrave;|&#249;", "u");
-        result = result.replaceAll("&Uacute;|&#218;|&uacute;|&#250;", "u");
-        result = result.replaceAll("&Ucirc;|&#219;|&ucirc;|&#251;", "u");
-        result = result.replaceAll("&Uuml;|&#220;|&uuml;|&#252;", "u");
-        result = result.replaceAll("&Yacute;|&#221;|&yacute;|&#253;", "y");
-        result = result.replaceAll("&yuml;|&#255;", "y");
-        result = result.replaceAll("&szlig;|&#223;", "ss");
-
-        result = result.replaceAll("&apos;|&#39;", "'");
+        // Expand apostrophes and currency symbols.
+        String result = text.replaceAll("&apos;|&#39;", "'");
 
         result = result.replaceAll("&cent;|&#162;", "\u00A2");
         result = result.replaceAll("&pound;|&#163;", "\u00A3");
@@ -101,11 +107,13 @@ class FeedUtils
      */
     private static String stripPunctuation(String text)
     {
-        String result = text.replaceAll("[\\.\\,;\\:\\?\\s\\\"]+", " ");
+        String result = text.replaceAll("[\\.,;:\\?\\s\"\\(\\)&\\|/]+", " ");
         // An apostrophe or hyphen is only significant if it is between two letters
         // (i.e. there are no spaces on either side and it's not the first or last
         // character in the string).
         result = result.replaceAll("^'| '|' |'$|^-| -|- |-$", " ");
+        // Strip possessive apostrophes.
+        result = result.replaceAll("'s\\s", " ");
         return result.trim();
     }
 }

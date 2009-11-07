@@ -18,6 +18,7 @@ package org.uncommons.zeitgeist;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
@@ -73,5 +74,30 @@ public class ArticleTest
         assert !wordCounts.containsKey("the") : "Low value word 'the' should be omitted.";
         assert !wordCounts.containsKey("is") : "Low value word 'is' should be omitted.";
         assert !wordCounts.containsKey("a") : "Low value word 'a' should be omitted.";
+    }
+
+
+    @Test
+    public void testWordsWithApostrophes()
+    {
+        Article article = new Article("martin o'neill", "", null, new Date(), Collections.<Image>emptyList(), null);
+        Map<String, Integer> wordCounts = article.getWordCounts();
+        Reporter.log(wordCounts.keySet().toString());
+        assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
+        assert wordCounts.containsKey("o'neill") : "Apostrophe word should be treated as one word.";
+
+    }
+
+
+    @Test
+    public void testStripPossessiveApostrophes()
+    {
+        Article article = new Article("steven gerrard's goal", "", null, new Date(), Collections.<Image>emptyList(), null);
+        Map<String, Integer> wordCounts = article.getWordCounts();
+        Reporter.log(wordCounts.keySet().toString());
+        assert wordCounts.size() == 3 : "Should be 2 words, is " + wordCounts.size();
+        assert wordCounts.containsKey("gerrard") : "Possessive apostrophe should be stripped.";
+        assert !wordCounts.containsKey("gerrard's") : "Possessive apostrophe should be stripped.";
+
     }
 }

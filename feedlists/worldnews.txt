@@ -17,3 +17,7 @@ http://feeds.guardian.co.uk/theguardian/world/rss
 http://rss.feedsportal.com/c/266/f/3503/index.rss
 http://feeds.nytimes.com/nyt/rss/World
 http://www.ft.com/rss/world
+http://www.dailymail.co.uk/news/worldnews/index.rss
+http://www.express.co.uk/posts/rss/78/foreignnews
+http://rss.independent.ie/c/32444/f/474628/index.rss
+http://www.mg.co.za/feeds/rss_international.aspx
