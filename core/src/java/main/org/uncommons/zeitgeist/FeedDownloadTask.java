@@ -24,7 +24,9 @@ import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
 import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -59,27 +61,41 @@ class FeedDownloadTask implements Callable<List<Article>>
     public List<Article> call() throws Exception
     {
         List<Article> feedArticles = new LinkedList<Article>();
-        SyndFeed feed = FETCHER.retrieveFeed(feedURL);
-
-        List<SyndEntry> entries = feed.getEntries();
-        for (SyndEntry entry : entries)
+        try
         {
-            String text = extractContent(entry);
-            
-            Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
-            List<Image> images = extractImages(entry);
-            Image feedLogo = feed.getImage() != null
-                             ? new Image(new URL(feed.getImage().getUrl()), new URL(feed.getImage().getLink()))
-                             : null;
+            SyndFeed feed = FETCHER.retrieveFeed(feedURL);
+            System.out.println("Fetched " + feedURL);
 
-            feedArticles.add(new Article(entry.getTitle(),
-                                         text,
-                                         new URL(entry.getLink()),
-                                         articleDate,
-                                         images,
-                                         feedLogo));
+            List<SyndEntry> entries = feed.getEntries();
+            for (SyndEntry entry : entries)
+            {
+                String text = extractContent(entry);
+
+                Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
+                List<Image> images = extractImages(entry);
+                Image feedLogo = feed.getImage() == null
+                                 ? null
+                                 : new Image(new URL(feed.getImage().getUrl()),
+                                             feed.getImage().getLink() == null ? null : new URL(feed.getImage().getLink()));
+
+                feedArticles.add(new Article(entry.getTitle(),
+                                             text,
+                                             new URL(entry.getLink()),
+                                             articleDate,
+                                             images,
+                                             feedLogo));
+            }
+            return feedArticles;
         }
-        return feedArticles;
+        catch (UnknownHostException ex)
+        {
+            System.out.println("Failed fetching " + feedURL + ", unknown host.");
+        }
+        catch (IllegalArgumentException ex)
+        {
+            System.out.println("Failed fetching " + feedURL + ", invalid document.");
+        }
+        return Collections.emptyList();
     }
 
 
