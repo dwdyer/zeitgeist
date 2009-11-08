@@ -209,6 +209,7 @@ public class Zeitgeist
         System.out.println("Total articles: " + articles.size());
         System.out.println("Total words: " + globalWordCounts.size());
         System.out.println("Key words: " + words.size());
+        System.out.println(words);
 
         Matrix matrix = new Matrix(articles.size(), words.size());
         int row = 0;

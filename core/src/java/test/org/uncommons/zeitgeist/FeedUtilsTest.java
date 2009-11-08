@@ -47,9 +47,9 @@ public class FeedUtilsTest
     public void testStripPunctuation()
     {
         String text = "Hello, this is some text.";
-        String stripped = FeedUtils.stripMarkUpAndPunctuation(text);
+        String stripped = FeedUtils.stripPunctuation(text);
         // Comma and full stop should be removed.
-        assert stripped.equals("hello this is some text") : "Stripped text is wrong: " + stripped;
+        assert stripped.equals("Hello this is some text") : "Stripped text is wrong: " + stripped;
     }
 
 
@@ -57,9 +57,9 @@ public class FeedUtilsTest
     public void testApostrophes()
     {
         String text = "This is some 'text' that might include an Irish name like O'Neill";
-        String stripped = FeedUtils.stripMarkUpAndPunctuation(text);
+        String stripped = FeedUtils.stripPunctuation(text);
         // Single quotes should be removed but not apostrophes in words.
-        assert stripped.equals("this is some text that might include an irish name like o'neill")
+        assert stripped.equals("This is some text that might include an Irish name like O'Neill")
                : "Stripped text is wrong: " + stripped;
     }
 
@@ -71,5 +71,14 @@ public class FeedUtilsTest
         String text = "'quotes'";
         String stripped = FeedUtils.stripMarkUpAndPunctuation(text);
         assert stripped.equals("quotes") : "Stripped text is wrong: " + stripped;
+    }
+
+
+    @Test
+    public void testCommasInNumbers()
+    {
+        String text = "100,000";
+        String stripped = FeedUtils.stripMarkUpAndPunctuation(text);
+        assert stripped.equals("100000") : "Stripped text is wrong: " + stripped;
     }
 }

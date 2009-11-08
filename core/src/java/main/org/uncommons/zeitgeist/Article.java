@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -172,6 +171,6 @@ public class Article
     @Override
     public String toString()
     {
-        return '[' + headline + "]\n" + text + '\n' + Arrays.toString(getWordCounts().keySet().toArray()) + '\n';
+        return '[' + headline + "]\n" + text + '\n' + getWordCounts().keySet() + '\n';
     }
 }
