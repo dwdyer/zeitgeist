@@ -72,6 +72,7 @@ public class Zeitgeist
     public List<Theme> getThemes()
     {
         List<Article> articles = downloadArticles();
+        int rawCount = articles.size();
 
         // Eliminate any articles that are too old.
         Iterator<Article> iterator = articles.iterator();
@@ -83,6 +84,8 @@ public class Zeitgeist
                 iterator.remove();
             }
         }
+        int discardCount = rawCount - articles.size();
+        System.out.println("Downloaded " + rawCount + " articles, " + discardCount + " discarded as too old.");
 
         Matrix matrix = makeMatrix(articles);
         int themeCount = 40;//(int) Math.ceil(Math.sqrt(articles.size()));
@@ -179,6 +182,15 @@ public class Zeitgeist
             if (theme.size() >= MINIMUM_ARTICLES_PER_THEME)
             {
                 themes.add(new Theme(theme));
+            }
+            else if (theme.isEmpty())
+            {
+                System.out.println("Discarding empty theme.");
+            }
+            else
+            {
+                System.out.println("Discarding theme (" + theme.get(0).getItem().getHeadline()
+                                   + "), too few articles (" + theme.size() + ")");
             }
         }
 

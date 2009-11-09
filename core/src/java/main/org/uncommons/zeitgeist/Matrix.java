@@ -88,29 +88,6 @@ public final class Matrix
 
 
     /**
-     * Multiply this matrix (row-by-column) by the specified matrix.
-     * @return A new matrix that is the result of the multiplication.
-     */
-    public Matrix multiply(Matrix m)
-    {
-        Matrix result = new Matrix(rowCount, m.getColumnCount());
-        for (int row = 0; row < result.getRowCount(); row++)
-        {
-            for (int column = 0; column < result.getColumnCount(); column++)
-            {
-                double value = 0;
-                for (int i = 0; i < columnCount; i++)
-                {
-                    value += get(row, i) * m.get(i, column);
-                }
-                result.set(row, column, value);
-            }
-        }
-        return result;
-    }
-
-
-    /**
      * Perform non-negative factorisation on this matrix.
      * The result is a pair of matrices (weights and features) that,
      * when multiplied, approximate this matrix.
@@ -151,17 +128,36 @@ public final class Matrix
     private double diffCost(Matrix other)
     {
         double diff = 0;
-        for (int i = 0; i < getRowCount(); i++)
+        for (int i = 0; i < data.length; i++)
         {
-            for (int j = 0; j < getColumnCount(); j++)
-            {
-                double delta = get(i, j) - other.get(i, j);
-                diff += delta * delta;
-            }
+            double delta = data[i] - other.data[i];
+            diff += delta * delta;
         }
         return diff;
     }
 
+
+    /**
+     * Multiply this matrix (row-by-column) by the specified matrix.
+     * @return A new matrix that is the result of the multiplication.
+     */
+    public Matrix multiply(Matrix m)
+    {
+        Matrix result = new Matrix(rowCount, m.getColumnCount());
+        for (int row = 0; row < result.getRowCount(); row++)
+        {
+            for (int column = 0; column < result.getColumnCount(); column++)
+            {
+                double value = 0;
+                for (int i = 0; i < columnCount; i++)
+                {
+                    value += get(row, i) * m.get(i, column);
+                }
+                result.set(row, column, value);
+            }
+        }
+        return result;
+    }
 
 
     /**

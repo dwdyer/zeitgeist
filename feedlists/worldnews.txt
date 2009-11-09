@@ -21,3 +21,5 @@ http://www.dailymail.co.uk/news/worldnews/index.rss
 http://www.express.co.uk/posts/rss/78/foreignnews
 http://rss.independent.ie/c/32444/f/474628/index.rss
 http://www.mg.co.za/feeds/rss_international.aspx
+http://feeds2.feedburner.com/ndtv/TqgX
+http://news.scotsman.com/getfeed.aspx?sectionid=7000&format=rss

@@ -75,12 +75,12 @@ class FeedDownloadTask implements Callable<List<Article>>
                 List<Image> images = extractImages(entry);
                 Image feedLogo = feed.getImage() == null
                                  ? null
-                                 : new Image(new URL(feed.getImage().getUrl()),
-                                             feed.getImage().getLink() == null ? null : new URL(feed.getImage().getLink()));
+                                 : new Image(new URL(feedURL, feed.getImage().getUrl()),
+                                             feed.getImage().getLink() == null ? null : new URL(feedURL, feed.getImage().getLink()));
 
                 feedArticles.add(new Article(entry.getTitle(),
                                              text,
-                                             new URL(entry.getLink()),
+                                             new URL(feedURL, entry.getLink()),
                                              articleDate,
                                              images,
                                              feedLogo));
@@ -123,7 +123,8 @@ class FeedDownloadTask implements Callable<List<Article>>
                 if (!images.containsKey(enclosure.getUrl()))
                 {
                     images.put(enclosure.getUrl(),
-                               new Image(new URL(enclosure.getUrl()), new URL(entry.getLink())));
+                               new Image(new URL(feedURL, enclosure.getUrl()),
+                                         new URL(feedURL, entry.getLink())));
                 }
             }
         }
@@ -141,7 +142,8 @@ class FeedDownloadTask implements Callable<List<Article>>
                     if (!images.containsKey(imageLink))
                     {
                         images.put(imageLink,
-                                   new Image(new URL(imageLink), new URL(entry.getLink())));
+                                   new Image(new URL(feedURL, imageLink),
+                                             new URL(feedURL, entry.getLink())));
                     }
                 }
             }
@@ -155,12 +157,13 @@ class FeedDownloadTask implements Callable<List<Article>>
             while (matcher.find())
             {
                 String imageLink = matcher.group(1);
-                // We only use JPG images because others are more likely to be
+                // We only use inline JPG images because others are more likely to be
                 // not related to the story (e.g. icons and adverts).
                 if (imageLink.toLowerCase().endsWith(".jpg") && !images.containsKey(imageLink))
                 {
                     images.put(imageLink,
-                               new Image(new URL(imageLink), new URL(entry.getLink())));
+                               new Image(new URL(feedURL, imageLink),
+                                         new URL(feedURL, entry.getLink())));
                 }
             }
         }
