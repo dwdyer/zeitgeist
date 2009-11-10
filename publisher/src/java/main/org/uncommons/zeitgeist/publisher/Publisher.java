@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
+import org.grlea.log.SimpleLogger;
 import org.uncommons.zeitgeist.Theme;
 import org.uncommons.zeitgeist.Zeitgeist;
 
@@ -27,6 +28,7 @@ import org.uncommons.zeitgeist.Zeitgeist;
  */
 public class Publisher
 {
+    private static final SimpleLogger LOG = new SimpleLogger(Publisher.class);
     private static final String ENCODING = "UTF-8";
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE d MMMM yyyy / HH:mm z");
 
@@ -81,11 +83,10 @@ public class Publisher
                                    String targetFileName) throws IOException
     {
         File resourceFile = new File(outputDirectory, targetFileName);
-        BufferedReader reader = null;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
         Writer writer = null;
         try
         {
-            reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resourceFile), ENCODING));
 
             String line = reader.readLine();
@@ -95,14 +96,10 @@ public class Publisher
                 writer.write('\n');
                 line = reader.readLine();
             }
-            writer.flush();
         }
         finally
         {
-            if (reader != null)
-            {
-                reader.close();
-            }
+            reader.close();
             if (writer != null)
             {
                 writer.close();
@@ -129,7 +126,7 @@ public class Publisher
             Date cutoffDate = new Date(System.currentTimeMillis() - 172800000); // 2 days ago.
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
             List<Theme> themes = zeitgeist.getThemes();
-            System.out.println(themes.size() + " themes identified.");
+            LOG.info(themes.size() + " themes identified.");
             publish(themes, args[1]);
         }
         finally

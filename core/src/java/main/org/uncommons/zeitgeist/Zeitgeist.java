@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.grlea.log.SimpleLogger;
 
 /**
  * Identifies common themes across multiple articles from multiple RSS feeds.
@@ -39,6 +40,7 @@ import java.util.concurrent.Future;
  */
 public class Zeitgeist
 {
+    private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
     private static final int MINIMUM_ARTICLES_PER_THEME = 4;
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
@@ -85,11 +87,11 @@ public class Zeitgeist
             }
         }
         int discardCount = rawCount - articles.size();
-        System.out.println("Downloaded " + rawCount + " articles, " + discardCount + " discarded as too old.");
+        LOG.info("Downloaded " + rawCount + " articles, " + discardCount + " discarded as too old.");
 
         Matrix matrix = makeMatrix(articles);
         int themeCount = 40;//(int) Math.ceil(Math.sqrt(articles.size()));
-        System.out.println("Estimating number of themes is " + themeCount);
+        LOG.debug("Estimating number of themes is " + themeCount);
         List<Matrix> factors = matrix.factorise(themeCount);
         return extractThemes(articles, factors.get(0), factors.get(1));
     }
@@ -185,12 +187,12 @@ public class Zeitgeist
             }
             else if (theme.isEmpty())
             {
-                System.out.println("Discarding empty theme.");
+                LOG.verbose("Discarding empty theme.");
             }
             else
             {
-                System.out.println("Discarding theme (" + theme.get(0).getItem().getHeadline()
-                                   + "), too few articles (" + theme.size() + ")");
+                LOG.verbose("Discarding theme (" + theme.get(0).getItem().getHeadline()
+                            + "), too few articles (" + theme.size() + ")");
             }
         }
 
@@ -216,11 +218,12 @@ public class Zeitgeist
             }
         }
 
-        List<String> words = listWords(articles, globalWordCounts);
+        List<String> words = listWords(globalWordCounts);
 
-        System.out.println("Total articles: " + articles.size());
-        System.out.println("Total words: " + globalWordCounts.size());
-        System.out.println("Key words: " + words.size());
+        LOG.info("Total articles: " + articles.size());
+        LOG.info("Total words: " + globalWordCounts.size());
+        LOG.info("Key words: " + words.size());
+        LOG.debug(words.toString());
 
         Matrix matrix = new Matrix(articles.size(), words.size());
         int row = 0;
@@ -239,13 +242,14 @@ public class Zeitgeist
     }
 
 
-    private List<String> listWords(List<Article> articles,
-                                   Map<String, Integer> globalWordCounts)
+    private List<String> listWords(Map<String, Integer> globalWordCounts)
     {
         List<String> words = new ArrayList<String>();
         for (Map.Entry<String, Integer> entry : globalWordCounts.entrySet())
         {
-            if (entry.getValue() >= MINIMUM_ARTICLES_PER_THEME && entry.getValue() < articles.size() * 0.3)
+            // If a word doesn't occur at least n times, it can't be in at least
+            // that many articles.
+            if (entry.getValue() >= MINIMUM_ARTICLES_PER_THEME)
             {
                 words.add(entry.getKey());
             }

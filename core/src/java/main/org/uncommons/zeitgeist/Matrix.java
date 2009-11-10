@@ -18,6 +18,7 @@ package org.uncommons.zeitgeist;
 import java.util.Random;
 import java.util.List;
 import java.util.Arrays;
+import org.grlea.log.SimpleLogger;
 
 /**
  * Simple matrix implementation that supports specific operations required by the
@@ -26,6 +27,7 @@ import java.util.Arrays;
  */
 public final class Matrix
 {
+    private static final SimpleLogger LOG = new SimpleLogger(Matrix.class);
     private static final Random RNG = new Random();
     
     private final int rowCount;
@@ -119,7 +121,7 @@ public final class Matrix
             oldCost = cost;
             cost = diffCost(product);
         }
-        System.out.println(cost);
+        LOG.debug("Minimised factorisation error:" + cost);
 
         return Arrays.asList(weights, features);
     }

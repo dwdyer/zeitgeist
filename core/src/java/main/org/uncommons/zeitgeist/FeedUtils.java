@@ -116,7 +116,7 @@ class FeedUtils
         // character in the string).
         result = result.replaceAll("^'| '|' |'$|^-| -|- |-$", " ");
         // Strip possessive apostrophes.
-        result = result.replaceAll("'s\\s", " ");
+        result = result.replaceAll("'s\\s|\u2019s\\s", " ");
         return result.trim();
     }
 }

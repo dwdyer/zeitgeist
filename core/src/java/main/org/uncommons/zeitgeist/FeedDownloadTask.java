@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.grlea.log.SimpleLogger;
 import org.jdom.Element;
 
 /**
@@ -43,6 +44,7 @@ import org.jdom.Element;
  */
 class FeedDownloadTask implements Callable<List<Article>>
 {
+    private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
     private static final FeedFetcher FETCHER = new HttpURLFeedFetcher(HashMapFeedInfoCache.getInstance());
 
     private final URL feedURL;
@@ -64,7 +66,7 @@ class FeedDownloadTask implements Callable<List<Article>>
         try
         {
             SyndFeed feed = FETCHER.retrieveFeed(feedURL);
-            System.out.println("Fetched " + feedURL);
+            LOG.debug("Fetched " + feedURL);
 
             List<SyndEntry> entries = feed.getEntries();
             for (SyndEntry entry : entries)
@@ -89,11 +91,11 @@ class FeedDownloadTask implements Callable<List<Article>>
         }
         catch (UnknownHostException ex)
         {
-            System.out.println("Failed fetching " + feedURL + ", unknown host.");
+            LOG.error("Failed fetching " + feedURL + ", unknown host.");
         }
         catch (IllegalArgumentException ex)
         {
-            System.out.println("Failed fetching " + feedURL + ", invalid document.");
+            LOG.error("Failed fetching " + feedURL + ", invalid document.");
         }
         return Collections.emptyList();
     }

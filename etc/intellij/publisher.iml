@@ -23,6 +23,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="core" />
+    <orderEntry type="library" name="SimpleLog" level="project" />
   </component>
 </module>
 

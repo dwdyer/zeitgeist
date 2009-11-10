@@ -48,6 +48,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="SimpleLog" level="project" />
   </component>
 </module>
 
