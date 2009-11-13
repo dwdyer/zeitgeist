@@ -30,7 +30,7 @@ public class ArticleTest
     @Test
     public void testTitleWordCounts()
     {
-        Article article = new Article("fish fish yeah", "", null, new Date(), Collections.<Image>emptyList(), null);
+        Article article = new Article("fish fish yeah", "", null, new Date(), Collections.<Image>emptyList(), null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
         assert wordCounts.get("fish") == 2 : "Count should be 2 is " + wordCounts.get("fish");
@@ -40,7 +40,7 @@ public class ArticleTest
     @Test
     public void testContentWordCounts()
     {
-        Article article = new Article("", "dog cat rabbit cat", null, new Date(), Collections.<Image>emptyList(), null);
+        Article article = new Article("", "dog cat rabbit cat", null, new Date(), Collections.<Image>emptyList(), null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 3 : "Should be 3 words, is " + wordCounts.size();
         assert wordCounts.get("dog") == 1 : "Count should be 1 is " + wordCounts.get("dog");
@@ -55,7 +55,7 @@ public class ArticleTest
     @Test
     public void testCombinedWordCounts()
     {
-        Article article = new Article("dog magic", "fish magic rabbit magic", null, new Date(), Collections.<Image>emptyList(), null);
+        Article article = new Article("dog magic", "fish magic rabbit magic", null, new Date(), Collections.<Image>emptyList(), null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 4 : "Should be 4 words, is " + wordCounts.size();
         assert wordCounts.get("dog") == 1 : "Count should be 1 is " + wordCounts.get("dog");
@@ -68,7 +68,7 @@ public class ArticleTest
     @Test
     public void testOmitLowValueWords()
     {
-        Article article = new Article("the title is a headline", "", null, new Date(), Collections.<Image>emptyList(), null);
+        Article article = new Article("the title is a headline", "", null, new Date(), Collections.<Image>emptyList(), null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
         assert !wordCounts.containsKey("the") : "Low value word 'the' should be omitted.";
@@ -80,7 +80,7 @@ public class ArticleTest
     @Test
     public void testWordsWithApostrophes()
     {
-        Article article = new Article("martin o'neill", "", null, new Date(), Collections.<Image>emptyList(), null);
+        Article article = new Article("martin o'neill", "", null, new Date(), Collections.<Image>emptyList(), null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         Reporter.log(wordCounts.keySet().toString());
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
@@ -92,7 +92,7 @@ public class ArticleTest
     @Test
     public void testStripPossessiveApostrophes()
     {
-        Article article = new Article("steven gerrard's goal", "", null, new Date(), Collections.<Image>emptyList(), null);
+        Article article = new Article("steven gerrard's goal", "", null, new Date(), Collections.<Image>emptyList(), null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         Reporter.log(wordCounts.keySet().toString());
         assert wordCounts.size() == 3 : "Should be 2 words, is " + wordCounts.size();

@@ -85,6 +85,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                                              new URL(feedURL, entry.getLink()),
                                              articleDate,
                                              images,
+                                             feed.getTitle(),
                                              feedLogo));
             }
             return feedArticles;

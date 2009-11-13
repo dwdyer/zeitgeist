@@ -74,6 +74,7 @@ public class Article
     private final URL articleURL;
     private final Date date;
     private final List<Image> images;
+    private final String feedTitle;
     private final Image feedLogo;
 
 
@@ -82,6 +83,7 @@ public class Article
                    URL link,
                    Date date,
                    List<Image> images,
+                   String feedTitle,
                    Image feedLogo)
     {
         this.headline = headline;
@@ -89,6 +91,7 @@ public class Article
         this.articleURL = link;
         this.date = date;
         this.images = Collections.unmodifiableList(images);
+        this.feedTitle = feedTitle;
         this.feedLogo = feedLogo;
     }
 
@@ -120,6 +123,12 @@ public class Article
     public List<Image> getImages()
     {
         return images;
+    }
+
+
+    public String getFeedTitle()
+    {
+        return feedTitle;
     }
 
 
