@@ -49,6 +49,8 @@ public class Zeitgeist
     // Which words appear in which articles and how many times.
     private final Map<Article, Map<String, Integer>> articleWordCounts = new HashMap<Article, Map<String, Integer>>();
 
+    private final List<Article> articles = new ArrayList<Article>();
+
 
     /**
      * @param feeds A list of feeds to include in the analysis.
@@ -73,7 +75,10 @@ public class Zeitgeist
 
     public List<Theme> getThemes()
     {
-        List<Article> articles = downloadArticles();
+        if (articles.isEmpty())
+        {
+            articles.addAll(downloadArticles());
+        }
         int rawCount = articles.size();
 
         // Eliminate any articles that are too old.
@@ -94,6 +99,24 @@ public class Zeitgeist
         LOG.debug("Estimating number of themes is " + themeCount);
         List<Matrix> factors = matrix.factorise(themeCount);
         return extractThemes(articles, factors.get(0), factors.get(1));
+    }
+
+
+    /**
+     * @return The total number of articles downloaded (includes any that were discarded as too old).
+     */
+    public int getArticleCount()
+    {
+        return articles.size();
+    }
+
+
+    /**
+     * @return The total number of news sources that articles are downloaded from.
+     */
+    public int getFeedCount()
+    {
+        return feeds.size();
     }
 
 

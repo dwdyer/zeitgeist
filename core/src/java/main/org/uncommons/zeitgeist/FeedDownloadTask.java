@@ -177,7 +177,7 @@ class FeedDownloadTask implements Callable<List<Article>>
     /**
      * Extract the article content from a feed entry.  This content may be in the description
      * element or it may be elsewhere.
-     * @return The article text, stripped of its mark-up.
+     * @return The article text.
      */
     @SuppressWarnings("unchecked")
     private String extractContent(SyndEntry entry)

@@ -34,13 +34,17 @@ public class Publisher
 
 
     public static void publish(List<Theme> themes,
-                               String title) throws IOException
+                               String title,
+                               int feedCount,
+                               int articleCount) throws IOException
     {
         StringTemplateGroup group = new StringTemplateGroup("group");
         StringTemplate template = group.getInstanceOf("news");
         template.setAttribute("themes", themes);
         template.setAttribute("title", title);
-        template.setAttribute("datetime", DATE_FORMAT.format(new Date()));
+        template.setAttribute("dateTime", DATE_FORMAT.format(new Date()));
+        template.setAttribute("feedCount", feedCount);
+        template.setAttribute("articleCount", articleCount);
         Writer writer = new OutputStreamWriter(new FileOutputStream("news.html"), ENCODING);
         try
         {
@@ -127,7 +131,7 @@ public class Publisher
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
             List<Theme> themes = zeitgeist.getThemes();
             LOG.info(themes.size() + " themes identified.");
-            publish(themes, args[1]);
+            publish(themes, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
         }
         finally
         {
