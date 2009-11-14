@@ -32,6 +32,8 @@ public class Publisher
     private static final String ENCODING = "UTF-8";
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE d MMMM yyyy / HH:mm z");
 
+    private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
+
 
     public static void publish(List<Theme> themes,
                                String title,
@@ -112,7 +114,6 @@ public class Publisher
     }
 
 
-
     public static void main(String[] args) throws IOException
     {
         BufferedReader feedListReader = new BufferedReader(new FileReader(args[0]));
@@ -127,7 +128,7 @@ public class Publisher
                     feeds.add(new URL(url));
                 }
             }
-            Date cutoffDate = new Date(System.currentTimeMillis() - 172800000); // 2 days ago.
+            Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
             List<Theme> themes = zeitgeist.getThemes();
             LOG.info(themes.size() + " themes identified.");

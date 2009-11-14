@@ -46,6 +46,7 @@ class FeedDownloadTask implements Callable<List<Article>>
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
     private static final FeedFetcher FETCHER = new HttpURLFeedFetcher(HashMapFeedInfoCache.getInstance());
+    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=\"(\\S+?)\"");
 
     private final URL feedURL;
     private final boolean includeInlineImages;
@@ -121,7 +122,8 @@ class FeedDownloadTask implements Callable<List<Article>>
         {
             if ((enclosure.getType().equalsIgnoreCase("image/jpeg")
                  || enclosure.getType().equalsIgnoreCase("image/png")
-                 || enclosure.getType().equalsIgnoreCase("image/gif")))
+                 || enclosure.getType().equalsIgnoreCase("image/gif"))
+                || enclosure.getUrl().endsWith(".jpg"))
             {
                 if (!images.containsKey(enclosure.getUrl()))
                 {
@@ -138,15 +140,19 @@ class FeedDownloadTask implements Callable<List<Article>>
             List<Element> foreignElements = (List<Element>) entry.getForeignMarkup();
             for (Element element : foreignElements)
             {
-                if (element.getNamespacePrefix().equals("media")
-                    && element.getName().equals("thumbnail"))
+                if (element.getNamespacePrefix().equals("media"))
                 {
-                    String imageLink = element.getAttributeValue("url");
-                    if (!images.containsKey(imageLink))
+                    String type = element.getAttributeValue("type");
+                    if ((element.getName().equals("content") && type != null && type.equals("image/jpeg"))
+                        || element.getName().equals("thumbnail"))
                     {
-                        images.put(imageLink,
-                                   new Image(new URL(feedURL, imageLink),
-                                             new URL(feedURL, entry.getLink())));
+                        String imageLink = element.getAttributeValue("url");
+                        if (!images.containsKey(imageLink))
+                        {
+                            images.put(imageLink,
+                                       new Image(new URL(feedURL, imageLink),
+                                                 new URL(feedURL, entry.getLink())));
+                        }
                     }
                 }
             }
@@ -155,8 +161,7 @@ class FeedDownloadTask implements Callable<List<Article>>
         // Sometimes images are embedded directly in the article using HTML <img> tags.
         if (includeInlineImages && entry.getDescription() != null)
         {
-            Pattern imageTagPattern = Pattern.compile("<img.+?src=\"(\\S+?)\".*?>");
-            Matcher matcher = imageTagPattern.matcher(entry.getDescription().getValue());
+            Matcher matcher = IMAGE_TAG_PATTERN.matcher(entry.getDescription().getValue());
             while (matcher.find())
             {
                 String imageLink = matcher.group(1);

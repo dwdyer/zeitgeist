@@ -103,7 +103,7 @@ public class Zeitgeist
 
 
     /**
-     * @return The total number of articles downloaded (includes any that were discarded as too old).
+     * @return The total number of articles downloaded.
      */
     public int getArticleCount()
     {

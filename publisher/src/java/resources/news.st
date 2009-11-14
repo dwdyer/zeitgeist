@@ -9,7 +9,7 @@
     <p class="datetime">$dateTime$</p>
     <p class="about">
       This page was constructed by automated analysis of <b>$articleCount$</b> articles from <b>$feedCount$</b>
-      news sources. No humans were involved in the selection and classification of these news headlines.
+      news sources. No humans were involved in the selection and classification of these headlines.
     </p>
     $themes:theme()$
   </body>
