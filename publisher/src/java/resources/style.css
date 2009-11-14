@@ -44,6 +44,9 @@ p {font-size: 1.4em;
 .picture {float: left;
           margin-bottom: 1.8em;
           max-width: 250px;}
+.picture img {max-width: 100%}
+
+.credit {font-size: .9em;}
 
 .logo {max-height: 30px;
        max-width: 150px;

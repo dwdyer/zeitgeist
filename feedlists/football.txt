@@ -1,7 +1,6 @@
 http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/football/rss.xml
 http://www.telegraph.co.uk/sport/football/rss
 http://rss.feedsportal.com/c/266/f/3785/index.rss
-http://www.mirror.co.uk/sport/football/rss.xml
 http://feeds.guardian.co.uk/theguardian/football/rss
 http://www.skysports.com/rss/0,20514,11095,00.xml
 http://feeds.reuters.com/reuters/UKFootballNews
@@ -23,3 +22,4 @@ http://www.newsoftheworld.co.uk/feeds/rss/article186490.ece
 http://www.uefa.com/rssfeed/footballeurope/index.xml
 http://resources.sportingo.com/Sportingo_RSS/Section/Football.xml
 http://www.express.co.uk/posts/rss/67/football
+http://rss.feedsportal.com/feed/metro/43

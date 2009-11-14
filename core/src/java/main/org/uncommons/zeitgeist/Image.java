@@ -43,4 +43,15 @@ public class Image
     {
         return articleURL;
     }
+
+
+    public String getImageCredit()
+    {
+        String host = articleURL.getHost();
+        // Remove common prefixes such as 'www', 'rss' or 'feeds' to keep the URL as short as possible.
+        String credit = host.replaceFirst("^feeds\\.", "");
+        credit = credit.replaceFirst("^rss\\.", "");
+        credit = credit.replaceFirst("^www\\.", "");
+        return credit;
+    }
 }

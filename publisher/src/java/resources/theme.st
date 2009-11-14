@@ -8,7 +8,10 @@
       />$endif$</a>
     }$
   </h2>
-  $first(it.images):{<a href="$it.articleURL$"><img src="$it.imageURL$" class="picture"/></a>}$
+  <div class="picture">
+    $first(it.images):{<a href="$it.articleURL$"><img src="$it.imageURL$"/></a><br />
+                       <a href="$it.articleURL$" class="credit">$it.imageCredit$</a>}$
+  </div>
   <div class="links">
     $rest(it.articles):{<a href="$it.item.articleURL$">$it.item.headline$</a><!-- $it.weight$ --><br />}$
   </div>
