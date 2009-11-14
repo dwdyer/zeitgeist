@@ -28,17 +28,18 @@ p {font-size: 1.4em;
 
 .datetime {font-size: 1.2em;
            font-family: Palatino Linotype, Palatino, serif;
-           margin-top: -1.5em;}
+           margin-top: -1.5em;
+           margin-bottom: 1.5em;}
 
 .about {color: #666666;}
 
 .theme {clear: both;
         margin-top: 1.8em;
         margin-bottom: 1.8em;}
-.links {display: inline-block;
+.links {display: table-cell;
         font-size: 1.4em;
-        margin-left: 1em;
-        margin-bottom: .3333em;}
+        padding-left: 1em;
+        padding-bottom: .3333em;}
 
 .picture {float: left;
           margin-bottom: 1.8em;
