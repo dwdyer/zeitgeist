@@ -4,10 +4,13 @@ actually
 again
 all
 almost
+along
 already
 also
 although
 am
+amid
+among
 an
 and
 another
@@ -44,6 +47,8 @@ etc
 even
 ever
 every
+few
+fewer
 for
 from
 get
@@ -83,6 +88,7 @@ it's
 its
 itself
 just
+less
 let
 like
 made
@@ -93,6 +99,7 @@ me
 meanwhile
 might
 mine
+more
 moreover
 most
 much

@@ -42,6 +42,7 @@ public class Zeitgeist
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
     private static final int MINIMUM_SOURCES_PER_THEME = 3;
+    private static final int MINIMUM_ARTICLES_FOR_KEYWORD = 4; // Ignore obscure words.
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
     private final List<URL> feeds;
@@ -269,7 +270,7 @@ public class Zeitgeist
         for (Map.Entry<String, Integer> entry : globalWordCounts.entrySet())
         {
             // If a word doesn't occur in enough different articles, discard it.
-            if (entry.getValue() >= MINIMUM_SOURCES_PER_THEME)
+            if (entry.getValue() >= MINIMUM_ARTICLES_FOR_KEYWORD)
             {
                 words.add(entry.getKey());
             }
