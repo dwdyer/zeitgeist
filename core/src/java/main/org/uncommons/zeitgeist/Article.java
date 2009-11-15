@@ -76,15 +76,28 @@ public class Article
     private final List<Image> images;
     private final String feedTitle;
     private final Image feedLogo;
+    private final Image feedIcon;
 
 
+    /**
+     * @param headline The title of the article.
+     * @param text The article text included in the feed.  This may be the full article but is
+     * typically a brief summary.
+     * @param link The link to full the article.
+     * @param date The date that this article was published.
+     * @param images A list of images related to this article.
+     * @param feedTitle The name of the feed that this article belongs to.
+     * @param feedLogo The full-size site logo specified by the feed that this article belongs to.
+     * @param feedIcon The favicon for the feed that this article belongs to.
+     */
     public Article(String headline,
                    String text,
                    URL link,
                    Date date,
                    List<Image> images,
                    String feedTitle,
-                   Image feedLogo)
+                   Image feedLogo,
+                   Image feedIcon)
     {
         this.headline = headline;
         this.text = text;
@@ -93,6 +106,7 @@ public class Article
         this.images = Collections.unmodifiableList(images);
         this.feedTitle = feedTitle;
         this.feedLogo = feedLogo;
+        this.feedIcon = feedIcon;
     }
 
 
@@ -135,6 +149,12 @@ public class Article
     public Image getFeedLogo()
     {
         return feedLogo;
+    }
+
+
+    public Image getFeedIcon()
+    {
+        return feedIcon;
     }
 
 

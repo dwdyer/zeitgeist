@@ -52,3 +52,7 @@ p {font-size: 1.4em;
        max-width: 150px;
        margin-left: .5em;
        vertical-align: middle;}
+
+.icon {width: 16px;
+       height: 16px;
+       vertical-align: bottom;}

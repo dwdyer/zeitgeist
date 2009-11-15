@@ -72,22 +72,16 @@ class FeedDownloadTask implements Callable<List<Article>>
             List<SyndEntry> entries = feed.getEntries();
             for (SyndEntry entry : entries)
             {
-                String text = extractContent(entry);
-
                 Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
-                List<Image> images = extractImages(entry);
-                Image feedLogo = feed.getImage() == null
-                                 ? null
-                                 : new Image(new URL(feedURL, feed.getImage().getUrl()),
-                                             feed.getImage().getLink() == null ? null : new URL(feedURL, feed.getImage().getLink()));
-
+                
                 feedArticles.add(new Article(entry.getTitle(),
-                                             text,
+                                             extractContent(entry),
                                              new URL(feedURL, entry.getLink()),
                                              articleDate,
-                                             images,
+                                             extractImages(entry),
                                              feed.getTitle(),
-                                             feedLogo));
+                                             getFeedLogo(feed),
+                                             getFeedIcon(feed)));
             }
             return feedArticles;
         }
@@ -104,6 +98,40 @@ class FeedDownloadTask implements Callable<List<Article>>
 
 
     /**
+     * Determines the location of the large feed logo image for a given feed.
+     * @param feed The feed for which to retrieve a logo.
+     * @return The feed logo image information, or null if there isn't a logo.
+     */
+    private Image getFeedLogo(SyndFeed feed) throws MalformedURLException
+    {
+        if (feed.getImage() == null)
+        {
+            return null;
+        }
+        else
+        {
+            return new Image(new URL(feedURL, feed.getImage().getUrl()),
+                             new URL(feedURL, feed.getImage().getLink() == null ? feed.getLink() : feed.getImage().getLink()));
+        }
+    }
+
+
+    /**
+     * Determines the location of the 16x16 icon (favicon) for a given feed.
+     * @param feed The feed for which to retrieve a favicon.
+     * @return The feed icon image information.
+     */
+    private Image getFeedIcon(SyndFeed feed) throws MalformedURLException
+    {
+        // Most sites have a favicon.ico file at the root.  Some specify another location
+        // using a link tag, but we don't support that at the moment as it would require
+        // downloading and parsing the site home page.
+        URL feedLink = feed.getLink() != null ? new URL(feed.getLink()) : feedURL;
+        return new Image(new URL(feedLink, "/favicon.ico"), feedLink);
+    }
+
+
+    /**
      * Locates any images associated with a given article.  These may have been
      * embedded in several different ways.  This method looks in the most likely
      * places and returns a list of any images found.
@@ -116,7 +144,7 @@ class FeedDownloadTask implements Callable<List<Article>>
         // to the map if it already contains an image with the same URL.
         Map<String, Image> images = new LinkedHashMap<String, Image>();
 
-        // The most likely/best place for an image is in an enclosure. 
+        // The most likely/best place for an image is in an enclosure.
         List<SyndEnclosure> enclosures = entry.getEnclosures();
         for (SyndEnclosure enclosure : enclosures)
         {
