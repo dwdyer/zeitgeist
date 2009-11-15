@@ -78,7 +78,16 @@ public class FeedUtilsTest
     public void testCommasInNumbers()
     {
         String text = "100,000";
-        String stripped = FeedUtils.stripMarkUpAndPunctuation(text);
+        String stripped = FeedUtils.stripPunctuation(text);
         assert stripped.equals("100000") : "Stripped text is wrong: " + stripped;
+    }
+
+
+    @Test
+    public void testAcronyms()
+    {
+        String text = "Some words about N.A.S.A. and the U.S.";
+        String stripped = FeedUtils.stripPunctuation(text);
+        assert stripped.equals("Some words about NASA and the US") : "Stripped text is wrong: " + stripped;
     }
 }

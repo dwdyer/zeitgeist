@@ -16,7 +16,9 @@
 package org.uncommons.zeitgeist;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Daniel Dyer
@@ -46,5 +48,21 @@ public class Theme
             images.addAll(article.getItem().getImages());
         }
         return images;
+    }
+
+
+    /**
+     * Counts how many distinct feeds are represented by the articles that
+     * make up this theme.
+     * @return The number of distinct sources.
+     */
+    public int countDistinctSources()
+    {
+        Set<String> sources = new HashSet<String>();
+        for (WeightedItem<Article> article : articles)
+        {
+            sources.add(article.getItem().getArticleURL().getHost());
+        }
+        return sources.size();
     }
 }

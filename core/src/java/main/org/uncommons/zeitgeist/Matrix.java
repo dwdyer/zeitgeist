@@ -121,7 +121,7 @@ public final class Matrix
             oldCost = cost;
             cost = diffCost(product);
         }
-        LOG.debug("Minimised factorisation error:" + cost);
+        LOG.debug("Minimised factorisation error: " + cost);
 
         return Arrays.asList(weights, features);
     }

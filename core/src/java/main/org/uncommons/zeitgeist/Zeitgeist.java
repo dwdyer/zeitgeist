@@ -41,7 +41,7 @@ import org.grlea.log.SimpleLogger;
 public class Zeitgeist
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final int MINIMUM_ARTICLES_PER_THEME = 4;
+    private static final int MINIMUM_SOURCES_PER_THEME = 3;
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
     private final List<URL> feeds;
@@ -95,7 +95,7 @@ public class Zeitgeist
         LOG.info("Downloaded " + rawCount + " articles, " + discardCount + " discarded as too old.");
 
         Matrix matrix = makeMatrix(articles);
-        int themeCount = 40;//(int) Math.ceil(Math.sqrt(articles.size()));
+        int themeCount = (int) Math.ceil(Math.sqrt(matrix.getColumnCount()));
         LOG.debug("Estimating number of themes is " + themeCount);
         List<Matrix> factors = matrix.factorise(themeCount);
         return extractThemes(articles, factors.get(0), factors.get(1));
@@ -167,10 +167,10 @@ public class Zeitgeist
     {
         int featureCount = features.getRowCount();
 
-        List<List<WeightedItem<Article>>> themeArticles = new ArrayList<List<WeightedItem<Article>>>(featureCount);
+        List<List<WeightedItem<Article>>> articlesByTheme = new ArrayList<List<WeightedItem<Article>>>(featureCount);
         for (int i = 0; i < featureCount; i++)
         {
-            themeArticles.add(new ArrayList<WeightedItem<Article>>());
+            articlesByTheme.add(new ArrayList<WeightedItem<Article>>());
         }
 
         for (int i = 0; i < articles.size(); i++)
@@ -190,32 +190,30 @@ public class Zeitgeist
             if (maxWeight >= MINIMUM_ARTICLE_RELEVANCE) // Don't include articles with only tenuous links to the main theme.
             {
                 WeightedItem<Article> weightedArticle = new WeightedItem<Article>(maxWeight, articles.get(i));
-                int index = Collections.binarySearch(themeArticles.get(themeIndex),
+                int index = Collections.binarySearch(articlesByTheme.get(themeIndex),
                                                      weightedArticle,
                                                      Collections.reverseOrder());
                 if (index < 0)
                 {
                     index = -(index + 1);
                 }
-                themeArticles.get(themeIndex).add(index, weightedArticle);
+                articlesByTheme.get(themeIndex).add(index, weightedArticle);
             }
         }
 
         List<Theme> themes = new ArrayList<Theme>();
-        for (List<WeightedItem<Article>> theme : themeArticles)
+        for (List<WeightedItem<Article>> themeArticles : articlesByTheme)
         {
-            if (theme.size() >= MINIMUM_ARTICLES_PER_THEME)
+            Theme theme = new Theme(themeArticles);
+            int sources = theme.countDistinctSources();
+            if (sources >= MINIMUM_SOURCES_PER_THEME)
             {
-                themes.add(new Theme(theme));
-            }
-            else if (theme.isEmpty())
-            {
-                LOG.verbose("Discarding empty theme.");
+                themes.add(theme);
             }
             else
             {
-                LOG.verbose("Discarding theme (" + theme.get(0).getItem().getHeadline()
-                            + "), too few articles (" + theme.size() + ")");
+                String detail = themeArticles.isEmpty() ? "???" : themeArticles.get(0).getItem().getHeadline();
+                LOG.verbose(String.format("Discarding theme \"%s\" (%d), too few sources (%d)", detail, themeArticles.size(), sources));
             }
         }
 
@@ -270,9 +268,8 @@ public class Zeitgeist
         List<String> words = new ArrayList<String>();
         for (Map.Entry<String, Integer> entry : globalWordCounts.entrySet())
         {
-            // If a word doesn't occur at least n times, it can't be in at least
-            // that many articles.
-            if (entry.getValue() >= MINIMUM_ARTICLES_PER_THEME)
+            // If a word doesn't occur in enough different articles, discard it.
+            if (entry.getValue() >= MINIMUM_SOURCES_PER_THEME)
             {
                 words.add(entry.getKey());
             }

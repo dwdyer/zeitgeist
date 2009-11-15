@@ -109,8 +109,12 @@ class FeedUtils
     {
         // Remove commas from numbers.
         String result = text.replaceAll("(\\d),(\\d)", "$1$2");
+
+        // Full-stops that occur in words, with no adjacent spaces are usually part
+        // of an acronym.
+        result = result.replaceAll("\\.", "");
             
-        result = result.replaceAll("[\\.,;:\\?\\s\"\\(\\)&\\|/\u2013\u2022]+", " ");
+        result = result.replaceAll("[,;:\\?\\s\"\\(\\)&\\|/\u2013\u2022]+", " ");
         // An apostrophe or hyphen is only significant if it is between two letters
         // (i.e. there are no spaces on either side and it's not the first or last
         // character in the string).

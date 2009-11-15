@@ -69,19 +69,22 @@ class FeedDownloadTask implements Callable<List<Article>>
             SyndFeed feed = FETCHER.retrieveFeed(feedURL);
             LOG.debug("Fetched " + feedURL);
 
+            Image feedLogo = getFeedLogo(feed);
+            Image feedIcon = getFeedIcon(feed);
+            
             List<SyndEntry> entries = feed.getEntries();
             for (SyndEntry entry : entries)
             {
                 Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
-                
-                feedArticles.add(new Article(entry.getTitle(),
+
+                feedArticles.add(new Article(entry.getTitle().trim(),
                                              extractContent(entry),
                                              new URL(feedURL, entry.getLink()),
                                              articleDate,
                                              extractImages(entry),
                                              feed.getTitle(),
-                                             getFeedLogo(feed),
-                                             getFeedIcon(feed)));
+                                             feedLogo,
+                                             feedIcon));
             }
             return feedArticles;
         }
@@ -126,7 +129,7 @@ class FeedDownloadTask implements Callable<List<Article>>
         // Most sites have a favicon.ico file at the root.  Some specify another location
         // using a link tag, but we don't support that at the moment as it would require
         // downloading and parsing the site home page.
-        URL feedLink = feed.getLink() != null ? new URL(feed.getLink()) : feedURL;
+        URL feedLink = feed.getLink() != null ? new URL(feedURL, feed.getLink()) : feedURL;
         return new Image(new URL(feedLink, "/favicon.ico"), feedLink);
     }
 

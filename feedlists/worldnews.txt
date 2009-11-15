@@ -1,7 +1,7 @@
 http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/world/rss.xml
 http://rss.cnn.com/rss/cnn_world.rss
 http://www.foxnews.com/xmlfeed/rss/0,4313,81,00.rss
-http://feeds.reuters.com/reuters/UKWorldNews
+http://feeds.reuters.com/reuters/WorldNews
 http://www.abc.net.au/news/indexes/world/rss.xml
 http://rss.cbc.ca/lineup/world.xml
 http://feeds.news24.com/articles/News24/World/rss
@@ -19,7 +19,6 @@ http://feeds.nytimes.com/nyt/rss/World
 http://www.ft.com/rss/world
 http://www.dailymail.co.uk/news/worldnews/index.rss
 http://www.express.co.uk/posts/rss/78/foreignnews
-http://rss.independent.ie/c/32444/f/474628/index.rss
 http://www.mg.co.za/feeds/rss_international.aspx
 http://feeds2.feedburner.com/ndtv/TqgX
 http://news.scotsman.com/getfeed.aspx?sectionid=7000&format=rss
@@ -28,3 +27,4 @@ http://www.thestar.com/rss/98744?
 http://rss.canada.com/get/?F7432
 http://www.rte.ie/rss/news/world.xml
 http://tvnz.co.nz/content/ta_tvnz_world_headlines_auto_group/rss_20_skin.xml
+http://timesofindia.indiatimes.com/rssfeeds/296589292.cms
