@@ -106,6 +106,37 @@
   </target>
 
 
+  <!-- Create the release artifacts. -->
+  <target name="release"
+          depends="clean, dist, test"
+          description="Creates the release archives.">
+    <mkdir dir="${release.dir}" />
+    <!-- Create a GZipped TAR file containing the built binaries. -->
+    <tar destfile="${release.dir}/${artifact.identifier}.tgz"
+         compression="gzip"
+         longfile="gnu">
+      <tarfileset dir="${dist.dir}"
+                  prefix="${artifact.identifier}"
+                  includes="**/*" />
+      <!-- Don't forget to include the licence and other important information. -->
+      <tarfileset dir="."
+                  prefix="${artifact.identifier}"
+                  includes="*.txt" />
+    </tar>
+    <!-- Also create a zip file release for the convenience of Windows users. -->
+    <zip destfile="${release.dir}/${artifact.identifier}.zip">
+      <zipfileset dir="${dist.dir}"
+                  prefix="${artifact.identifier}"
+                  includes="**/*" />
+      <!-- Don't forget to include the licence and other important information. -->
+      <zipfileset dir="."
+                  prefix="${artifact.identifier}"
+                  includes="*.txt" />
+    </zip>
+  </target>
+
+
+
 
 
 <!-- ==================================================================

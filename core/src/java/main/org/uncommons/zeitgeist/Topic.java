@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * A topic is some unifying theme that links multiple individual articles.
  * @author Daniel Dyer
  */
 public class Topic
