@@ -23,12 +23,12 @@ import java.util.Set;
 /**
  * @author Daniel Dyer
  */
-public class Theme
+public class Topic
 {
     private final List<WeightedItem<Article>> articles = new ArrayList<WeightedItem<Article>>();
 
 
-    public Theme(List<WeightedItem<Article>> articles)
+    public Topic(List<WeightedItem<Article>> articles)
     {
         this.articles.addAll(articles);
     }
@@ -53,7 +53,7 @@ public class Theme
 
     /**
      * Counts how many distinct feeds are represented by the articles that
-     * make up this theme.
+     * make up this topic.
      * @return The number of distinct sources.
      */
     public int countDistinctSources()

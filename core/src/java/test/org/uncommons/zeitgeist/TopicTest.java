@@ -23,10 +23,10 @@ import java.util.Collections;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for the {@link Theme} class.
+ * Unit test for the {@link Topic} class.
  * @author Daniel Dyer
  */
-public class ThemeTest
+public class TopicTest
 {
     @Test
     public void testCountDistinctSources() throws MalformedURLException
@@ -36,13 +36,14 @@ public class ThemeTest
         Article article3 = new Article("3", "3", new URL("http://www.site2.com/3"), null, Collections.<Image>emptyList(), null, null, null);
         Article article4 = new Article("4", "4", new URL("http://www.site1.com/4"), null, Collections.<Image>emptyList(), null, null, null);
         Article article5 = new Article("5", "5", new URL("http://www.site3.com/5"), null, Collections.<Image>emptyList(), null, null, null);
+        @SuppressWarnings("unchecked")
         List<WeightedItem<Article>> articles = Arrays.asList(new WeightedItem<Article>(5, article1),
                                                              new WeightedItem<Article>(4, article2),
                                                              new WeightedItem<Article>(3, article3),
                                                              new WeightedItem<Article>(2, article4),
                                                              new WeightedItem<Article>(1, article5));
-        Theme theme = new Theme(articles);
-        int sources = theme.countDistinctSources();
+        Topic topic = new Topic(articles);
+        int sources = topic.countDistinctSources();
         assert sources == 3 : "Should be 3 distinct sources, is " + sources;
     }
 }

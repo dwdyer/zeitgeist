@@ -1,4 +1,4 @@
-<div class="theme">
+<div class="topic">
   <h2>$first(it.articles):{
     <a href="$it.item.articleURL$">$it.item.headline$</a><!-- $it.weight$ -->
     <a href="$it.item.feedLogo.articleURL$">$if(it.item.feedLogo)$<img

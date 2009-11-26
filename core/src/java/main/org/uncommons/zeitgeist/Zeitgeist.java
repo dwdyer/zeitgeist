@@ -33,7 +33,7 @@ import java.util.concurrent.Future;
 import org.grlea.log.SimpleLogger;
 
 /**
- * Identifies common themes across multiple articles from multiple RSS feeds.
+ * Identifies common topics across multiple articles from multiple RSS feeds.
  * Based on the non-negative matrix factorisation example in the book Programming
  * Collective Intelligence by Toby Segaran. 
  * @author Daniel Dyer
@@ -41,7 +41,7 @@ import org.grlea.log.SimpleLogger;
 public class Zeitgeist
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final int MINIMUM_SOURCES_PER_THEME = 3;
+    private static final int MINIMUM_SOURCES_PER_TOPIC = 3;
     private static final int MINIMUM_ARTICLES_FOR_KEYWORD = 4; // Ignore obscure words.
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
@@ -74,7 +74,7 @@ public class Zeitgeist
     }
 
 
-    public List<Theme> getThemes()
+    public List<Topic> getTopics()
     {
         if (articles.isEmpty())
         {
@@ -96,10 +96,10 @@ public class Zeitgeist
         LOG.info("Downloaded " + rawCount + " articles, " + discardCount + " discarded as too old.");
 
         Matrix matrix = makeMatrix(articles);
-        int themeCount = (int) Math.ceil(Math.sqrt(matrix.getColumnCount()));
-        LOG.debug("Estimating number of themes is " + themeCount);
-        List<Matrix> factors = matrix.factorise(themeCount);
-        return extractThemes(articles, factors.get(0), factors.get(1));
+        int topicCount = (int) Math.ceil(Math.sqrt(matrix.getColumnCount()));
+        LOG.debug("Estimating number of topics is " + topicCount);
+        List<Matrix> factors = matrix.factorise(topicCount);
+        return extractTopics(articles, factors.get(0), factors.get(1));
     }
 
 
@@ -162,64 +162,64 @@ public class Zeitgeist
     }
 
 
-    private List<Theme> extractThemes(List<Article> articles,
+    private List<Topic> extractTopics(List<Article> articles,
                                       Matrix weights,
                                       Matrix features)
     {
         int featureCount = features.getRowCount();
 
-        List<List<WeightedItem<Article>>> articlesByTheme = new ArrayList<List<WeightedItem<Article>>>(featureCount);
+        List<List<WeightedItem<Article>>> articlesByTopic = new ArrayList<List<WeightedItem<Article>>>(featureCount);
         for (int i = 0; i < featureCount; i++)
         {
-            articlesByTheme.add(new ArrayList<WeightedItem<Article>>());
+            articlesByTopic.add(new ArrayList<WeightedItem<Article>>());
         }
 
         for (int i = 0; i < articles.size(); i++)
         {
             // Identify strongest feature of article.
             double maxWeight = -1;
-            int themeIndex = -1;
+            int topicIndex = -1;
             for (int j = 0; j < featureCount; j++)
             {
                 double featureWeight = weights.get(i, j);
                 if (featureWeight > maxWeight)
                 {
                     maxWeight = featureWeight;
-                    themeIndex = j;
+                    topicIndex = j;
                 }
             }
-            if (maxWeight >= MINIMUM_ARTICLE_RELEVANCE) // Don't include articles with only tenuous links to the main theme.
+            if (maxWeight >= MINIMUM_ARTICLE_RELEVANCE) // Don't include articles with only tenuous links to the main topic.
             {
                 WeightedItem<Article> weightedArticle = new WeightedItem<Article>(maxWeight, articles.get(i));
-                int index = Collections.binarySearch(articlesByTheme.get(themeIndex),
+                int index = Collections.binarySearch(articlesByTopic.get(topicIndex),
                                                      weightedArticle,
                                                      Collections.reverseOrder());
                 if (index < 0)
                 {
                     index = -(index + 1);
                 }
-                articlesByTheme.get(themeIndex).add(index, weightedArticle);
+                articlesByTopic.get(topicIndex).add(index, weightedArticle);
             }
         }
 
-        List<Theme> themes = new ArrayList<Theme>();
-        for (List<WeightedItem<Article>> themeArticles : articlesByTheme)
+        List<Topic> topics = new ArrayList<Topic>();
+        for (List<WeightedItem<Article>> topicArticles : articlesByTopic)
         {
-            Theme theme = new Theme(themeArticles);
-            int sources = theme.countDistinctSources();
-            if (sources >= MINIMUM_SOURCES_PER_THEME)
+            Topic topic = new Topic(topicArticles);
+            int sources = topic.countDistinctSources();
+            if (sources >= MINIMUM_SOURCES_PER_TOPIC)
             {
-                themes.add(theme);
+                topics.add(topic);
             }
             else
             {
-                String detail = themeArticles.isEmpty() ? "???" : themeArticles.get(0).getItem().getHeadline();
-                LOG.verbose(String.format("Discarding theme \"%s\" (%d), too few sources (%d)", detail, themeArticles.size(), sources));
+                String detail = topicArticles.isEmpty() ? "???" : topicArticles.get(0).getItem().getHeadline();
+                LOG.verbose(String.format("Discarding topic \"%s\" (%d), too few sources (%d)", detail, topicArticles.size(), sources));
             }
         }
 
-        Collections.sort(themes, Collections.reverseOrder(new ThemeArticleCountComparator()));
-        return themes;
+        Collections.sort(topics, Collections.reverseOrder(new TopicArticleCountComparator()));
+        return topics;
     }
 
 

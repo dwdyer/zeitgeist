@@ -19,13 +19,13 @@ import java.util.Comparator;
 import java.io.Serializable;
 
 /**
- * Comparator used for sorting themes in order of the number of articles that make up
- * the theme.
+ * Comparator used for sorting topics in order of the number of articles that make up
+ * the topic.
  * @author Daniel Dyer
  */
-class ThemeArticleCountComparator implements Comparator<Theme>, Serializable
+class TopicArticleCountComparator implements Comparator<Topic>, Serializable
 {
-    public int compare(Theme o1, Theme o2)
+    public int compare(Topic o1, Topic o2)
     {
         return o1.getArticles().size() - o2.getArticles().size();
     }

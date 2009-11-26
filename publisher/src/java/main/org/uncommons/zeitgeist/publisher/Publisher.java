@@ -19,11 +19,11 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
-import org.uncommons.zeitgeist.Theme;
+import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.Zeitgeist;
 
 /**
- * Simple HTML publisher for a set of themes.
+ * Simple HTML publisher for a set of topics.
  * @author Daniel Dyer
  */
 public class Publisher
@@ -35,14 +35,14 @@ public class Publisher
     private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
 
 
-    public static void publish(List<Theme> themes,
+    public static void publish(List<Topic> topics,
                                String title,
                                int feedCount,
                                int articleCount) throws IOException
     {
         StringTemplateGroup group = new StringTemplateGroup("group");
         StringTemplate template = group.getInstanceOf("news");
-        template.setAttribute("themes", themes);
+        template.setAttribute("topics", topics);
         template.setAttribute("title", title);
         template.setAttribute("dateTime", DATE_FORMAT.format(new Date()));
         template.setAttribute("feedCount", feedCount);
@@ -130,9 +130,9 @@ public class Publisher
             }
             Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
-            List<Theme> themes = zeitgeist.getThemes();
-            LOG.info(themes.size() + " themes identified.");
-            publish(themes, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
+            List<Topic> topics = zeitgeist.getTopics();
+            LOG.info(topics.size() + " topics identified.");
+            publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
         }
         finally
         {
