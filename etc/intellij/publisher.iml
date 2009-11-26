@@ -12,6 +12,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="core" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -22,7 +23,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="core" />
     <orderEntry type="library" name="SimpleLog" level="project" />
   </component>
 </module>

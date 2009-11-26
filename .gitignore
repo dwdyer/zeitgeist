@@ -1,0 +1,5 @@
+dist
+docs
+temp
+etc/intellij/*.iws
+*/build
