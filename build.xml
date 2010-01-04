@@ -98,51 +98,18 @@
   <target name="dist"
           depends="core, publisher"
           description="Generate the project distribution." >
-    <mkdir dir="${dist.dir}" />
-    <copy todir="${dist.dir}" flatten="true">
-      <fileset dir="." includes="**/${build.dir}/*.jar" excludes="**/${build.dir}/*-src.jar"/>
-      <fileset dir="." includes="**/${lib.runtime}/*"/>
-    </copy>
+    <uncommons:dist />
   </target>
 
 
   <!-- Create the release artifacts. -->
   <target name="release"
-          depends="clean, dist, test"
+          depends="clean, dist, test, docs"
           description="Creates the release archives.">
-    <mkdir dir="${release.dir}" />
-    <!-- Create a GZipped TAR file containing the built binaries. -->
-    <tar destfile="${release.dir}/${artifact.identifier}.tgz"
-         compression="gzip"
-         longfile="gnu">
-      <tarfileset dir="${dist.dir}"
-                  prefix="${artifact.identifier}"
-                  includes="**/*" />
-      <!-- Don't forget to include the licence and other important information. -->
-      <tarfileset dir="."
-                  prefix="${artifact.identifier}"
-                  includes="*.txt" />
-    </tar>
-    <!-- Also create a zip file release for the convenience of Windows users. -->
-    <zip destfile="${release.dir}/${artifact.identifier}.zip">
-      <zipfileset dir="${dist.dir}"
-                  prefix="${artifact.identifier}"
-                  includes="**/*" />
-      <!-- Don't forget to include the licence and other important information. -->
-      <zipfileset dir="."
-                  prefix="${artifact.identifier}"
-                  includes="*.txt" />
-    </zip>
+    <uncommons:release name="${artifact.identifier}" />
   </target>
 
-
-
-
-
-<!-- ==================================================================
-      TARGETS FOR GENERATING TEST REPORTS & DOCUMENTATION
- =================================================================== -->
-
+  
   <!-- Runs unit tests for all modules. -->
   <target name="test"
           depends="dist"
@@ -151,5 +118,14 @@
                     title="Zeitgeist Unit Test Report"
                     mincoverage="${minimum.coverage}" />
   </target>
+
+
+  <!-- Generates API documentation for all modules. -->
+  <target name="docs"
+          description="Generates Javadoc API documentation.">
+    <uncommons:javadoc title="Zeitgeist API"
+                       version="${version}" />
+  </target>
+
 
 </project>
