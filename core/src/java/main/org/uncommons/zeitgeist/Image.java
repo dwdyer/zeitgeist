@@ -1,5 +1,5 @@
 // ============================================================================
-//   Copyright 2009 Daniel W. Dyer
+//   Copyright 2009-2010 Daniel W. Dyer
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.uncommons.zeitgeist;
 import java.net.URL;
 
 /**
+ * Holds information about an image from a feed.
  * @author Daniel Dyer
  */
 public class Image

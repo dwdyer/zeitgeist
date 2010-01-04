@@ -13,20 +13,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.zeitgeist;
-
-import java.util.Comparator;
-import java.io.Serializable;
-
 /**
- * Comparator used for sorting topics in order of the number of articles that make up
- * the topic.
+ * Core functionality (downloading feeds, extracting features and identifying topics).
  * @author Daniel Dyer
  */
-class TopicArticleCountComparator implements Comparator<Topic>, Serializable
-{
-    public int compare(Topic o1, Topic o2)
-    {
-        return o1.getArticles().size() - o2.getArticles().size();
-    }
-}
+package org.uncommons.zeitgeist;
