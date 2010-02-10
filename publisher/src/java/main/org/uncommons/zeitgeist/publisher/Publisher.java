@@ -16,24 +16,117 @@
 package org.uncommons.zeitgeist.publisher;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
 import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.Zeitgeist;
 
 /**
- * Main class for the publisher module.  Simply delegates to one or more {@link FilePublisher} implementations.
+ * Simple HTML publisher for a set of topics.
  * @author Daniel Dyer
  */
 public class Publisher
 {
     private static final SimpleLogger LOG = new SimpleLogger(Publisher.class);
+    private static final String ENCODING = "UTF-8";
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE d MMMM yyyy / HH:mm z");
+
     private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
+
+
+    public static void publish(List<Topic> topics,
+                               String title,
+                               int feedCount,
+                               int articleCount) throws IOException
+    {
+        StringTemplateGroup group = new StringTemplateGroup("group");
+        StringTemplate template = group.getInstanceOf("news");
+        template.setAttribute("topics", topics);
+        template.setAttribute("title", title);
+        template.setAttribute("dateTime", DATE_FORMAT.format(new Date()));
+        template.setAttribute("feedCount", feedCount);
+        template.setAttribute("articleCount", articleCount);
+        Writer writer = new OutputStreamWriter(new FileOutputStream("news.html"), ENCODING);
+        try
+        {
+            writer.write(template.toString());
+            writer.flush();
+        }
+        finally
+        {
+            writer.close();
+        }
+        copyClasspathResource(new File("."), "style.css", "style.css");
+    }
+
+
+    /**
+     * Copy a single named resource from the classpath to the output directory.
+     * @param outputDirectory The destination directory for the copied resource.
+     * @param resourcePath The path of the resource.
+     * @param targetFileName The name of the file created in {@literal outputDirectory}.
+     * @throws IOException If the resource cannot be copied.
+     */
+    private static void copyClasspathResource(File outputDirectory,
+                                              String resourcePath,
+                                              String targetFileName) throws IOException
+    {
+        InputStream resourceStream = ClassLoader.getSystemResourceAsStream(resourcePath);
+        copyStream(outputDirectory, resourceStream, targetFileName);
+    }
+
+
+    /**
+     * Helper method to copy the contents of a stream to a file.
+     * @param outputDirectory The directory in which the new file is created.
+     * @param stream The stream to copy.
+     * @param targetFileName The file to write the stream contents to.
+     * @throws IOException If the stream cannot be copied.
+     */
+    private static void copyStream(File outputDirectory,
+                                   InputStream stream,
+                                   String targetFileName) throws IOException
+    {
+        File resourceFile = new File(outputDirectory, targetFileName);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
+        Writer writer = null;
+        try
+        {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resourceFile), ENCODING));
+
+            String line = reader.readLine();
+            while (line != null)
+            {
+                writer.write(line);
+                writer.write('\n');
+                line = reader.readLine();
+            }
+        }
+        finally
+        {
+            reader.close();
+            if (writer != null)
+            {
+                writer.close();
+            }
+        }
+    }
 
 
     public static void main(String[] args) throws IOException
@@ -54,8 +147,7 @@ public class Publisher
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
             List<Topic> topics = zeitgeist.getTopics();
             LOG.info(topics.size() + " topics identified.");
-            new HTMLPublisher().publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
-            new FeedPublisher("http://localhost").publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
+            publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
         }
         finally
         {

@@ -18,6 +18,7 @@ http://www.sportinglife.com/rss/football.xml
 http://www.goal.com/en/feeds/news?fmt=rss
 http://www.thesun.co.uk/sol/homepage/feeds/rss/article247739.ece
 http://feeds.teletext.co.uk/sport/football/stories
+http://www.sundaymail.co.uk/sport-news/scottish-football/english-football/rss.xml
 http://www.newsoftheworld.co.uk/feeds/rss/article186490.ece
 http://www.uefa.com/rssfeed/footballeurope/index.xml
 http://resources.sportingo.com/Sportingo_RSS/Section/Football.xml
