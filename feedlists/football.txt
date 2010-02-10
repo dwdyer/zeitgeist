@@ -18,7 +18,7 @@ http://www.goal.com/en/feeds/news?fmt=rss
 http://www.thesun.co.uk/sol/homepage/feeds/rss/article247739.ece
 http://feeds.teletext.co.uk/sport/football/stories
 http://www.newsoftheworld.co.uk/feeds/rss/article186490.ece
-http://www.uefa.com/rssfeed/footballeurope/index.xml
+http://www.uefa.com/rssfeed/news/rss.xml
 http://resources.sportingo.com/Sportingo_RSS/Section/Football.xml
 http://www.express.co.uk/posts/rss/67/football
 http://www.metro.co.uk/xml/rss/page.xml?in_page_id=43

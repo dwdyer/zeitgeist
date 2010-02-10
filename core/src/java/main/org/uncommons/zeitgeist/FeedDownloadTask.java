@@ -20,6 +20,7 @@ import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.FetcherException;
 import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
 import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import java.net.MalformedURLException;
@@ -87,6 +88,10 @@ class FeedDownloadTask implements Callable<List<Article>>
                                              feedIcon));
             }
             return feedArticles;
+        }
+        catch (FetcherException ex)
+        {
+            LOG.error("Failed fetching " + feedURL + ", " + ex.getMessage());
         }
         catch (UnknownHostException ex)
         {

@@ -4,3 +4,4 @@ release
 temp
 etc/intellij/*.iws
 */build
+.DS_Store

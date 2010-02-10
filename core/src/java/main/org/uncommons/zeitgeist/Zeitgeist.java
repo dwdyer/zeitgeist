@@ -147,7 +147,7 @@ public class Zeitgeist
                 catch (ExecutionException ex)
                 {
                     // Log the failure for this feed, but carry on with other feeds.
-                    ex.printStackTrace();
+                    LOG.errorException(ex.getCause());
                 }
             }
             executor.shutdown();
@@ -214,7 +214,10 @@ public class Zeitgeist
             else
             {
                 String detail = topicArticles.isEmpty() ? "???" : topicArticles.get(0).getItem().getHeadline();
-                LOG.verbose(String.format("Discarding topic \"%s\" (%d), too few sources (%d)", detail, topicArticles.size(), sources));
+                LOG.verbose(String.format("Discarding topic \"%s\" (%d), too few sources (%d)",
+                                          detail,
+                                          topicArticles.size(),
+                                          sources));
             }
         }
 
