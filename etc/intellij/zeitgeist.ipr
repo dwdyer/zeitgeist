@@ -286,6 +286,14 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="Rome">
+      <CLASSES>
+        <root url="jar:///Users/dan/Projects/zeitgeist/lib/runtime/jdom.jar!/" />
+        <root url="jar:///Users/dan/Projects/zeitgeist/lib/runtime/rome-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
 </project>
 

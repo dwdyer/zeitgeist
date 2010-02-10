@@ -27,7 +27,7 @@ import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.Zeitgeist;
 
 /**
- * Simple HTML publisher for a set of topics.
+ * Main class for the publisher module.  Simply delegates to one or more {@link FilePublisher} implementations.
  * @author Daniel Dyer
  */
 public class Publisher
@@ -55,6 +55,7 @@ public class Publisher
             List<Topic> topics = zeitgeist.getTopics();
             LOG.info(topics.size() + " topics identified.");
             new HTMLPublisher().publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
+            new FeedPublisher("http://localhost").publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
         }
         finally
         {

@@ -24,6 +24,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="SimpleLog" level="project" />
+    <orderEntry type="library" name="Rome" level="project" />
   </component>
 </module>
 

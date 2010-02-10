@@ -24,7 +24,7 @@ import java.io.IOException;
  * (different implementations will generate different file types).
  * @author Daniel Dyer
  */
-public interface FilePublisher
+interface FilePublisher
 {
     void publish(List<Topic> topics,
                  String title,

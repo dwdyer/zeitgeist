@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
  * Publish Zeitgeist topics as an HTML page.
  * @author Daniel Dyer
  */
-public class HTMLPublisher implements FilePublisher
+class HTMLPublisher implements FilePublisher
 {
     private static final String ENCODING = "UTF-8";
     private final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE d MMMM yyyy / HH:mm z");
