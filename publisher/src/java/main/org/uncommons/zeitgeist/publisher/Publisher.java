@@ -26,8 +26,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,24 +43,43 @@ public class Publisher
 {
     private static final SimpleLogger LOG = new SimpleLogger(Publisher.class);
     private static final String ENCODING = "UTF-8";
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE d MMMM yyyy / HH:mm z");
 
     private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
 
 
-    public static void publish(List<Topic> topics,
-                               String title,
-                               int feedCount,
-                               int articleCount) throws IOException
+    public void publish(List<Topic> topics,
+                        String title,
+                        int feedCount,
+                        int articleCount) throws IOException
     {
-        StringTemplateGroup group = new StringTemplateGroup("group");
-        StringTemplate template = group.getInstanceOf("news");
+        StringTemplateGroup group = new StringTemplateGroup("zeitgeist");
+        group.registerRenderer(Date.class, new DateRenderer());
+        group.registerRenderer(String.class, new XMLStringRenderer());
+
+        // Publish HTML.
+        StringTemplate htmlTemplate = group.getInstanceOf("news");
+        publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("news.html"));
+        copyClasspathResource(new File("."), "style.css", "style.css");
+
+        // Publish RSS.
+        StringTemplate feedTemplate = group.getInstanceOf("feed");
+        publishTemplate(topics, title, feedCount, articleCount, feedTemplate, new File("rss.xml"));
+    }
+
+
+    private void publishTemplate(List<Topic> topics,
+                                 String title,
+                                 int feedCount,
+                                 int articleCount,
+                                 StringTemplate template,
+                                 File outputFile) throws IOException
+    {
         template.setAttribute("topics", topics);
         template.setAttribute("title", title);
-        template.setAttribute("dateTime", DATE_FORMAT.format(new Date()));
+        template.setAttribute("dateTime", new Date());
         template.setAttribute("feedCount", feedCount);
         template.setAttribute("articleCount", articleCount);
-        Writer writer = new OutputStreamWriter(new FileOutputStream("news.html"), ENCODING);
+        Writer writer = new OutputStreamWriter(new FileOutputStream(outputFile), ENCODING);
         try
         {
             writer.write(template.toString());
@@ -72,7 +89,6 @@ public class Publisher
         {
             writer.close();
         }
-        copyClasspathResource(new File("."), "style.css", "style.css");
     }
 
 
@@ -83,9 +99,9 @@ public class Publisher
      * @param targetFileName The name of the file created in {@literal outputDirectory}.
      * @throws IOException If the resource cannot be copied.
      */
-    private static void copyClasspathResource(File outputDirectory,
-                                              String resourcePath,
-                                              String targetFileName) throws IOException
+    private void copyClasspathResource(File outputDirectory,
+                                       String resourcePath,
+                                       String targetFileName) throws IOException
     {
         InputStream resourceStream = ClassLoader.getSystemResourceAsStream(resourcePath);
         copyStream(outputDirectory, resourceStream, targetFileName);
@@ -99,36 +115,41 @@ public class Publisher
      * @param targetFileName The file to write the stream contents to.
      * @throws IOException If the stream cannot be copied.
      */
-    private static void copyStream(File outputDirectory,
-                                   InputStream stream,
-                                   String targetFileName) throws IOException
+    private void copyStream(File outputDirectory,
+                            InputStream stream,
+                            String targetFileName) throws IOException
     {
         File resourceFile = new File(outputDirectory, targetFileName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
-        Writer writer = null;
         try
         {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resourceFile), ENCODING));
-
-            String line = reader.readLine();
-            while (line != null)
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resourceFile), ENCODING));
+            try
             {
-                writer.write(line);
-                writer.write('\n');
-                line = reader.readLine();
+                String line = reader.readLine();
+                while (line != null)
+                {
+                    writer.write(line);
+                    writer.write('\n');
+                    line = reader.readLine();
+                }
+            }
+            finally
+            {
+                writer.close();
             }
         }
         finally
         {
             reader.close();
-            if (writer != null)
-            {
-                writer.close();
-            }
         }
     }
 
 
+    /**
+     * Entry point for the publisher application.  Takes two arguments - the path to a file containing a list
+     * of feeds, and the title to use for the generated output.
+     */
     public static void main(String[] args) throws IOException
     {
         BufferedReader feedListReader = new BufferedReader(new FileReader(args[0]));
@@ -147,7 +168,7 @@ public class Publisher
             Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
             List<Topic> topics = zeitgeist.getTopics();
             LOG.info(topics.size() + " topics identified.");
-            publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
+            new Publisher().publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
         }
         finally
         {

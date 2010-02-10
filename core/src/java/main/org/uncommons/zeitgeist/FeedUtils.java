@@ -43,7 +43,7 @@ class FeedUtils
     /**
      * Naive and inefficient conversion of HTML to plain text.
      */
-    public static String stripMarkUpAndPunctuation(String text)
+    static String stripMarkUpAndPunctuation(String text)
     {
         // Remove all tags.
         String result = text.replaceAll("<.*?>"," ");

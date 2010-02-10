@@ -2,9 +2,15 @@
 
 <suite name="Unit Tests" verbose="1" >
 
-  <test name="Zeitgeist" >
+  <test name="Zeitgeist Core" >
     <packages>
       <package name="org.uncommons.zeitgeist" />
+    </packages>
+  </test>
+
+  <test name="Zeitgeist Publisher" >
+    <packages>
+      <package name="org.uncommons.zeitgeist.publisher" />
     </packages>
   </test>
 
