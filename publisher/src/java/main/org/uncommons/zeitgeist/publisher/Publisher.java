@@ -32,8 +32,10 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
+import org.uncommons.zeitgeist.Article;
 import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.Zeitgeist;
+import org.uncommons.zeitgeist.ArticleFetcher;
 
 /**
  * Simple HTML publisher for a set of topics.
@@ -165,10 +167,10 @@ public class Publisher
                 }
             }
             Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
-            Zeitgeist zeitgeist = new Zeitgeist(feeds, cutoffDate);
-            List<Topic> topics = zeitgeist.getTopics();
+            List<Article> articles = new ArticleFetcher().getArticles(feeds);
+            List<Topic> topics = new Zeitgeist(articles, cutoffDate).getTopics();
             LOG.info(topics.size() + " topics identified.");
-            new Publisher().publish(topics, args[1], zeitgeist.getFeedCount(), zeitgeist.getArticleCount());
+            new Publisher().publish(topics, args[1], feeds.size(), articles.size());
         }
         finally
         {

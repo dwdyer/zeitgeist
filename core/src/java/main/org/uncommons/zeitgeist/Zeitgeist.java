@@ -15,21 +15,14 @@
 // ============================================================================
 package org.uncommons.zeitgeist;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import org.grlea.log.SimpleLogger;
 
 /**
@@ -45,41 +38,38 @@ public class Zeitgeist
     private static final int MINIMUM_ARTICLES_FOR_KEYWORD = 4; // Ignore obscure words.
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
-    private final List<URL> feeds;
+    private final List<Article> articles;
     private final Date cutoffDate;
-    // Which words appear in which articles and how many times.
-    private final Map<Article, Map<String, Integer>> articleWordCounts = new HashMap<Article, Map<String, Integer>>();
-
-    private final List<Article> articles = new ArrayList<Article>();
-
 
     /**
-     * @param feeds A list of feeds to include in the analysis.
+     * Create a Zeitgeist from the specified list of articles.  Typically the
+     * list of articles is acquired from an {@link ArticleFetcher}.  Any articles
+     * published before the cut-off date are excluded.
+     * @param articles A list of articles fetched from one or more feeds.
      * @param cutOffDate Exclude any articles before this date.
      */
-    public Zeitgeist(List<URL> feeds,
+    public Zeitgeist(List<Article> articles,
                      Date cutOffDate)
     {
-        this.feeds = feeds;
+        this.articles = articles;
         this.cutoffDate = cutOffDate;
     }
 
 
     /**
-     * @param feeds A list of feeds to include in the analysis.
+     * Create a Zeitgeist from the specified list of articles.  Typically the
+     * list of articles is acquired from an {@link ArticleFetcher}.  All articles
+     * are included in the analysis.
+     * @param articles A list of articles fetched from one or more feeds.
      */
-    public Zeitgeist(List<URL> feeds)
+    public Zeitgeist(List<Article> articles)
     {
-        this(feeds, new Date(0)); // 1st January 1970.
+        this(articles, new Date(0)); // 1st January 1970.
     }
 
 
     public List<Topic> getTopics()
     {
-        if (articles.isEmpty())
-        {
-            articles.addAll(downloadArticles());
-        }
         int rawCount = articles.size();
 
         // Eliminate any articles that are too old.
@@ -100,65 +90,6 @@ public class Zeitgeist
         LOG.debug("Estimating number of topics is " + topicCount);
         List<Matrix> factors = matrix.factorise(topicCount);
         return extractTopics(articles, factors.get(0), factors.get(1));
-    }
-
-
-    /**
-     * @return The total number of articles downloaded.
-     */
-    public int getArticleCount()
-    {
-        return articles.size();
-    }
-
-
-    /**
-     * @return The total number of news sources that articles are downloaded from.
-     */
-    public int getFeedCount()
-    {
-        return feeds.size();
-    }
-
-
-    /**
-     * Download all feeds and extract the articles.
-     */
-    private List<Article> downloadArticles()
-    {
-        List<Article> articles = new LinkedList<Article>();
-        try
-        {
-            // Download the feeds in parallel so that it completes quicker.
-            ExecutorService executor = Executors.newFixedThreadPool(feeds.size());
-            List<Callable<List<Article>>> tasks = new ArrayList<Callable<List<Article>>>(feeds.size());
-            for (final URL feedURL : feeds)
-            {
-                tasks.add(new FeedDownloadTask(feedURL, true));
-            }
-
-            List<Future<List<Article>>> results = executor.invokeAll(tasks);
-            for (Future<List<Article>> result : results)
-            {
-                try
-                {
-                    articles.addAll(result.get());
-                }
-                catch (ExecutionException ex)
-                {
-                    // Log the failure for this feed, but carry on with other feeds.
-                    LOG.errorException(ex.getCause());
-                }
-            }
-            executor.shutdown();
-        }
-        catch (InterruptedException ex)
-        {
-            // Restore interrupt status.
-            Thread.currentThread().interrupt();
-            ex.printStackTrace();
-        }
-        return articles;
     }
 
 
@@ -229,6 +160,8 @@ public class Zeitgeist
 
     private Matrix makeMatrix(List<Article> articles)
     {
+        // Which words appear in which articles and how many times.
+        Map<Article, Map<String, Integer>> articleWordCounts = new HashMap<Article, Map<String, Integer>>();
         // How many articles does each word appear in.
         Map<String, Integer> globalWordCounts = new TreeMap<String, Integer>();
 
@@ -280,6 +213,4 @@ public class Zeitgeist
         }
         return words;
     }
-
-
 }
