@@ -50,13 +50,16 @@ class FeedDownloadTask implements Callable<List<Article>>
     private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=\"(\\S+?)\"");
 
     private final URL feedURL;
+    private final Date cutOffDate;
     private final boolean includeInlineImages;
 
 
     FeedDownloadTask(URL feedURL,
+                     Date cutOffDate,
                      boolean includeInlineImages)
     {
         this.feedURL = feedURL;
+        this.cutOffDate = cutOffDate;
         this.includeInlineImages = includeInlineImages;
     }
 
@@ -77,15 +80,18 @@ class FeedDownloadTask implements Callable<List<Article>>
             for (SyndEntry entry : entries)
             {
                 Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
-
-                feedArticles.add(new Article(entry.getTitle().trim(),
-                                             extractContent(entry),
-                                             new URL(feedURL, entry.getLink()),
-                                             articleDate,
-                                             extractImages(entry),
-                                             feed.getTitle(),
-                                             feedLogo,
-                                             feedIcon));
+                // Don't include articles that were published before the cut-off date.
+                if (articleDate == null || !articleDate.before(cutOffDate))
+                {
+                    feedArticles.add(new Article(entry.getTitle().trim(),
+                                                 extractContent(entry),
+                                                 new URL(feedURL, entry.getLink()),
+                                                 articleDate,
+                                                 extractImages(entry),
+                                                 feed.getTitle(),
+                                                 feedLogo,
+                                                 feedIcon));
+                }
             }
             return feedArticles;
         }

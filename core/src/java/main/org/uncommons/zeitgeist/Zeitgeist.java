@@ -17,9 +17,7 @@ package org.uncommons.zeitgeist;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,52 +37,20 @@ public class Zeitgeist
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
     private final List<Article> articles;
-    private final Date cutoffDate;
 
     /**
      * Create a Zeitgeist from the specified list of articles.  Typically the
-     * list of articles is acquired from an {@link ArticleFetcher}.  Any articles
-     * published before the cut-off date are excluded.
-     * @param articles A list of articles fetched from one or more feeds.
-     * @param cutOffDate Exclude any articles before this date.
-     */
-    public Zeitgeist(List<Article> articles,
-                     Date cutOffDate)
-    {
-        this.articles = articles;
-        this.cutoffDate = cutOffDate;
-    }
-
-
-    /**
-     * Create a Zeitgeist from the specified list of articles.  Typically the
-     * list of articles is acquired from an {@link ArticleFetcher}.  All articles
-     * are included in the analysis.
+     * list of articles is acquired from an {@link ArticleFetcher}.
      * @param articles A list of articles fetched from one or more feeds.
      */
     public Zeitgeist(List<Article> articles)
     {
-        this(articles, new Date(0)); // 1st January 1970.
+        this.articles = articles;
     }
 
 
     public List<Topic> getTopics()
     {
-        int rawCount = articles.size();
-
-        // Eliminate any articles that are too old.
-        Iterator<Article> iterator = articles.iterator();
-        while (iterator.hasNext())
-        {
-            Article article = iterator.next();
-            if (article.getDate() != null && article.getDate().before(cutoffDate))
-            {
-                iterator.remove();
-            }
-        }
-        int discardCount = rawCount - articles.size();
-        LOG.info("Downloaded " + rawCount + " articles, " + discardCount + " discarded as too old.");
-
         Matrix matrix = makeMatrix(articles);
         int topicCount = (int) Math.ceil(Math.sqrt(matrix.getColumnCount()));
         LOG.debug("Estimating number of topics is " + topicCount);

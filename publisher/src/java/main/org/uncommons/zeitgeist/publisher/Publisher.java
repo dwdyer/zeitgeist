@@ -167,8 +167,8 @@ public class Publisher
                 }
             }
             Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
-            List<Article> articles = new ArticleFetcher().getArticles(feeds);
-            List<Topic> topics = new Zeitgeist(articles, cutoffDate).getTopics();
+            List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
+            List<Topic> topics = new Zeitgeist(articles).getTopics();
             LOG.info(topics.size() + " topics identified.");
             new Publisher().publish(topics, args[1], feeds.size(), articles.size());
         }

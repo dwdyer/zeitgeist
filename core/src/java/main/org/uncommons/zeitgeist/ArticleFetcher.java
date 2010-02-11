@@ -15,15 +15,16 @@
 // ============================================================================
 package org.uncommons.zeitgeist;
 
-import java.util.List;
-import java.util.LinkedList;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import java.util.concurrent.ExecutionException;
-import java.net.URL;
 import org.grlea.log.SimpleLogger;
 
 /**
@@ -39,10 +40,11 @@ public class ArticleFetcher
      * or parsed, an error will be logged but there will be no exception and the other feeds will be processed
      * as normal.
      * @param feeds A list of URLs of RSS/Atom feeds to download.
+     * @param cutOffDate Only return articles published since this date/time.
      * @return A list of articles extracted from the specified feed.  The articles will be grouped
      * by feed, in the order that the feeds were specified.
      */
-    public List<Article> getArticles(List<URL> feeds)
+    public List<Article> getArticles(List<URL> feeds, Date cutOffDate)
     {
         List<Article> articles = new LinkedList<Article>();
         try
@@ -52,7 +54,7 @@ public class ArticleFetcher
             List<Callable<List<Article>>> tasks = new ArrayList<Callable<List<Article>>>(feeds.size());
             for (final URL feedURL : feeds)
             {
-                tasks.add(new FeedDownloadTask(feedURL, true));
+                tasks.add(new FeedDownloadTask(feedURL, cutOffDate, true));
             }
 
             List<Future<List<Article>>> results = executor.invokeAll(tasks);
@@ -69,6 +71,7 @@ public class ArticleFetcher
                 }
             }
             executor.shutdown();
+            LOG.info("Downloaded " + articles.size() + " articles.");
         }
         catch (InterruptedException ex)
         {
