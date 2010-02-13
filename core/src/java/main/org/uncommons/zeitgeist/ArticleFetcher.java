@@ -38,7 +38,19 @@ public class ArticleFetcher
 {
     private static final SimpleLogger LOG = new SimpleLogger(ArticleFetcher.class);
 
-    private final FeedFetcher fetcher = new HttpURLFeedFetcher(HashMapFeedInfoCache.getInstance());
+    private final FeedFetcher fetcher;
+
+    public ArticleFetcher()
+    {
+        this(new HttpURLFeedFetcher(HashMapFeedInfoCache.getInstance()));
+    }
+
+    
+    ArticleFetcher(FeedFetcher fetcher)
+    {
+        this.fetcher = fetcher;
+    }
+
 
     /**
      * Download the specified feeds and extract the articles.  If any of the feeds cannot be retrieved

@@ -13,22 +13,27 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 // ============================================================================
-package org.uncommons.zeitgeist.publisher;
+package org.uncommons.zeitgeist;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for the {@link XMLStringRenderer} class.
+ * Unit test for the {@link ArticleFetcher} class.
  * @author Daniel Dyer
  */
-public class XMLStringRendererTest
+public class ArticleFetcherTest
 {
+    private static final URL SAMPLE_RSS_URL = FeedDownloadTaskTest.class.getClassLoader().getResource("org/uncommons/zeitgeist/test.rss");
+
     @Test
-    public void testEntityEscaping()
+    public void testArticleFetching()
     {
-        String text = "7 > 6 & 3 < 4";
-        // The second parameter is always ignored and the method delegates to the single-parameter version.
-        String escaped = new XMLStringRenderer().toString(text, "Any old junk.");
-        assert escaped.equals("7 &gt; 6 &amp; 3 &lt; 4");
+        ArticleFetcher fetcher = new ArticleFetcher(new FileURLFeedFetcher());
+        List<Article> articles = fetcher.getArticles(Arrays.asList(SAMPLE_RSS_URL), new Date(0));
+        assert articles.size() == 10 : "Should be 10 articles, is " + articles.size();
     }
 }
