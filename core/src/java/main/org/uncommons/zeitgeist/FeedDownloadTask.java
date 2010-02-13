@@ -21,13 +21,10 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.fetcher.FeedFetcher;
 import com.sun.syndication.fetcher.FetcherException;
-import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
-import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -46,18 +43,20 @@ import org.jdom.Element;
 class FeedDownloadTask implements Callable<List<Article>>
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final FeedFetcher FETCHER = new HttpURLFeedFetcher(HashMapFeedInfoCache.getInstance());
     private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=\"(\\S+?)\"");
 
+    private final FeedFetcher fetcher;
     private final URL feedURL;
     private final Date cutOffDate;
     private final boolean includeInlineImages;
 
 
-    FeedDownloadTask(URL feedURL,
+    FeedDownloadTask(FeedFetcher fetcher,
+                     URL feedURL,
                      Date cutOffDate,
                      boolean includeInlineImages)
     {
+        this.fetcher = fetcher; 
         this.feedURL = feedURL;
         this.cutOffDate = cutOffDate;
         this.includeInlineImages = includeInlineImages;
@@ -70,7 +69,7 @@ class FeedDownloadTask implements Callable<List<Article>>
         List<Article> feedArticles = new LinkedList<Article>();
         try
         {
-            SyndFeed feed = FETCHER.retrieveFeed(feedURL);
+            SyndFeed feed = fetcher.retrieveFeed(feedURL);
             LOG.debug("Fetched " + feedURL);
 
             Image feedLogo = getFeedLogo(feed);
@@ -93,7 +92,6 @@ class FeedDownloadTask implements Callable<List<Article>>
                                                  feedIcon));
                 }
             }
-            return feedArticles;
         }
         catch (FetcherException ex)
         {
@@ -105,9 +103,9 @@ class FeedDownloadTask implements Callable<List<Article>>
         }
         catch (IllegalArgumentException ex)
         {
-            LOG.error("Failed fetching " + feedURL + ", invalid document.");
+            LOG.error("Failed fetching " + feedURL + ", " + ex.getMessage());
         }
-        return Collections.emptyList();
+        return feedArticles;
     }
 
 
