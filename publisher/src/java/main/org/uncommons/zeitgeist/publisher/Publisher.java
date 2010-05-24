@@ -18,6 +18,7 @@ package org.uncommons.zeitgeist.publisher;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,16 +27,18 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
 import org.uncommons.zeitgeist.Article;
+import org.uncommons.zeitgeist.ArticleFetcher;
 import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.Zeitgeist;
-import org.uncommons.zeitgeist.ArticleFetcher;
 
 /**
  * Simple HTML publisher for a set of topics.
@@ -48,24 +51,60 @@ public class Publisher
 
     private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
 
+    private final StringTemplateGroup group;
+
+
+    /**
+     * Create a publisher that loads templates from the classpath.  This is typically
+     * used to load the default templates that are bundled in the publisher JAR.
+     */
+    public Publisher()
+    {
+        this.group = new StringTemplateGroup("zeitgeist");
+    }
+
+
+    /**
+     * Create a publisher that loads templates from the specified directory.
+     * @param templateDir The root directory of the StringTemplate templates.
+     */
+    public Publisher(File templateDir)
+    {
+        if (!templateDir.isDirectory())
+        {
+            throw new IllegalArgumentException("Template path must be a directory.");
+        }
+        this.group = new StringTemplateGroup("zeitgeist", templateDir.getAbsolutePath());
+    }
+
 
     public void publish(List<Topic> topics,
                         String title,
                         int feedCount,
-                        int articleCount) throws IOException
+                        int articleCount,
+                        boolean rss) throws IOException
     {
-        StringTemplateGroup group = new StringTemplateGroup("zeitgeist");
         group.registerRenderer(Date.class, new DateRenderer());
         group.registerRenderer(String.class, new XMLStringRenderer());
 
         // Publish HTML.
         StringTemplate htmlTemplate = group.getInstanceOf("news");
-        publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("news.html"));
-        copyClasspathResource(new File("."), "style.css", "style.css");
+        publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("index.html"));
+        if (group.getRootDir() != null)
+        {
+            copyFile(new File("."), "style.css", "style.css");
+        }
+        else
+        {
+            copyClasspathResource(new File("."), "style.css", "style.css");
+        }
 
         // Publish RSS.
-        StringTemplate feedTemplate = group.getInstanceOf("feed");
-        publishTemplate(topics, title, feedCount, articleCount, feedTemplate, new File("rss.xml"));
+        if (rss)
+        {
+            StringTemplate feedTemplate = group.getInstanceOf("feed");
+            publishTemplate(topics, title, feedCount, articleCount, feedTemplate, new File("rss.xml"));
+        }
     }
 
 
@@ -76,9 +115,13 @@ public class Publisher
                                  StringTemplate template,
                                  File outputFile) throws IOException
     {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        calendar.add(Calendar.MINUTE, 15);
         template.setAttribute("topics", topics);
         template.setAttribute("title", title);
-        template.setAttribute("dateTime", new Date());
+        template.setAttribute("dateTime", date);
+        template.setAttribute("expires", calendar.getTime());
         template.setAttribute("feedCount", feedCount);
         template.setAttribute("articleCount", articleCount);
         Writer writer = new OutputStreamWriter(new FileOutputStream(outputFile), ENCODING);
@@ -107,6 +150,29 @@ public class Publisher
     {
         InputStream resourceStream = ClassLoader.getSystemResourceAsStream(resourcePath);
         copyStream(outputDirectory, resourceStream, targetFileName);
+    }
+
+
+    /**
+     * Copy a single named file to the output directory.
+     * @param outputDirectory The destination directory for the copied resource.
+     * @param filePath The path of the file.
+     * @param targetFileName The name of the file created in {@literal outputDirectory}.
+     * @throws IOException If the file cannot be copied.
+     */
+    private void copyFile(File outputDirectory,
+                          String filePath,
+                          String targetFileName) throws IOException
+    {
+        FileInputStream inputStream = new FileInputStream(new File(group.getRootDir(), "style.css"));
+        try
+        {
+            copyStream(new File("."), inputStream, "style.css");
+        }
+        finally
+        {
+            inputStream.close();
+        }
     }
 
 
@@ -170,7 +236,8 @@ public class Publisher
             List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
             List<Topic> topics = new Zeitgeist(articles).getTopics();
             LOG.info(topics.size() + " topics identified.");
-            new Publisher().publish(topics, args[1], feeds.size(), articles.size());
+            Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
+            publisher.publish(topics, args[1], feeds.size(), articles.size(), false);
         }
         finally
         {
