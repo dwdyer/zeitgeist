@@ -43,7 +43,7 @@ import org.jdom.Element;
 class FeedDownloadTask implements Callable<List<Article>>
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=\"(\\S+?)\"");
+    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=(?:\"|\\Q&quot;\\E)(\\S+?)(?:\"|\\Q&quot;\\E)");
 
     private final FeedFetcher fetcher;
     private final URL feedURL;
@@ -207,7 +207,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 String imageLink = matcher.group(1);
                 // We only use inline JPG images because others are more likely to be
                 // not related to the story (e.g. icons and adverts).
-                if (imageLink.toLowerCase().endsWith(".jpg") && !images.containsKey(imageLink))
+                if (imageLink.toLowerCase().contains(".jpg") && !images.containsKey(imageLink))
                 {
                     images.put(imageLink,
                                new Image(new URL(feedURL, imageLink),

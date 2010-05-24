@@ -40,6 +40,8 @@ couldn't
 did
 didn't
 do
+does
+doesn't
 don't
 done
 else
@@ -52,6 +54,7 @@ fewer
 for
 from
 get
+got
 had
 has
 hasn't

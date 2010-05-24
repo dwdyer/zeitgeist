@@ -22,3 +22,6 @@ http://www.uefa.com/rssfeed/news/rss.xml
 http://resources.sportingo.com/Sportingo_RSS/Section/Football.xml
 http://www.express.co.uk/posts/rss/67/football
 http://www.metro.co.uk/xml/rss/page.xml?in_page_id=43
+http://www.tribalfootball.com/rss.xml
+http://www.premierleague.com/rss/ptv/page/ArticleIndex/0,,12306~2233528,00.xml
+http://www.mirrorfootball.co.uk/rss.xml
