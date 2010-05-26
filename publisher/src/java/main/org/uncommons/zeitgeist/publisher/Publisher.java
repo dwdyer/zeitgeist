@@ -78,10 +78,20 @@ public class Publisher
     }
 
 
+    /**
+     * @param topics A list of topics identified.
+     * @param title Title for generated pages.
+     * @param feedCount The number of feeds used.
+     * @param articleCount The number of articles analysed.
+     * @param minutesToExpiry How many minutes after it is generated should the page(s) be cached for?
+     * @param rss Whether or not to generate an RSS file.
+     * @throws IOException If something goes wrong.
+     */
     public void publish(List<Topic> topics,
                         String title,
                         int feedCount,
                         int articleCount,
+                        int minutesToExpiry,
                         boolean rss) throws IOException
     {
         group.registerRenderer(Date.class, new DateRenderer());
@@ -89,7 +99,7 @@ public class Publisher
 
         // Publish HTML.
         StringTemplate htmlTemplate = group.getInstanceOf("news");
-        publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("index.html"));
+        publishTemplate(topics, title, feedCount, articleCount, minutesToExpiry, htmlTemplate, new File("index.html"));
         if (group.getRootDir() != null)
         {
             copyFile(new File("."), "style.css", "style.css");
@@ -103,7 +113,7 @@ public class Publisher
         if (rss)
         {
             StringTemplate feedTemplate = group.getInstanceOf("feed");
-            publishTemplate(topics, title, feedCount, articleCount, feedTemplate, new File("rss.xml"));
+            publishTemplate(topics, title, feedCount, articleCount, minutesToExpiry, feedTemplate, new File("rss.xml"));
         }
     }
 
@@ -112,12 +122,13 @@ public class Publisher
                                  String title,
                                  int feedCount,
                                  int articleCount,
+                                 int minutesToExpiry,
                                  StringTemplate template,
                                  File outputFile) throws IOException
     {
         Date date = new Date();
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        calendar.add(Calendar.MINUTE, 15);
+        calendar.add(Calendar.MINUTE, minutesToExpiry);
         template.setAttribute("topics", topics);
         template.setAttribute("title", title);
         template.setAttribute("dateTime", date);
@@ -237,7 +248,7 @@ public class Publisher
             List<Topic> topics = new Zeitgeist(articles).getTopics();
             LOG.info(topics.size() + " topics identified.");
             Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
-            publisher.publish(topics, args[1], feeds.size(), articles.size(), false);
+            publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, false);
         }
         finally
         {
