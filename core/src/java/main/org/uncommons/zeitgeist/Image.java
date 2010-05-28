@@ -46,7 +46,7 @@ public class Image
     public String getCachedFileName()
     {
         String remote = imageURL.toString();
-        String local = remote.replaceAll("http://", "").replaceAll("https://", "").replaceAll("/", "_");
+        String local = remote.replaceAll("http://", "").replaceAll("https://", "").replaceAll("[/%]", "_");
         // Remove query string.
         int queryIndex = local.indexOf('?');
         if (queryIndex >= 0)

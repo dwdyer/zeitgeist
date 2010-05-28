@@ -42,7 +42,7 @@ public class ImageTest
         Image image = new Image(new URL("http://images.example.com/image.jpg"),
                                 new URL("http://www.uncommons.org/article.html"));
         String cachedName = image.getCachedFileName();
-        assert cachedName.equals("images.example.com_image.jpg");
+        assert cachedName.equals("images.example.com_image.jpg") : "Incorrect file name: " + cachedName;
     }
 
 
@@ -55,7 +55,20 @@ public class ImageTest
         Image image = new Image(new URL("http://images.example.com/image.jpg?junk"),
                                 new URL("http://www.uncommons.org/article.html"));
         String cachedName = image.getCachedFileName();
-        assert cachedName.equals("images.example.com_image.jpg");
+        assert cachedName.equals("images.example.com_image.jpg") : "Incorrect file name: " + cachedName;
+    }
+
+
+    /**
+     * Test that query string is stripped from file name.
+     */
+    @Test
+    public void testGenerateCachedFileNameOmitURLEncoding() throws MalformedURLException
+    {
+        Image image = new Image(new URL("http://images.example.com/image%2Csomething.jpg"),
+                                new URL("http://www.uncommons.org/article.html"));
+        String cachedName = image.getCachedFileName();
+        assert cachedName.equals("images.example.com_image_2Csomething.jpg") : "Incorrect file name: " + cachedName;
     }
 
 
