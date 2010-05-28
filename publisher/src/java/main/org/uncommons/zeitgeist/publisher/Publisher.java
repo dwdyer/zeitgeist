@@ -21,20 +21,27 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -43,6 +50,7 @@ import org.uncommons.zeitgeist.Article;
 import org.uncommons.zeitgeist.ArticleFetcher;
 import org.uncommons.zeitgeist.Image;
 import org.uncommons.zeitgeist.Topic;
+import org.uncommons.zeitgeist.WeightedItem;
 import org.uncommons.zeitgeist.Zeitgeist;
 
 /**
@@ -55,6 +63,9 @@ public class Publisher
     private static final String ENCODING = "UTF-8";
 
     private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
+
+    private static final Pattern FAVICON_PATTERN = Pattern.compile("link.+?rel=\"shortcut icon\".+?href=\"(\\S+?)\"",
+                                                                   Pattern.CASE_INSENSITIVE);
 
     private final StringTemplateGroup group;
 
@@ -102,6 +113,7 @@ public class Publisher
         group.registerRenderer(String.class, new XMLStringRenderer());
 
         cacheImages(topics, outputDir);
+        cacheIcons(topics, outputDir);
 
         // Publish HTML.
         StringTemplate htmlTemplate = group.getInstanceOf("news");
@@ -148,6 +160,12 @@ public class Publisher
     }
 
 
+    /**
+     * Download and cache images referenced by the topics.  If the images are larger than
+     * necessary, scale them down.
+     * @param topics A list of topics.
+     * @param cacheDir Where to store the local favicons.
+     */
     private void cacheImages(List<Topic> topics, File cacheDir)
     {
         // We only use the first image from each topic, so only download that.
@@ -168,22 +186,14 @@ public class Publisher
                 {
                     try
                     {
-                        copyStream(cacheDir,
-                                   image.getImageURL().openConnection().getInputStream(),
-                                   image.getCachedFileName());
+                        copyStream(image.getImageURL().openConnection().getInputStream(),
+                                   new FileOutputStream(new File(cacheDir, image.getCachedFileName())));
                         LOG.debug("Downloaded image: " + image.getImageURL());
-                    }
-                    catch (IOException ex)
-                    {
-                        LOG.error("Failed downloading image " + image.getImageURL() + ", " + ex.getMessage());
-                    }
-                    try
-                    {
                         scaleImage(cachedFile, 200);
                     }
                     catch (IOException ex)
                     {
-                        LOG.error("Failed resizing image " + image.getImageURL() + ", " + ex.getMessage());
+                        LOG.error("Failed downloading image " + image.getImageURL() + ", " + ex.getMessage());
                     }
                 }
             }
@@ -192,7 +202,88 @@ public class Publisher
 
 
     /**
-     * Resize the specified image file, maintaining its aspect ratio, so that is no wider
+     * Download and cache favicons for all feeds referenced by the topics.
+     * @param topics A list of topics.
+     * @param cacheDir Where to store the local favicons. 
+     */
+    private void cacheIcons(List<Topic> topics, File cacheDir)
+    {
+        // Create a set of all required icons, eliminating duplicates so that we don't attempt to download any
+        // more than once.
+        Set<Image> favicons = new HashSet<Image>();
+        for (Topic topic : topics)
+        {
+            List<WeightedItem<Article>> articles = topic.getArticles();
+            for (WeightedItem<Article> article : articles)
+            {
+                favicons.add(article.getItem().getFeedIcon());
+            }
+        }
+
+        for (Image icon : favicons)
+        {
+            File cachedFile = new File(cacheDir, icon.getCachedFileName());
+            if (!cachedFile.exists()) // Don't fetch icons we already have.
+            {
+                try
+                {
+                    copyStream(icon.getImageURL().openConnection().getInputStream(),
+                               new FileOutputStream(cachedFile));
+                    LOG.debug("Downloaded favicon: " + icon.getImageURL());
+                }
+                catch (IOException ex)
+                {
+                    cachedFile.delete();
+                    LOG.debug("Failed downloading favicon from default location: " + icon.getImageURL());
+                    // If we can't find the favicon in the default location, fetch the web page and
+                    // look for a "shortcut icon" link tag.  This is expensive but it is a one-off.
+                    // Subsequent runs will pick up the cached version of the icon.
+                    try
+                    {
+                        String page = fetchPage(icon.getArticleURL());
+                        Matcher matcher = FAVICON_PATTERN.matcher(page);
+                        if (matcher.find())
+                        {
+                            URL url = new URL(icon.getArticleURL(), matcher.group(1));
+                            copyStream(url.openConnection().getInputStream(),
+                                       new FileOutputStream(cachedFile));
+                            LOG.debug("Downloaded favicon via web page: " + url.toString());
+                        }
+                        else
+                        {
+                            LOG.info("No favicon for: " + icon.getArticleURL());
+                        }
+                    }
+                    catch (IOException ex2)
+                    {
+                        cachedFile.delete();
+                        LOG.warn("Failed downloading home page for favicon: " + icon.getArticleURL());
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Fetch a web page and return it as a string.
+     * @param pageURL The page to fetch.
+     * @return The contents of the page (HTML).
+     * @throws IOException If there is a problem downloading the page.
+     */
+    private String fetchPage(URL pageURL) throws IOException
+    {
+        URLConnection urlConnection = pageURL.openConnection();
+        InputStream inputStream = urlConnection.getInputStream();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        copyStream(inputStream, buffer);
+        String encoding = urlConnection.getContentEncoding();
+        return new String(buffer.toByteArray(), encoding == null ? ENCODING : encoding);
+    }
+
+
+    /**
+     * Resize the specified image file, maintaining its aspect ratio, so that it is no wider
      * that the specified width.  If the image is smaller than the specified width, it is
      * left unchanged.
      * @param imageFile The file to (maybe) resize.
@@ -230,7 +321,7 @@ public class Publisher
                                        String targetFileName) throws IOException
     {
         InputStream resourceStream = ClassLoader.getSystemResourceAsStream(resourcePath);
-        copyStream(outputDirectory, resourceStream, targetFileName);
+        copyStream(resourceStream, new FileOutputStream(new File(outputDirectory, targetFileName)));
     }
 
 
@@ -248,7 +339,7 @@ public class Publisher
         FileInputStream inputStream = new FileInputStream(new File(group.getRootDir(), filePath));
         try
         {
-            copyStream(outputDirectory, inputStream, targetFileName);
+            copyStream(inputStream, new FileOutputStream(new File(outputDirectory, targetFileName)));
         }
         finally
         {
@@ -259,20 +350,17 @@ public class Publisher
 
     /**
      * Helper method to copy the contents of a stream to a file.
-     * @param outputDirectory The directory in which the new file is created.
      * @param stream The stream to copy.
-     * @param targetFileName The file to write the stream contents to.
+     * @param target The target stream to write the stream contents to.
      * @throws IOException If the stream cannot be copied.
      */
-    private void copyStream(File outputDirectory,
-                            InputStream stream,
-                            String targetFileName) throws IOException
+    private void copyStream(InputStream stream,
+                            OutputStream target) throws IOException
     {
-        File resourceFile = new File(outputDirectory, targetFileName);
         BufferedInputStream input = new BufferedInputStream(stream);
         try
         {
-            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(resourceFile));
+            BufferedOutputStream output = new BufferedOutputStream(target);
             try
             {
                 int i = input.read();

@@ -54,7 +54,7 @@ public class Image
             local = local.substring(0, queryIndex);
         }
         // Make sure the name has an appropriate extension so that it gets served with an appropriate mime type.
-        if (!local.endsWith(".jpg") && !local.endsWith(".jpeg"))
+        if (!local.endsWith(".jpg") && !local.endsWith(".jpeg") && !local.endsWith(".ico"))
         {
             local += ".jpg";
         }

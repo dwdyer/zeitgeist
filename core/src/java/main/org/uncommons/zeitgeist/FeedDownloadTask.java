@@ -43,7 +43,8 @@ import org.jdom.Element;
 class FeedDownloadTask implements Callable<List<Article>>
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=(?:\"|\\Q&quot;\\E)(\\S+?)(?:\"|\\Q&quot;\\E)");
+    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=(?:\"|\\Q&quot;\\E)(\\S+?)(?:\"|\\Q&quot;\\E)",
+                                                                     Pattern.CASE_INSENSITIVE);
 
     private final FeedFetcher fetcher;
     private final URL feedURL;
