@@ -40,6 +40,28 @@ public class Image
     }
 
 
+    /**
+     * When storing a local cached version of this image, use this name.
+     */
+    public String getCachedFileName()
+    {
+        String remote = imageURL.toString();
+        String local = remote.replaceAll("http://", "").replaceAll("https://", "").replaceAll("/", "_");
+        // Remove query string.
+        int queryIndex = local.indexOf('?');
+        if (queryIndex >= 0)
+        {
+            local = local.substring(0, queryIndex);
+        }
+        // Make sure the name has an appropriate extension so that it gets served with an appropriate mime type.
+        if (!local.endsWith(".jpg") && !local.endsWith(".jpeg"))
+        {
+            local += ".jpg";
+        }
+        return local;
+    }
+
+
     public URL getArticleURL()
     {
         return articleURL;

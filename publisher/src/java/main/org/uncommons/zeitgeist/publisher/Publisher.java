@@ -15,15 +15,15 @@
 // ============================================================================
 package org.uncommons.zeitgeist.publisher;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -37,6 +37,7 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
 import org.uncommons.zeitgeist.Article;
 import org.uncommons.zeitgeist.ArticleFetcher;
+import org.uncommons.zeitgeist.Image;
 import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.Zeitgeist;
 
@@ -84,7 +85,6 @@ public class Publisher
      * @param feedCount The number of feeds used.
      * @param articleCount The number of articles analysed.
      * @param minutesToExpiry How many minutes after it is generated should the page(s) be cached for?
-     * @param rss Whether or not to generate an RSS file.
      * @throws IOException If something goes wrong.
      */
     public void publish(List<Topic> topics,
@@ -92,28 +92,24 @@ public class Publisher
                         int feedCount,
                         int articleCount,
                         int minutesToExpiry,
-                        boolean rss) throws IOException
+                        File outputDir) throws IOException
     {
         group.registerRenderer(Date.class, new DateRenderer());
         group.registerRenderer(String.class, new XMLStringRenderer());
+
+        cacheImages(topics, outputDir);
 
         // Publish HTML.
         StringTemplate htmlTemplate = group.getInstanceOf("news");
         publishTemplate(topics, title, feedCount, articleCount, minutesToExpiry, htmlTemplate, new File("index.html"));
         if (group.getRootDir() != null)
         {
-            copyFile(new File("."), "style.css", "style.css");
+            copyFile(outputDir, "zeitgeist.css", "zeitgeist.css");
         }
         else
         {
-            copyClasspathResource(new File("."), "style.css", "style.css");
-        }
 
-        // Publish RSS.
-        if (rss)
-        {
-            StringTemplate feedTemplate = group.getInstanceOf("feed");
-            publishTemplate(topics, title, feedCount, articleCount, minutesToExpiry, feedTemplate, new File("rss.xml"));
+            copyClasspathResource(outputDir, "zeitgeist.css", "zeitgeist.css");
         }
     }
 
@@ -148,6 +144,41 @@ public class Publisher
     }
 
 
+    private void cacheImages(List<Topic> topics, File cacheDir)
+    {
+        // We only use the first image from each topic, so only download that.
+        for (Topic topic : topics)
+        {
+            List<Image> images = topic.getImages();
+            if (!images.isEmpty())
+            {
+                Image image = images.get(0);
+                try
+                {
+                    File cachedFile = new File(cacheDir, image.getCachedFileName());
+                    if (cachedFile.exists())
+                    {
+                        // If the file exists, touch it to show it is still relevant.
+                        cachedFile.setLastModified(System.currentTimeMillis());
+                        LOG.info("Image found in cache: " + image.getImageURL());
+                    }
+                    else // Only download images that are not already cached.
+                    {
+                        copyStream(cacheDir,
+                                   image.getImageURL().openConnection().getInputStream(),
+                                   image.getCachedFileName());
+                        LOG.info("Downloaded image: " + image.getImageURL());
+                    }
+                }
+                catch (IOException ex)
+                {
+                    LOG.error("Failed downloading image " + image.getImageURL() + ", " + ex.getMessage());
+                }
+            }
+        }
+    }
+
+
     /**
      * Copy a single named resource from the classpath to the output directory.
      * @param outputDirectory The destination directory for the copied resource.
@@ -175,10 +206,10 @@ public class Publisher
                           String filePath,
                           String targetFileName) throws IOException
     {
-        FileInputStream inputStream = new FileInputStream(new File(group.getRootDir(), "style.css"));
+        FileInputStream inputStream = new FileInputStream(new File(group.getRootDir(), filePath));
         try
         {
-            copyStream(new File("."), inputStream, "style.css");
+            copyStream(outputDirectory, inputStream, targetFileName);
         }
         finally
         {
@@ -199,28 +230,28 @@ public class Publisher
                             String targetFileName) throws IOException
     {
         File resourceFile = new File(outputDirectory, targetFileName);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
+        BufferedInputStream input = new BufferedInputStream(stream);
         try
         {
-            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resourceFile), ENCODING));
+            BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(resourceFile));
             try
             {
-                String line = reader.readLine();
-                while (line != null)
+                int i = input.read();
+                while (i != -1)
                 {
-                    writer.write(line);
-                    writer.write('\n');
-                    line = reader.readLine();
+                    output.write(i);
+                    i = input.read();
                 }
+                output.flush();
             }
             finally
             {
-                writer.close();
+                output.close();
             }
         }
         finally
         {
-            reader.close();
+            input.close();
         }
     }
 
@@ -248,7 +279,7 @@ public class Publisher
             List<Topic> topics = new Zeitgeist(articles).getTopics();
             LOG.info(topics.size() + " topics identified.");
             Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
-            publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, false);
+            publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, new File("."));
         }
         finally
         {

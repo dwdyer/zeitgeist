@@ -34,4 +34,37 @@ public class ImageTest
         // Image credit should be derived from the article URL, not the URL of the image.
         assert credit.equals("uncommons.org") : "Incorrect image credit: " + credit;
     }
+
+
+    @Test
+    public void testGenerateCachedFileName() throws MalformedURLException
+    {
+        Image image = new Image(new URL("http://images.example.com/image.jpg"),
+                                new URL("http://www.uncommons.org/article.html"));
+        String cachedName = image.getCachedFileName();
+        assert cachedName.equals("images.example.com_image.jpg");
+    }
+
+
+    /**
+     * Test that query string is stripped from file name.
+     */
+    @Test
+    public void testGenerateCachedFileNameOmitQueryString() throws MalformedURLException
+    {
+        Image image = new Image(new URL("http://images.example.com/image.jpg?junk"),
+                                new URL("http://www.uncommons.org/article.html"));
+        String cachedName = image.getCachedFileName();
+        assert cachedName.equals("images.example.com_image.jpg");
+    }
+
+
+    @Test
+    public void testGenerateCachedFileNameWithExtension() throws MalformedURLException
+    {
+        Image image = new Image(new URL("http://images.example.com/image.bin"),
+                                new URL("http://www.uncommons.org/article.html"));
+        String cachedName = image.getCachedFileName();
+        assert cachedName.equals("images.example.com_image.bin.jpg");
+    }
 }

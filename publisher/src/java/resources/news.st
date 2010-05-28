@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>$title$</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="zeitgeist.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <h1>$title$</h1>
