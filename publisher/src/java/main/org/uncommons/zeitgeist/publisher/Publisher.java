@@ -15,6 +15,9 @@
 // ============================================================================
 package org.uncommons.zeitgeist.publisher;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -32,6 +35,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
+import javax.imageio.ImageIO;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
@@ -153,28 +157,63 @@ public class Publisher
             if (!images.isEmpty())
             {
                 Image image = images.get(0);
-                try
+                File cachedFile = new File(cacheDir, image.getCachedFileName());
+                if (cachedFile.exists())
                 {
-                    File cachedFile = new File(cacheDir, image.getCachedFileName());
-                    if (cachedFile.exists())
-                    {
-                        // If the file exists, touch it to show it is still relevant.
-                        cachedFile.setLastModified(System.currentTimeMillis());
-                        LOG.info("Image found in cache: " + image.getImageURL());
-                    }
-                    else // Only download images that are not already cached.
+                    // If the file exists, touch it to show it is still relevant.
+                    cachedFile.setLastModified(System.currentTimeMillis());
+                    LOG.debug("Image found in cache: " + image.getImageURL());
+                }
+                else // Only download images that are not already cached.
+                {
+                    try
                     {
                         copyStream(cacheDir,
                                    image.getImageURL().openConnection().getInputStream(),
                                    image.getCachedFileName());
-                        LOG.info("Downloaded image: " + image.getImageURL());
+                        LOG.debug("Downloaded image: " + image.getImageURL());
+                    }
+                    catch (IOException ex)
+                    {
+                        LOG.error("Failed downloading image " + image.getImageURL() + ", " + ex.getMessage());
+                    }
+                    try
+                    {
+                        scaleImage(cachedFile, 200);
+                    }
+                    catch (IOException ex)
+                    {
+                        LOG.error("Failed resizing image " + image.getImageURL() + ", " + ex.getMessage());
                     }
                 }
-                catch (IOException ex)
-                {
-                    LOG.error("Failed downloading image " + image.getImageURL() + ", " + ex.getMessage());
-                }
             }
+        }
+    }
+
+
+    /**
+     * Resize the specified image file, maintaining its aspect ratio, so that is no wider
+     * that the specified width.  If the image is smaller than the specified width, it is
+     * left unchanged.
+     * @param imageFile The file to (maybe) resize.
+     * @param maxWidth The target width.
+     * @throws IOException If there is a problem reading or writing the image.
+     */
+    private void scaleImage(File imageFile, int maxWidth) throws IOException
+    {
+        BufferedImage image = ImageIO.read(imageFile);
+        if (image.getWidth() > maxWidth)
+        {
+            float ratio = ((float) maxWidth) / image.getWidth();
+            int height = Math.round(ratio * image.getHeight());
+            BufferedImage scaledImage = new BufferedImage(maxWidth,
+                                                          height,
+                                                          BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics = scaledImage.createGraphics();
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                                      RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics.drawImage(image, 0, 0, maxWidth, height, null);
+            ImageIO.write(scaledImage, "jpeg", imageFile);
         }
     }
 

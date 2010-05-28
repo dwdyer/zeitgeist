@@ -43,7 +43,7 @@ p {font-size: 1.4em;
 
 .picture {float: left;
           margin-bottom: 1.8em;
-          max-width: 250px;}
+          max-width: 200px;}
 .picture img {max-width: 100%}
 
 .credit {font-size: .9em;}
