@@ -1,0 +1,17 @@
+Changes in version 1.1
+------------------------
+
+* Allow alternative templates to be specified on the command line, rather than
+  requiring them to be added to the classpath.
+
+* Renamed style.css to zeitgeist.css.
+
+* Improved image detection in feeds, now recognises entity-encoded img tags.
+
+* Download and cache thumbnail images and favicons rather than linking to
+  originals.
+
+* Improved favicon detection (home page is now downloaded and scanned for link
+  tags when there is no favicon.ico in the web root).
+
+* Added expiry meta tag to default templates.

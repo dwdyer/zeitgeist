@@ -127,6 +127,19 @@ public class Publisher
 
             copyClasspathResource(outputDir, "zeitgeist.css", "zeitgeist.css");
         }
+
+        if (group.isDefined("snippet"))
+        {
+            List<Topic> snippetTopics = topics.subList(0, Math.min(5, topics.size())); // Include no more than 5 topics.
+            StringTemplate syndicateTemplate = group.getInstanceOf("snippet");
+            publishTemplate(snippetTopics,
+                            title,
+                            feedCount,
+                            articleCount,
+                            minutesToExpiry,
+                            syndicateTemplate,
+                            new File("snippet.html"));
+        }
     }
 
 
@@ -233,7 +246,6 @@ public class Publisher
                 }
                 catch (IOException ex)
                 {
-                    cachedFile.delete();
                     LOG.debug("Failed downloading favicon from default location: " + icon.getImageURL());
                     // If we can't find the favicon in the default location, fetch the web page and
                     // look for a "shortcut icon" link tag.  This is expensive but it is a one-off.
@@ -389,28 +401,48 @@ public class Publisher
      */
     public static void main(String[] args) throws IOException
     {
-        BufferedReader feedListReader = new BufferedReader(new FileReader(args[0]));
-        try
+        if (args.length < 2 || args.length > 3)
         {
-            List<URL> feeds = new LinkedList<URL>();
-            for (String line = feedListReader.readLine(); line != null; line = feedListReader.readLine())
-            {
-                String url = line.trim();
-                if (url.length() > 0)
-                {
-                    feeds.add(new URL(url));
-                }
-            }
-            Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
-            List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
-            List<Topic> topics = new Zeitgeist(articles).getTopics();
-            LOG.info(topics.size() + " topics identified.");
-            Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
-            publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, new File("."));
+            printUsage();
         }
-        finally
+        else
         {
-            feedListReader.close();
+            BufferedReader feedListReader = new BufferedReader(new FileReader(args[0]));
+            try
+            {
+                List<URL> feeds = new LinkedList<URL>();
+                for (String line = feedListReader.readLine(); line != null; line = feedListReader.readLine())
+                {
+                    String url = line.trim();
+                    if (url.length() > 0)
+                    {
+                        feeds.add(new URL(url));
+                    }
+                }
+                Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
+                List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
+                List<Topic> topics = new Zeitgeist(articles).getTopics();
+                LOG.info(topics.size() + " topics identified.");
+                Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
+                publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, new File("."));
+            }
+            finally
+            {
+                feedListReader.close();
+            }
         }
     }
+
+
+    private static void printUsage()
+    {
+        System.err.println("java -jar zeitgeist-publisher.jar <feedlist> <title> [templatedir] [templates]");
+        System.err.println();
+        System.err.println("  <feedlist>    - Path to a file listing RSS/Atom feeds, one per line.");
+        System.err.println("  <title>       - A title passed to the templates.");
+        System.err.println("  [templatedir] - Path to alternate templates to use in place of the defaults.");
+        System.err.println();
+        System.err.println("If no template directory is specified, default templates from the classpath are used.");
+    }
+
 }
