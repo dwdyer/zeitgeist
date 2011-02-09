@@ -83,7 +83,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 // Don't include articles that were published before the cut-off date.
                 if (articleDate == null || !articleDate.before(cutOffDate))
                 {
-                    feedArticles.add(new Article(entry.getTitle().trim(),
+                    feedArticles.add(new Article(FeedUtils.expandEntities(entry.getTitle().trim()),
                                                  extractContent(entry),
                                                  new URL(feedURL, entry.getLink()),
                                                  articleDate,
@@ -139,7 +139,19 @@ class FeedDownloadTask implements Callable<List<Article>>
         // Most sites have a favicon.ico file at the root.  Some specify another location
         // using a link tag, but we don't support that at the moment as it would require
         // downloading and parsing the site home page.
-        URL feedLink = feed.getLink() != null ? new URL(feedURL, feed.getLink()) : feedURL;
+        URL feedLink = feedURL;
+        if (feed.getLink() != null)
+        {
+            try
+            {
+                feedLink = new URL(feedURL, feed.getLink());
+            }
+            catch (MalformedURLException ex)
+            {
+                // Sometimes a feed contains an invalid URL.
+                LOG.warnException(ex);
+            }
+        }
         return new Image(new URL(feedLink, "/favicon.ico"), feedLink);
     }
 

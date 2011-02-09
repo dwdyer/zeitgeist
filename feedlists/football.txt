@@ -10,10 +10,9 @@ http://rss.cnn.com/rss/edition_football.rss
 http://rss.soccernet.com/c/668/f/8493/index.rss
 http://sport.scotsman.com/getfeed.aspx?sectionid=6991&format=rss
 http://www.dailyrecord.co.uk/football/england/rss.xml
-http://www.sportinglife.com/rss/football.xml
+http://www.football365.com/rss/0,16039,8652,00.xml
 http://www.goal.com/en/feeds/news?fmt=rss
-http://www.thesun.co.uk/sol/homepage/feeds/rss/article247739.ece
-http://www.newsoftheworld.co.uk/feeds/rss/article186490.ece
+http://www.thesun.co.uk/sol/homepage/sport/football/rss/
 http://www.uefa.com/rssfeed/news/rss.xml
 http://resources.sportingo.com/Sportingo_RSS/Section/Football.xml
 http://www.express.co.uk/posts/rss/67/football
@@ -22,5 +21,7 @@ http://www.tribalfootball.com/rss.xml
 http://www.premierleague.com/rss/ptv/page/ArticleIndex/0,,12306~2233528,00.xml
 http://www.footy247.co.uk/feed
 http://theworldgame.sbs.com.au/rss/news/
-http://www.mirrorfootball.co.uk/rss.xml
 http://rss.thisislondon.co.uk/feed/thisislondon/football
+http://www.people.co.uk/sport/football/news/rss.xml
+http://www.rte.ie/rss/soccer.xml
+http://www.givemefootball.com/rss.ashx?c=1

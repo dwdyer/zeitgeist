@@ -19,7 +19,7 @@ http://feeds.nytimes.com/nyt/rss/World
 http://www.ft.com/rss/world
 http://www.dailymail.co.uk/news/worldnews/index.rss
 http://www.express.co.uk/posts/rss/78/foreignnews
-http://www.mg.co.za/feeds/rss_international.aspx
+http://www.mg.co.za/rss/world
 http://feeds2.feedburner.com/ndtv/TqgX
 http://news.scotsman.com/getfeed.aspx?sectionid=7000&format=rss
 http://www.sbs.com.au/news/rss/Section/Top%20Stories
