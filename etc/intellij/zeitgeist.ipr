@@ -41,11 +41,8 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="EclipseCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="EntryPointsManager">
@@ -61,6 +58,9 @@
         <inspection_tool class="AbstractMethodOverridesConcreteMethod" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="AccessToNonThreadSafeStaticFieldFromInstance" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="nonThreadSafeTypes" value="java.text.DateFormat,java.util.Calendar" />
+          <option name="nonThreadSafeClasses">
+            <value />
+          </option>
         </inspection_tool>
         <inspection_tool class="AccessToStaticFieldLockedOnInstance" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="AnnotationNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
@@ -86,6 +86,9 @@
         <inspection_tool class="AwaitWithoutCorrespondingSignal" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="BadExceptionCaught" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="exceptionsString" value="java.lang.NullPointerException,java.lang.IllegalMonitorStateException,java.lang.ArrayIndexOutOfBoundsException" />
+          <option name="exceptions">
+            <value />
+          </option>
         </inspection_tool>
         <inspection_tool class="BadOddness" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="BigDecimalEquals" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -179,7 +182,13 @@
         <inspection_tool class="ELSpecValidationInJSP" level="WARNING" enabled="false" />
         <inspection_tool class="ELValidationInJSP" level="WARNING" enabled="false" />
         <inspection_tool class="EmptyCatchBlockJS" level="WARNING" enabled="true" />
-        <inspection_tool class="EmptyClass" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EmptyClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignorableAnnotations">
+            <value />
+          </option>
+          <option name="ignoreClassWithParameterization" value="false" />
+          <option name="ignoreThrowables" value="true" />
+        </inspection_tool>
         <inspection_tool class="EmptyFinallyBlockJS" level="WARNING" enabled="true" />
         <inspection_tool class="EmptyInitializer" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="EmptySynchronizedStatement" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -204,6 +213,7 @@
         <inspection_tool class="ErrorRethrown" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ExceptionFromCatchWhichDoesntWrap" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreGetMessage" value="true" />
+          <option name="ignoreCantWrap" value="false" />
         </inspection_tool>
         <inspection_tool class="ExceptionNameDoesntEndWithException" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="ExtendsThread" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -261,7 +271,6 @@
           <option name="ignoreCharConversions" value="false" />
           <option name="ignoreConstantConversions" value="false" />
         </inspection_tool>
-        <inspection_tool class="IndexOfReplaceableByContains" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="InnerClassMayBeStatic" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="InstanceMethodNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_regex" value="[a-z][A-Za-z\d]*" />
@@ -328,11 +337,14 @@
         <inspection_tool class="MissingMnemonic" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreObjectMethods" value="true" />
+          <option name="ignoreAnonymousClassMethods" value="false" />
         </inspection_tool>
         <inspection_tool class="MissortedModifiers" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_requireAnnotationsFirst" value="true" />
         </inspection_tool>
-        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreForLoopDeclarations" value="true" />
+        </inspection_tool>
         <inspection_tool class="MultipleTopLevelClassesInFile" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="MultipleTypedDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="NakedNotify" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -364,6 +376,10 @@
           <option name="m_ignoreNonPublicClasses" value="false" />
         </inspection_tool>
         <inspection_tool class="NonSerializableFieldInSerializableClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignorableAnnotations">
+            <value />
+          </option>
+          <option name="ignoreAnonymousInnerClasses" value="false" />
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="NonSerializableObjectBoundToHttpSession" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -416,6 +432,9 @@
         <inspection_tool class="PublicConstructorInNonPublicClass" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="PublicField" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreEnums" value="false" />
+          <option name="ignorableAnnotations">
+            <value />
+          </option>
         </inspection_tool>
         <inspection_tool class="PublicFieldAccessedInSynchronizedContext" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="PublicStaticArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -452,9 +471,11 @@
         <inspection_tool class="SelfIncludingJspFiles" level="ERROR" enabled="false" />
         <inspection_tool class="SerialVersionUIDNotStaticFinal" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SerializableInnerClassHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreAnonymousInnerClasses" value="false" />
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="SerializableInnerClassWithNonSerializableOuterClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreAnonymousInnerClasses" value="false" />
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="SerializableWithUnconstructableAncestor" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -462,9 +483,7 @@
         <inspection_tool class="SignalWithoutCorrespondingAwait" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SimplifiableIfStatement" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="Singleton" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="SizeReplaceableByIsEmpty" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignoreNegations" value="false" />
-        </inspection_tool>
+        <inspection_tool class="SizeReplaceableByIsEmpty" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SleepWhileHoldingLock" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SocketResource" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="insideTryAllowed" value="false" />
@@ -489,8 +508,6 @@
         <inspection_tool class="StaticVariableUninitializedUse" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
-        <inspection_tool class="StringBufferReplaceableByString" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="StringBufferReplaceableByStringBuilder" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringBufferToStringInConcatenation" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="StringConcatenationInLoops" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreUnlessAssigned" value="false" />
@@ -532,6 +549,7 @@
         <inspection_tool class="TimeToString" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="TooBroadCatch" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="onlyWarnOnRootExceptions" value="true" />
+          <option name="ignoreInTestCode" value="false" />
         </inspection_tool>
         <inspection_tool class="TooBroadScope" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_allowConstructorAsInitializer" value="false" />
@@ -602,20 +620,14 @@
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
-    <list size="5">
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
-      <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="TYPO" />
-      <item index="3" class="java.lang.String" itemvalue="WARNING" />
-      <item index="4" class="java.lang.String" itemvalue="ERROR" />
+      <item index="1" class="java.lang.String" itemvalue="WEAK WARNING" />
+      <item index="2" class="java.lang.String" itemvalue="INFO" />
+      <item index="3" class="java.lang.String" itemvalue="TYPO" />
+      <item index="4" class="java.lang.String" itemvalue="WARNING" />
+      <item index="5" class="java.lang.String" itemvalue="ERROR" />
     </list>
-  </component>
-  <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -633,14 +645,6 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-  </component>
-  <component name="JikesSettings">
-    <option name="JIKES_PATH" value="" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="DEPRECATION" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="IS_EMACS_ERRORS_MODE" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="Palette2">
     <group name="Swing">
@@ -779,7 +783,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="ResourceManagerContainer">
@@ -788,13 +792,6 @@
         <list size="0" />
       </value>
     </option>
-  </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">

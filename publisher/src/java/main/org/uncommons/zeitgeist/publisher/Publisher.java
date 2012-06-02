@@ -62,8 +62,6 @@ public class Publisher
     private static final SimpleLogger LOG = new SimpleLogger(Publisher.class);
     private static final String ENCODING = "UTF-8";
 
-    private static final int CUTOFF_TIME_MS = 129600000; // 36 hours ago.
-
     private static final Pattern FAVICON_PATTERN = Pattern.compile("link.+?rel=\"shortcut icon\".+?href=\"(\\S+?)\"",
                                                                    Pattern.CASE_INSENSITIVE);
 
@@ -204,7 +202,7 @@ public class Publisher
                         LOG.debug("Downloaded image: " + image.getImageURL());
                         scaleImage(cachedFile, 200);
                     }
-                    catch (IOException ex)
+                    catch (Exception ex)
                     {
                         LOG.error("Failed downloading image " + image.getImageURL() + ", " + ex.getMessage());
                     }
@@ -401,7 +399,7 @@ public class Publisher
      */
     public static void main(String[] args) throws IOException
     {
-        if (args.length < 2 || args.length > 3)
+        if (args.length < 3 || args.length > 4)
         {
             printUsage();
         }
@@ -419,11 +417,12 @@ public class Publisher
                         feeds.add(new URL(url));
                     }
                 }
-                Date cutoffDate = new Date(System.currentTimeMillis() - CUTOFF_TIME_MS);
+                double maxAgeHours = Double.parseDouble(args[2]);
+                Date cutoffDate = new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000));
                 List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
                 List<Topic> topics = new Zeitgeist(articles).getTopics();
                 LOG.info(topics.size() + " topics identified.");
-                Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
+                Publisher publisher = args.length > 3 ? new Publisher(new File(args[3])) : new Publisher();
                 publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, new File("."));
             }
             finally
@@ -436,13 +435,13 @@ public class Publisher
 
     private static void printUsage()
     {
-        System.err.println("java -jar zeitgeist-publisher.jar <feedlist> <title> [templatedir] [templates]");
+        System.err.println("java -jar zeitgeist-publisher.jar <feedlist> <title> <maxage> [templatedir]");
         System.err.println();
         System.err.println("  <feedlist>    - Path to a file listing RSS/Atom feeds, one per line.");
         System.err.println("  <title>       - A title passed to the templates.");
+        System.err.println("  <maxage>      - The maximum age (in hours) of included articles.");
         System.err.println("  [templatedir] - Path to alternate templates to use in place of the defaults.");
         System.err.println();
         System.err.println("If no template directory is specified, default templates from the classpath are used.");
     }
-
 }

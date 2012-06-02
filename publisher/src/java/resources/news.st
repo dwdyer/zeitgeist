@@ -8,8 +8,9 @@
     <h1>$title$</h1>
     <p class="datetime">$dateTime;format="EEEE d MMMM yyyy / HH:mm z"$</p>
     <p class="about">
-      This page was constructed by automated analysis of <b>$articleCount$</b> articles from <b>$feedCount$</b>
-      news sources. No humans were involved in the selection and classification of these headlines.
+      This page was constructed by <a href="http://zeitgeist.uncommons.org">automated analysis</a> of
+      <b>$articleCount$</b> articles from <b>$feedCount$</b> news sources. No humans were involved in
+      the selection and classification of these headlines.
     </p>
     $topics:topic()$
   </body>
