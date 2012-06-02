@@ -85,7 +85,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 {
                     feedArticles.add(new Article(FeedUtils.expandEntities(entry.getTitle().trim()),
                                                  extractContent(entry),
-                                                 new URL(feedURL, entry.getLink()),
+                                                 extractArticleURL(entry),
                                                  articleDate,
                                                  extractImages(entry),
                                                  feed.getTitle(),
@@ -107,6 +107,31 @@ class FeedDownloadTask implements Callable<List<Article>>
             LOG.error("Failed fetching " + feedURL + ", " + ex.getMessage());
         }
         return feedArticles;
+    }
+
+
+    /**
+     * Get the URL for the article.  Usually that's straightforward but FeedBurner feeds may have redirect
+     * URLs, in which case we need to find the original link.
+     */
+    @SuppressWarnings("unchecked")
+    private URL extractArticleURL(SyndEntry entry) throws MalformedURLException
+    {
+        String articleLink = entry.getLink();
+        // This might be a FeedBurner redirected link.
+        if (entry.getForeignMarkup() instanceof List)
+        {
+            List<Element> foreignElements = (List<Element>) entry.getForeignMarkup();
+            for (Element element : foreignElements)
+            {
+                if (element.getNamespacePrefix().equals("feedburner") && element.getName().equals("origLink"))
+                {
+                    articleLink = element.getValue();
+                    break;
+                }
+            }
+        }
+        return new URL(feedURL, articleLink);
     }
 
 
