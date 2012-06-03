@@ -189,8 +189,9 @@ public class Article
         {
             if (word.length() > 0 && !LOW_VALUE_WORDS.contains(word))
             {
-                Integer count = wordCounts.get(word);
-                wordCounts.put(word, count == null ? 1 : ++count);
+                String stem = new Stemmer().stem(word);
+                Integer count = wordCounts.get(stem);
+                wordCounts.put(stem, count == null ? 1 : ++count);
             }
         }
         return wordCounts;
