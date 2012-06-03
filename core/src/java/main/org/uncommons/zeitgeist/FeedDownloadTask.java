@@ -198,15 +198,17 @@ class FeedDownloadTask implements Callable<List<Article>>
         List<SyndEnclosure> enclosures = entry.getEnclosures();
         for (SyndEnclosure enclosure : enclosures)
         {
-            if ((enclosure.getType().equalsIgnoreCase("image/jpeg")
-                 || enclosure.getType().equalsIgnoreCase("image/png")
-                 || enclosure.getType().equalsIgnoreCase("image/gif"))
-                || enclosure.getUrl().endsWith(".jpg"))
+            String enclosureType = enclosure.getType();
+            String enclosureUrl = enclosure.getUrl();
+            boolean imageMimeType = enclosureType != null && (enclosureType.equalsIgnoreCase("image/jpeg")
+                                                              || enclosureType.equalsIgnoreCase("image/png")
+                                                              || enclosureType.equalsIgnoreCase("image/gif"));
+            if (imageMimeType || (enclosureUrl != null && enclosureUrl.endsWith(".jpg")))
             {
-                if (!images.containsKey(enclosure.getUrl()))
+                if (!images.containsKey(enclosureUrl))
                 {
-                    images.put(enclosure.getUrl(),
-                               new Image(new URL(feedURL, enclosure.getUrl()),
+                    images.put(enclosureUrl,
+                               new Image(new URL(feedURL, enclosureUrl),
                                          new URL(feedURL, entry.getLink())));
                 }
             }
