@@ -1,5 +1,5 @@
 Zeitgeist - An intelligent RSS news aggregator
-(C) Copyright 2009-2010 Daniel W. Dyer
+(C) Copyright 2009-2012 Daniel W. Dyer
 
 SYNOPSIS
 

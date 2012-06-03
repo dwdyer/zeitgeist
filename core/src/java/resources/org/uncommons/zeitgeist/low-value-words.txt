@@ -31,7 +31,6 @@ being
 but
 by
 came
-can
 can't
 cannot
 come
@@ -44,6 +43,7 @@ does
 doesn't
 don't
 done
+either
 else
 etc
 even
@@ -108,8 +108,10 @@ most
 much
 my
 myself
+neither
 no
 none
+nor
 not
 now
 of
@@ -121,11 +123,13 @@ onto
 or
 other
 others
+otherwise
 our
 ours
 out
 per
 put
+quite
 rather
 re
 really
@@ -173,14 +177,13 @@ those
 though
 through
 throughout
+thus
 to
 too
 until
 upon
 us
-v
 very
-vs
 was
 wasn't
 we
@@ -213,7 +216,6 @@ whoever
 whom
 whose
 why
-will
 with
 within
 without
@@ -223,6 +225,7 @@ wouldn't
 yes
 yet
 you
+you're
 your
 yours
 yourself
