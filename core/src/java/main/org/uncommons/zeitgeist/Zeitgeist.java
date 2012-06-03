@@ -52,7 +52,7 @@ public class Zeitgeist
     public List<Topic> getTopics()
     {
         Matrix matrix = makeMatrix(articles);
-        int topicCount = (int) Math.ceil(Math.sqrt(matrix.getColumnCount()));
+        int topicCount = (int) Math.ceil(Math.log(articles.size()) * Math.log(matrix.getColumnCount()));
         LOG.debug("Estimating number of topics is " + topicCount);
         List<Matrix> factors = matrix.factorise(topicCount);
         return extractTopics(articles, factors.get(0), factors.get(1));

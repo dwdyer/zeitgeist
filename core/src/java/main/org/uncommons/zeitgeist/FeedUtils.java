@@ -32,7 +32,7 @@ class FeedUtils
     private static final Pattern ACCENTED_U_PATTERN = Pattern.compile("&Ugrave;|&#217;|\u00D9|&ugrave;|&#249;|\u00F9|&Uacute;|&#218;|\u00DA|&uacute;|&#250;|\u00FA|&Ucirc;|&#219;|\u00DB|&ucirc;|&#251;|\u00FB|&Uuml;|&#220;|\u00DC|&uuml;|&#252;|\u00FC");
     private static final Pattern ACCENTED_Y_PATTERN = Pattern.compile("&Yacute;|&#221;|\u00DD|&yacute;|&#253;|\u00FD|&yuml;|&#255;|\u00FF");
     private static final Pattern SCHARFES_S_PATTERN = Pattern.compile("&szlig;|&#223;|\u00DF");
-    private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("[,;:\\?\\s\"\\(\\)&\\|/\u2013\u2022]+");
+    private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("[,;:!\\?\\s\"\\(\\)&\\|\\[\\]\\{\\}<>/\u2013\u2022]+");
 
     private FeedUtils()
     {
@@ -87,7 +87,7 @@ class FeedUtils
         // All other entities can be ignored (replaced by whitespace).
         // We use spaces rather than empty strings because the entity might
         // be separating two words and they would otherwise become concatenated.
-        result = result.replaceAll("&\\w*;"," ");
+        result = result.replaceAll("&#?\\w*;"," ");
         
         return result;
     }

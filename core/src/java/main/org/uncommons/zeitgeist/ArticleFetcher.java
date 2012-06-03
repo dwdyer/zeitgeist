@@ -20,6 +20,7 @@ import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,6 +92,7 @@ public class ArticleFetcher
                 }
             }
             executor.shutdown();
+            Collections.shuffle(articles);
             LOG.info("Downloaded " + articles.size() + " articles.");
         }
         catch (InterruptedException ex)
