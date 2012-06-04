@@ -1,4 +1,4 @@
-http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/cricket/rss.xml
+http://feeds.bbci.co.uk/sport/0/cricket/rss.xml?edition=uk
 http://rss.feedsportal.com/c/266/f/3792/index.rss
 http://www.ecb.co.uk/news.xml
 http://content.cricinfo.com/rss/content/feeds/news/0.xml
@@ -6,9 +6,16 @@ http://www.skysports.com/rss/0,20514,12123,00.xml
 http://www.telegraph.co.uk/sport/cricket/rss
 http://www.guardian.co.uk/sport/cricket/rss
 http://www.mirror.co.uk/sport/cricket/rss.xml
-http://cricket.com.au/site/_content/rss/news.xml
 http://feeds.news.com.au/public/rss/2.0/bcm_cricket_459.xml
-http://sport.scotsman.com/getfeed.aspx?sectionid=7032&format=rss
-http://www.cricket365.com/rss/0,16039,6575_38,00.xml
-http://cricket.timesofindia.indiatimes.com/rssfeedsdefault.cms
-http://feeds.iol.co.za/rss/feed_cricket.rss
+http://www.cricket365.com/rss/6575
+http://timesofindia.feedsportal.com/c/33039/f/533920/index.rss
+http://cricket.yahoo.com/news/rss/
+http://www.cricketnirvana.com/RSS/news/RssFeed.aspx
+http://www.dailymail.co.uk/sport/cricket/index.rss
+http://feeds.sport24.co.za/articles/Sport/Cricket/rss
+http://caribbeancricket.com/feeds/news
+http://www.cricket.com.pk/news/feed
+http://rss.nzherald.co.nz/rss/xml/nzhrsscid_000000029.xml
+http://feeds.feedburner.com/srilanka-cricket
+http://www.mirror.co.uk/sport/cricket/rss.xml
+http://www.thesun.co.uk/sol/homepage/sport/cricket/rss/

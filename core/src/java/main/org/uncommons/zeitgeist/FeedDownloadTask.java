@@ -83,11 +83,12 @@ class FeedDownloadTask implements Callable<List<Article>>
                 // Don't include articles that were published before the cut-off date.
                 if (articleDate == null || !articleDate.before(cutOffDate))
                 {
+                    URL articleURL = extractArticleURL(entry);
                     feedArticles.add(new Article(FeedUtils.expandEntities(entry.getTitle().trim()),
                                                  extractContent(entry),
-                                                 extractArticleURL(entry),
+                                                 articleURL,
                                                  articleDate,
-                                                 extractImages(entry),
+                                                 extractImages(entry, articleURL),
                                                  feed.getTitle(),
                                                  feedLogo,
                                                  feedIcon));
@@ -187,7 +188,7 @@ class FeedDownloadTask implements Callable<List<Article>>
      * places and returns a list of any images found.
      */
     @SuppressWarnings("unchecked")
-    private List<Image> extractImages(SyndEntry entry) throws MalformedURLException
+    private List<Image> extractImages(SyndEntry entry, URL articleURL) throws MalformedURLException
     {
         // Sometimes the same image is embedded using more than one method.  We need
         // to keep track of that and avoid adding duplicates.  We don't add an image
@@ -208,8 +209,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 if (!images.containsKey(enclosureUrl))
                 {
                     images.put(enclosureUrl,
-                               new Image(new URL(feedURL, enclosureUrl),
-                                         new URL(feedURL, entry.getLink())));
+                               new Image(new URL(feedURL, enclosureUrl), articleURL));
                 }
             }
         }
@@ -230,8 +230,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                         if (!images.containsKey(imageLink))
                         {
                             images.put(imageLink,
-                                       new Image(new URL(feedURL, imageLink),
-                                                 new URL(feedURL, entry.getLink())));
+                                       new Image(new URL(feedURL, imageLink), articleURL));
                         }
                     }
                 }
@@ -250,8 +249,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 if (imageLink.toLowerCase().contains(".jpg") && !images.containsKey(imageLink))
                 {
                     images.put(imageLink,
-                               new Image(new URL(feedURL, imageLink),
-                                         new URL(feedURL, entry.getLink())));
+                               new Image(new URL(feedURL, imageLink), articleURL));
                 }
             }
         }

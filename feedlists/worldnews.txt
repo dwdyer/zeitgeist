@@ -27,3 +27,4 @@ http://www.thestar.com/rss/98744?
 http://rss.canada.com/get/?F7432
 http://www.rte.ie/rss/news/world.xml
 http://timesofindia.indiatimes.com/rssfeeds/296589292.cms
+http://rss.csmonitor.com/feeds/world

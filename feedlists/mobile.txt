@@ -4,10 +4,8 @@ http://phandroid.com/feed/
 http://www.androidpit.com/en/android/blog/subscribe/rss.xml
 http://feeds.feedburner.com/Droidmatters
 http://feeds.feedburner.com/AndroidUk
-http://feeds.feedburner.com/androidandme
 http://eurodroid.com/feed/
 http://www.droiddog.com/feed/
-http://feeds.feedburner.com/OfficialGoogleMobileBlog
 http://www.gizmodo.co.uk/tag/android/feed/
 http://feeds.macrumors.com/MacRumors-iPhone
 http://feeds2.feedburner.com/MYiPhone
@@ -23,3 +21,9 @@ http://www.eweek.com/rss-feeds-38.xml
 http://news.yahoo.com/rss/wireless
 http://www.mobilemag.com/feed/
 http://feeds.feedburner.com/jkontherun
+http://feeds.feedburner.com/tnw_mobile
+http://www.forbes.com/mobile/feed/
+http://www.infoworld.com/taxonomy/term/2532/feed
+http://venturebeat.com/category/mobile/feed/
+http://feeds.feedburner.com/pocketnow
+http://feeds.informationweek.com/infoweek/wireless

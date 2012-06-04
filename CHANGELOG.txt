@@ -1,5 +1,20 @@
+Changes in version 1.2
+----------------------
+
+* For feeds containing FeedBurner-specific mark-up, use the origLink element
+  for the article URL to avoid FeedBurner redirect URLs.
+
+* Added publisher command line option to specify article cut-off period.
+
+* Better handling of punctuation and Unicode entities.
+
+* Use Porter stemmer to consolidate keywords that derive from the same root.
+
+* More robust image extraction (better exception handling).
+
+
 Changes in version 1.1
-------------------------
+----------------------
 
 * Allow alternative templates to be specified on the command line, rather than
   requiring them to be added to the classpath.
