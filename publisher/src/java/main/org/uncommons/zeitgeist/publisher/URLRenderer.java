@@ -16,6 +16,6 @@ public class URLRenderer implements AttributeRenderer
 
     public String toString(Object o, String s)
     {
-        return toString(0);
+        return toString(o);
     }
 }

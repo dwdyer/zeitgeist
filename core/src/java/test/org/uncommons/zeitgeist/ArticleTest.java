@@ -80,11 +80,11 @@ public class ArticleTest
     @Test
     public void testWordsWithApostrophes()
     {
-        Article article = new Article("martin o'neill", "", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("ronan o'gara", "", null, new Date(), Collections.<Image>emptyList(), null, null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         Reporter.log(wordCounts.keySet().toString());
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
-        assert wordCounts.containsKey("o'neill") : "Apostrophe word should be treated as one word.";
+        assert wordCounts.containsKey("o'gara") : "Apostrophe word should be treated as one word.";
 
     }
 
