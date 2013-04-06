@@ -233,37 +233,55 @@ public class Publisher
                 {
                     copyStream(icon.getImageURL().openConnection().getInputStream(),
                                new FileOutputStream(cachedFile));
-                    LOG.debug("Downloaded favicon: " + icon.getImageURL());
+                    // Some sites will serve up a zero-byte file for the default location
+                    // but still have a valid icon elsewhere.
+                    if (cachedFile.length() == 0)
+                    {
+                        cachedFile.delete();
+                        extractFaviconFromHTML(icon, cachedFile);
+                    }
+                    else
+                    {
+                        LOG.debug("Downloaded favicon: " + icon.getImageURL());
+                    }
                 }
                 catch (IOException ex)
                 {
                     LOG.debug("Failed downloading favicon from default location: " + icon.getImageURL());
-                    // If we can't find the favicon in the default location, fetch the web page and
-                    // look for a "shortcut icon" link tag.  This is expensive but it is a one-off.
-                    // Subsequent runs will pick up the cached version of the icon.
-                    try
-                    {
-                        String page = fetchPage(icon.getArticleURL());
-                        Matcher matcher = FAVICON_PATTERN.matcher(page);
-                        if (matcher.find())
-                        {
-                            URL url = new URL(icon.getArticleURL(), matcher.group(1));
-                            copyStream(url.openConnection().getInputStream(),
-                                       new FileOutputStream(cachedFile));
-                            LOG.debug("Downloaded favicon via web page: " + url.toString());
-                        }
-                        else
-                        {
-                            LOG.info("No favicon for: " + icon.getArticleURL());
-                        }
-                    }
-                    catch (IOException ex2)
-                    {
-                        cachedFile.delete();
-                        LOG.warn("Failed downloading home page for favicon: " + icon.getArticleURL());
-                    }
+                    extractFaviconFromHTML(icon, cachedFile);
                 }
             }
+        }
+    }
+
+
+    /**
+     * If we can't find the favicon in the default location, fetch the web page and
+     * look for a "shortcut icon" link tag.  This is expensive but it is a one-off.
+     * Subsequent runs will pick up the cached version of the icon.
+     */
+    private void extractFaviconFromHTML(Image icon, File cachedFile)
+    {
+        try
+        {
+            String page = fetchPage(icon.getArticleURL());
+            Matcher matcher = FAVICON_PATTERN.matcher(page);
+            if (matcher.find())
+            {
+                URL url = new URL(icon.getArticleURL(), matcher.group(1));
+                copyStream(url.openConnection().getInputStream(),
+                           new FileOutputStream(cachedFile));
+                LOG.debug("Downloaded favicon via web page: " + url.toString());
+            }
+            else
+            {
+                LOG.info("No favicon for: " + icon.getArticleURL());
+            }
+        }
+        catch (IOException ex)
+        {
+            cachedFile.delete();
+            LOG.warn("Failed downloading home page for favicon: " + icon.getArticleURL());
         }
     }
 
@@ -406,7 +424,8 @@ public class Publisher
                 for (String line = feedListReader.readLine(); line != null; line = feedListReader.readLine())
                 {
                     String url = line.trim();
-                    if (url.length() > 0)
+                    // Lines beginning with a hash are considered to be comments.
+                    if (!url.startsWith("#") && url.length() > 0)
                     {
                         feeds.add(new URL(url));
                     }

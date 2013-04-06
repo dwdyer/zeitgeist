@@ -16,6 +16,10 @@ Changes in version 1.2
 
 * Enable templates to detect which articles are new (less than 30 minutes old).
 
+* Exclude articles with no publication date.
+
+* Allow comments in feed lists.
+
 
 Changes in version 1.1
 ----------------------

@@ -79,11 +79,20 @@ class FeedDownloadTask implements Callable<List<Article>>
             List<SyndEntry> entries = feed.getEntries();
             for (SyndEntry entry : entries)
             {
+                URL articleURL = extractArticleURL(entry);
                 Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
-                // Don't include articles that were published before the cut-off date.
-                if (articleDate == null || !articleDate.before(cutOffDate))
+
+                // If we don't know when the article was published then we don't know if it is relevant,
+                // so we omit it.
+                // This can be caused by the feed wrongly reporting that it is RSS version 0.91 and ROME
+                // therefore not even bothering to look for item dates.
+                if (articleDate == null)
                 {
-                    URL articleURL = extractArticleURL(entry);
+                    LOG.warn("Article has no publication date: " + articleURL);
+                }
+                // Don't include articles that were published before the cut-off date.
+                else if (!articleDate.before(cutOffDate))
+                {
                     feedArticles.add(new Article(FeedUtils.expandEntities(entry.getTitle().trim()),
                                                  extractContent(entry),
                                                  articleURL,
