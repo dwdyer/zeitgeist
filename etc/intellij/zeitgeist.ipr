@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/../../build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
   </component>
   <component name="BuildJarProjectSettings">
@@ -32,7 +26,11 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
-    <annotationProcessing enabled="false" useClasspath="true" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+    </annotationProcessing>
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -172,7 +170,6 @@
         <inspection_tool class="DoubleCheckedLocking" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreOnVolatileVariables" value="false" />
         </inspection_tool>
-        <inspection_tool class="DoubleNegation" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="DuplicateBooleanBranch" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="DuplicateCondition" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreMethodCalls" value="false" />
@@ -353,6 +350,7 @@
         </inspection_tool>
         <inspection_tool class="NegatedIfElse" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_ignoreNegatedNullComparison" value="true" />
+          <option name="m_ignoreNegatedZeroComparison" value="false" />
         </inspection_tool>
         <inspection_tool class="NestedAssignment" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="NestedAssignmentJS" level="WARNING" enabled="true" />
@@ -440,10 +438,7 @@
         <inspection_tool class="PublicStaticArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="PublicStaticCollectionField" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="RandomDoubleForRandomInteger" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="RawUseOfParameterizedType" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignoreObjectConstruction" value="true" />
-          <option name="ignoreTypeCasts" value="false" />
-        </inspection_tool>
+        <inspection_tool class="RawUseOfParameterizedType" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="RedundantImplements" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreSerializable" value="false" />
           <option name="ignoreCloneable" value="false" />
@@ -528,6 +523,7 @@
         <inspection_tool class="SynchronizeOnThis" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SynchronizedMethod" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_includeNativeMethods" value="true" />
+          <option name="ignoreSynchronizedSuperMethods" value="true" />
         </inspection_tool>
         <inspection_tool class="SynchronizedOnLiteralObject" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="SystemRunFinalizersOnExit" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -549,7 +545,6 @@
         <inspection_tool class="TimeToString" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="TooBroadCatch" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="onlyWarnOnRootExceptions" value="true" />
-          <option name="ignoreInTestCode" value="false" />
         </inspection_tool>
         <inspection_tool class="TooBroadScope" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_allowConstructorAsInitializer" value="false" />
@@ -594,6 +589,9 @@
         <inspection_tool class="UtilityClassWithPublicConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UtilityClassWithoutPrivateConstructor" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreClassesWithOnlyMain" value="false" />
+          <option name="ignorableAnnotations">
+            <value />
+          </option>
         </inspection_tool>
         <inspection_tool class="VoidExpressionJS" level="WARNING" enabled="true" />
         <inspection_tool class="VolatileArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -815,7 +813,7 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../.." vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">

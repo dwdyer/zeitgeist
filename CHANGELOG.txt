@@ -12,6 +12,10 @@ Changes in version 1.2
 
 * More robust image extraction (better exception handling).
 
+* Escape ampersands in URLs.
+
+* Enable templates to detect which articles are new (less than 30 minutes old).
+
 
 Changes in version 1.1
 ----------------------

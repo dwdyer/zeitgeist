@@ -34,6 +34,7 @@ import java.util.Set;
  */
 public class Article
 {
+    private static final int HALF_HOUR = 1800000;
     private static final Set<String> LOW_VALUE_WORDS = new HashSet<String>();
     static
     {
@@ -68,7 +69,6 @@ public class Article
         }
     }
 
-    
     private final String headline;
     private final String text;
     private final URL articleURL;
@@ -131,6 +131,15 @@ public class Article
     public Date getDate()
     {
         return date;
+    }
+
+
+    /**
+     * An article is considered new if it was posted within the last half hour.
+     */
+    public boolean isNew()
+    {
+        return date != null && System.currentTimeMillis() - HALF_HOUR < date.getTime();
     }
 
 

@@ -4,18 +4,16 @@ http://www.independent.co.uk/sport/football/premier-league/rss
 http://www.independent.co.uk/sport/football/news-and-comment/rss
 http://feeds.guardian.co.uk/theguardian/football/rss
 http://www.skysports.com/rss/0,20514,11095,00.xml
-http://feeds.reuters.com/reuters/UKFootballNews
-http://feeds.reuters.com/reuters/UKEuropeanFootballNews
+http://mf.feeds.reuters.com/reuters/UKFootballNews
+http://mf.feeds.reuters.com/reuters/UKEuropeanFootballNews
 http://rss.cnn.com/rss/edition_football.rss
-http://rss.soccernet.com/c/668/f/8493/index.rss
+http://espnfc.com/rss/news?section=soccernetfrontpage
 http://www.scotsman.com/cmlink/1.957065
-http://www.dailyrecord.co.uk/football/england/rss.xml
 http://www.football365.com/premier-league/rss
 http://www.goal.com/en/feeds/news?fmt=rss
 http://www.thesun.co.uk/sol/homepage/sport/football/rss/
 http://www.uefa.com/rssfeed/news/rss.xml
 http://www.express.co.uk/posts/rss/67/football
-http://www.metro.co.uk/xml/rss/page.xml?in_page_id=43
 http://www.tribalfootball.com/rss.xml
 http://www.premierleague.com/en-gb/news/newsfeed.rss
 http://theworldgame.sbs.com.au/rss/news/
@@ -28,3 +26,5 @@ http://www.dailymail.co.uk/sport/football/index.rss
 http://www.fifa.com/rss/index.xml
 http://www.football.co.uk/news/rss.xml
 http://www.caughtoffside.com/feed/
+http://feeds.feedburner.com/soccerlens
+http://www.soccernews.com/feed/

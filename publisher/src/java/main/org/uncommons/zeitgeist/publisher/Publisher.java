@@ -33,13 +33,11 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -93,21 +91,21 @@ public class Publisher
 
 
     /**
+     *
      * @param topics A list of topics identified.
      * @param title Title for generated pages.
      * @param feedCount The number of feeds used.
      * @param articleCount The number of articles analysed.
-     * @param minutesToExpiry How many minutes after it is generated should the page(s) be cached for?
      * @throws IOException If something goes wrong.
      */
     public void publish(List<Topic> topics,
                         String title,
                         int feedCount,
                         int articleCount,
-                        int minutesToExpiry,
                         File outputDir) throws IOException
     {
         group.registerRenderer(Date.class, new DateRenderer());
+        group.registerRenderer(URL.class, new URLRenderer());
         group.registerRenderer(String.class, new XMLStringRenderer());
 
         cacheImages(topics, outputDir);
@@ -115,7 +113,7 @@ public class Publisher
 
         // Publish HTML.
         StringTemplate htmlTemplate = group.getInstanceOf("news");
-        publishTemplate(topics, title, feedCount, articleCount, minutesToExpiry, htmlTemplate, new File("index.html"));
+        publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("index.html"));
         if (group.getRootDir() != null)
         {
             copyFile(outputDir, "zeitgeist.css", "zeitgeist.css");
@@ -134,7 +132,6 @@ public class Publisher
                             title,
                             feedCount,
                             articleCount,
-                            minutesToExpiry,
                             syndicateTemplate,
                             new File("snippet.html"));
         }
@@ -145,17 +142,13 @@ public class Publisher
                                  String title,
                                  int feedCount,
                                  int articleCount,
-                                 int minutesToExpiry,
                                  StringTemplate template,
                                  File outputFile) throws IOException
     {
         Date date = new Date();
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        calendar.add(Calendar.MINUTE, minutesToExpiry);
         template.setAttribute("topics", topics);
         template.setAttribute("title", title);
         template.setAttribute("dateTime", date);
-        template.setAttribute("expires", calendar.getTime());
         template.setAttribute("feedCount", feedCount);
         template.setAttribute("articleCount", articleCount);
         Writer writer = new OutputStreamWriter(new FileOutputStream(outputFile), ENCODING);
@@ -394,8 +387,9 @@ public class Publisher
 
 
     /**
-     * Entry point for the publisher application.  Takes two arguments - the path to a file containing a list
-     * of feeds, and the title to use for the generated output.
+     * Entry point for the publisher application.  Takes three arguments - the path to a file containing a list
+     * of feeds, the title to use for the generated output, and the maximum age (in hours) permitted for articles
+     * to be included.
      */
     public static void main(String[] args) throws IOException
     {
@@ -423,7 +417,7 @@ public class Publisher
                 List<Topic> topics = new Zeitgeist(articles).getTopics();
                 LOG.info(topics.size() + " topics identified.");
                 Publisher publisher = args.length > 3 ? new Publisher(new File(args[3])) : new Publisher();
-                publisher.publish(topics, args[1], feeds.size(), articles.size(), 30, new File("."));
+                publisher.publish(topics, args[1], feeds.size(), articles.size(), new File("."));
             }
             finally
             {
