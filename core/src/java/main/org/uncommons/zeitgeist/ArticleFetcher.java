@@ -16,9 +16,12 @@
 package org.uncommons.zeitgeist;
 
 import com.sun.syndication.fetcher.FeedFetcher;
+import com.sun.syndication.fetcher.impl.FeedFetcherCache;
 import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
+import com.sun.syndication.fetcher.impl.SyndFeedInfo;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -43,7 +46,7 @@ public class ArticleFetcher
 
     public ArticleFetcher()
     {
-        this(new HttpURLFeedFetcher(HashMapFeedInfoCache.getInstance()));
+        this(new TimeoutFeedFetcher(HashMapFeedInfoCache.getInstance()));
     }
 
     
@@ -102,5 +105,32 @@ public class ArticleFetcher
             ex.printStackTrace();
         }
         return articles;
+    }
+
+
+    /**
+     * A customised version of the ROME fetcher that doesn't hang forever waiting for a response.
+     */
+    private static class TimeoutFeedFetcher extends HttpURLFeedFetcher
+    {
+        private static final int TIMEOUT = 60000;
+
+        TimeoutFeedFetcher(FeedFetcherCache cache)
+        {
+            super(cache);
+        }
+
+
+        /**
+         * Conceptually this is not the right place to modify the timeout settings but it's the only
+         * place that exposes access to the underlying URLConnection.
+         */
+        @Override
+        protected void setRequestHeaders(URLConnection connection, SyndFeedInfo syndFeedInfo)
+        {
+            connection.setConnectTimeout(TIMEOUT);
+            connection.setReadTimeout(TIMEOUT);
+            super.setRequestHeaders(connection, syndFeedInfo);
+        }
     }
 }

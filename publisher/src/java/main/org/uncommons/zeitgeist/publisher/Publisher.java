@@ -62,6 +62,7 @@ public class Publisher
 
     private static final Pattern FAVICON_PATTERN = Pattern.compile("link.+?rel=\"shortcut icon\".+?href=\"(\\S+?)\"",
                                                                    Pattern.CASE_INSENSITIVE);
+    private static final int TIMEOUT = 30000;
 
     private final StringTemplateGroup group;
 
@@ -190,7 +191,7 @@ public class Publisher
                 {
                     try
                     {
-                        copyStream(image.getImageURL().openConnection().getInputStream(),
+                        copyStream(openConnection(image.getImageURL()).getInputStream(),
                                    new FileOutputStream(new File(cacheDir, image.getCachedFileName())));
                         LOG.debug("Downloaded image: " + image.getImageURL());
                         scaleImage(cachedFile, 200);
@@ -231,7 +232,7 @@ public class Publisher
             {
                 try
                 {
-                    copyStream(icon.getImageURL().openConnection().getInputStream(),
+                    copyStream(openConnection(icon.getImageURL()).getInputStream(),
                                new FileOutputStream(cachedFile));
                     // Some sites will serve up a zero-byte file for the default location
                     // but still have a valid icon elsewhere.
@@ -269,7 +270,7 @@ public class Publisher
             if (matcher.find())
             {
                 URL url = new URL(icon.getArticleURL(), matcher.group(1));
-                copyStream(url.openConnection().getInputStream(),
+                copyStream(openConnection(url).getInputStream(),
                            new FileOutputStream(cachedFile));
                 LOG.debug("Downloaded favicon via web page: " + url.toString());
             }
@@ -294,7 +295,7 @@ public class Publisher
      */
     private String fetchPage(URL pageURL) throws IOException
     {
-        URLConnection urlConnection = pageURL.openConnection();
+        URLConnection urlConnection = openConnection(pageURL);
         InputStream inputStream = urlConnection.getInputStream();
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         copyStream(inputStream, buffer);
@@ -322,11 +323,22 @@ public class Publisher
                                                           height,
                                                           BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = scaledImage.createGraphics();
-            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                                      RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             graphics.drawImage(image, 0, 0, maxWidth, height, null);
             ImageIO.write(scaledImage, "jpeg", imageFile);
         }
+    }
+
+
+    /**
+     * Open a URL connection and set the timeouts appropriately.
+     */
+    private URLConnection openConnection(URL url) throws IOException
+    {
+        URLConnection connection = url.openConnection();
+        connection.setConnectTimeout(TIMEOUT);
+        connection.setReadTimeout(TIMEOUT);
+        return connection;
     }
 
 

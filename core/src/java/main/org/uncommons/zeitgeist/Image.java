@@ -21,16 +21,18 @@ import java.net.URL;
  * Holds information about an image from a feed.
  * @author Daniel Dyer
  */
-public class Image
+public class Image implements Comparable<Image>
 {
     private final URL imageURL;
     private final URL articleURL;
+    private final Integer width;
 
 
-    public Image(URL imageURL, URL articleURL)
+    public Image(URL imageURL, URL articleURL, Integer width)
     {
         this.imageURL = imageURL;
         this.articleURL = articleURL;
+        this.width = width;
     }
 
 
@@ -68,6 +70,15 @@ public class Image
     }
 
 
+    /**
+     * @return The width of the image in pixels or null if it is unknown.
+     */
+    public Integer getWidth()
+    {
+        return width;
+    }
+
+
     public String getImageCredit()
     {
         String host = articleURL.getHost();
@@ -76,5 +87,29 @@ public class Image
         credit = credit.replaceFirst("^rss\\.", "");
         credit = credit.replaceFirst("^www\\.", "");
         return credit;
+    }
+
+
+    /**
+     * Larger (wider) images take precedence over smaller images.  When used for sorting this comparator
+     * will order the images in descending order of width (this is the reverse of usual ordering for a
+     * comparator).
+     * @param image The image to compare to.
+     */
+    public int compareTo(Image image)
+    {
+        if (this.width != null && image.width != null)
+        {
+            return image.width - this.width;
+        }
+        else if (this.width != null)
+        {
+            return -1; // This image is considered bigger than the unknown width of the other image.
+        }
+        else if (image.width != null)
+        {
+            return 1; // This image is considered smaller than the known width of the other image.
+        }
+        return 0; // Both sizes are unknown and therefore considered equal.
     }
 }

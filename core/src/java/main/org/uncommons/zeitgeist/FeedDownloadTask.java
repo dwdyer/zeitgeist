@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -43,7 +44,17 @@ import org.jdom.Element;
 class FeedDownloadTask implements Callable<List<Article>>
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?src=(?:\"|\\Q&quot;\\E)(\\S+?)(?:\"|\\Q&quot;\\E)",
+
+    // Processing HTML with regexes is seldom sensible, but since this junk is encoded in so many
+    // different ways (plain HTML, entity-encoded elements, CDATA, some combination of all of those),
+    // using a proper parser won't help much either.  This is a best efforts attempt to extract images
+    // embedded within feed content (as opposed to nicely marked up in the XML of the feed).  If it
+    // misses some it doesn't really matter.
+    private static final String QUOTE_RE = "(?:\"|'|\\Q&quot;\\E)";
+    private static final String SRC_RE = "src=" + QUOTE_RE + "(\\S+?)" + QUOTE_RE;
+    private static final String WIDTH_RE = "(?:width=" + QUOTE_RE + "(\\d+)" + QUOTE_RE + ")?";
+    // The width attribute may be before the src attribute, after it, or absent entirely.
+    private static final Pattern IMAGE_TAG_PATTERN = Pattern.compile("img.+?" + WIDTH_RE + ".*?" + SRC_RE + ".*?" + WIDTH_RE,
                                                                      Pattern.CASE_INSENSITIVE);
 
     private final FeedFetcher fetcher;
@@ -57,7 +68,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                      Date cutOffDate,
                      boolean includeInlineImages)
     {
-        this.fetcher = fetcher; 
+        this.fetcher = fetcher;
         this.feedURL = feedURL;
         this.cutOffDate = cutOffDate;
         this.includeInlineImages = includeInlineImages;
@@ -159,7 +170,8 @@ class FeedDownloadTask implements Callable<List<Article>>
         else
         {
             return new Image(new URL(feedURL, feed.getImage().getUrl()),
-                             new URL(feedURL, feed.getImage().getLink() == null ? feed.getLink() : feed.getImage().getLink()));
+                             new URL(feedURL, feed.getImage().getLink() == null ? feed.getLink() : feed.getImage().getLink()),
+                             null);
         }
     }
 
@@ -187,7 +199,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 LOG.warnException(ex);
             }
         }
-        return new Image(new URL(feedLink, "/favicon.ico"), feedLink);
+        return new Image(new URL(feedLink, "/favicon.ico"), feedLink, 16);
     }
 
 
@@ -218,7 +230,7 @@ class FeedDownloadTask implements Callable<List<Article>>
                 if (!images.containsKey(enclosureUrl))
                 {
                     images.put(enclosureUrl,
-                               new Image(new URL(feedURL, enclosureUrl), articleURL));
+                               new Image(new URL(feedURL, enclosureUrl), articleURL, null));
                 }
             }
         }
@@ -236,10 +248,12 @@ class FeedDownloadTask implements Callable<List<Article>>
                         || element.getName().equals("thumbnail"))
                     {
                         String imageLink = element.getAttributeValue("url");
+                        String widthString = element.getAttributeValue("width");
+                        Integer width = widthString == null ? null : Integer.parseInt(widthString);
                         if (!images.containsKey(imageLink))
                         {
                             images.put(imageLink,
-                                       new Image(new URL(feedURL, imageLink), articleURL));
+                                       new Image(new URL(feedURL, imageLink), articleURL, width));
                         }
                     }
                 }
@@ -252,18 +266,26 @@ class FeedDownloadTask implements Callable<List<Article>>
             Matcher matcher = IMAGE_TAG_PATTERN.matcher(entry.getDescription().getValue());
             while (matcher.find())
             {
-                String imageLink = matcher.group(1);
+                String imageLink = matcher.group(2);
                 // We only use inline JPG images because others are more likely to be
                 // not related to the story (e.g. icons and adverts).
                 if (imageLink.toLowerCase().contains(".jpg") && !images.containsKey(imageLink))
                 {
+                    String widthString = matcher.group(1);
+                    if (widthString == null) // If the width attribute is not before the src, it might be after.
+                    {
+                        widthString = matcher.group(3);
+                    }
+                    Integer width = widthString == null ? null : new Integer(widthString);
                     images.put(imageLink,
-                               new Image(new URL(feedURL, imageLink), articleURL));
+                               new Image(new URL(feedURL, imageLink), articleURL, width));
                 }
             }
         }
 
-        return new ArrayList<Image>(images.values());
+        List<Image> imageList = new ArrayList<Image>(images.values());
+        Collections.sort(imageList);  // Prioritise larger images.
+        return imageList;
     }
 
 

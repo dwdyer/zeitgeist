@@ -20,6 +20,10 @@ Changes in version 1.2
 
 * Allow comments in feed lists.
 
+* Set connection/read timeouts so threads don't hang indefinitely.
+
+* Give priority to the largest image associated with an article.
+
 
 Changes in version 1.1
 ----------------------
