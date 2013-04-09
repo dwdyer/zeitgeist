@@ -32,6 +32,7 @@ import org.grlea.log.SimpleLogger;
 public class Zeitgeist
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
+    private static final int MINIMUM_ARTICLES_PER_TOPIC = 4;
     private static final int MINIMUM_SOURCES_PER_TOPIC = 3;
     private static final int MINIMUM_ARTICLES_FOR_KEYWORD = 4; // Ignore obscure words.
     private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
@@ -104,7 +105,7 @@ public class Zeitgeist
         {
             Topic topic = new Topic(topicArticles);
             int sources = topic.countDistinctSources();
-            if (sources >= MINIMUM_SOURCES_PER_TOPIC)
+            if (sources >= MINIMUM_SOURCES_PER_TOPIC && topicArticles.size() >= MINIMUM_ARTICLES_PER_TOPIC)
             {
                 topics.add(topic);
             }

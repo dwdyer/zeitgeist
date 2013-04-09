@@ -26,18 +26,31 @@ import java.util.Set;
  */
 public class Topic
 {
-    private final List<WeightedItem<Article>> articles = new ArrayList<WeightedItem<Article>>();
+    private static final int MAX_ARTICLES = 10;
+
+    private final List<WeightedItem<Article>> articles;
+    private final List<WeightedItem<Article>> topArticles;
 
 
     public Topic(List<WeightedItem<Article>> articles)
     {
-        this.articles.addAll(articles);
+        this.articles = new ArrayList<WeightedItem<Article>>(articles);
+        this.topArticles = articles.subList(0, Math.min(articles.size(), MAX_ARTICLES));
     }
 
 
+    /**
+     * @return All articles associated with this topic, sorted by weight, highest first.
+     */
     public List<WeightedItem<Article>> getArticles()
     {
         return articles;
+    }
+
+
+    public List<WeightedItem<Article>> getTopArticles()
+    {
+        return topArticles;
     }
 
 
