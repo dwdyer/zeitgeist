@@ -31,12 +31,10 @@ GENERATING HTML OUTPUT
   headlines, complete with relevant images extracted from the feed articles.
   This application can be run as follows:
 
-      java -jar zeitgeist-publisher-1.0.jar feedlist.txt "Page Title" 24
+      java -jar zeitgeist-publisher-1.2.jar feedlist.txt "Page Title"
 
   The first argument is a text file that contains a list of feed URLs, one per
-  line, the second argument is the title to use for the generated page, and the
-  third argument is the maximum article age in hours (older articles are
-  discarded).
+  line, the second argument is the title to use for the generated page.
 
   To get good results you should aim to have at least 20 different feeds that
   cover the same broad topics.

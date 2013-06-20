@@ -24,6 +24,8 @@ Changes in version 1.2
 
 * Give priority to the largest image associated with an article.
 
+* Now requires Java 6 or later.
+
 
 Changes in version 1.1
 ----------------------

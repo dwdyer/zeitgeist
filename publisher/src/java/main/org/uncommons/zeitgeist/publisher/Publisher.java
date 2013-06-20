@@ -18,17 +18,13 @@ package org.uncommons.zeitgeist.publisher;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -37,6 +33,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -117,12 +114,12 @@ public class Publisher
         publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("index.html"));
         if (group.getRootDir() != null)
         {
-            copyFile(outputDir, "zeitgeist.css", "zeitgeist.css");
+            StreamUtils.copyFile(outputDir, new File(group.getRootDir(), "zeitgeist.css"), "zeitgeist.css");
         }
         else
         {
 
-            copyClasspathResource(outputDir, "zeitgeist.css", "zeitgeist.css");
+            StreamUtils.copyClasspathResource(outputDir, "zeitgeist.css", "zeitgeist.css");
         }
 
         if (group.isDefined("snippet"))
@@ -191,8 +188,8 @@ public class Publisher
                 {
                     try
                     {
-                        copyStream(openConnection(image.getImageURL()).getInputStream(),
-                                   new FileOutputStream(new File(cacheDir, image.getCachedFileName())));
+                        StreamUtils.copyStreamToFile(openConnection(image.getImageURL()).getInputStream(),
+                                                     new File(cacheDir, image.getCachedFileName()));
                         LOG.debug("Downloaded image: " + image.getImageURL());
                         scaleImage(cachedFile, 200);
                     }
@@ -232,8 +229,7 @@ public class Publisher
             {
                 try
                 {
-                    copyStream(openConnection(icon.getImageURL()).getInputStream(),
-                               new FileOutputStream(cachedFile));
+                    StreamUtils.copyStreamToFile(openConnection(icon.getImageURL()).getInputStream(), cachedFile);
                     // Some sites will serve up a zero-byte file for the default location
                     // but still have a valid icon elsewhere.
                     if (cachedFile.length() == 0)
@@ -270,8 +266,7 @@ public class Publisher
             if (matcher.find())
             {
                 URL url = new URL(icon.getArticleURL(), matcher.group(1));
-                copyStream(openConnection(url).getInputStream(),
-                           new FileOutputStream(cachedFile));
+                StreamUtils.copyStreamToFile(openConnection(url).getInputStream(), cachedFile);
                 LOG.debug("Downloaded favicon via web page: " + url.toString());
             }
             else
@@ -298,7 +293,7 @@ public class Publisher
         URLConnection urlConnection = openConnection(pageURL);
         InputStream inputStream = urlConnection.getInputStream();
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        copyStream(inputStream, buffer);
+        StreamUtils.copyStream(inputStream, buffer);
         String encoding = urlConnection.getContentEncoding();
         return new String(buffer.toByteArray(), encoding == null ? ENCODING : encoding);
     }
@@ -343,128 +338,76 @@ public class Publisher
 
 
     /**
-     * Copy a single named resource from the classpath to the output directory.
-     * @param outputDirectory The destination directory for the copied resource.
-     * @param resourcePath The path of the resource.
-     * @param targetFileName The name of the file created in {@literal outputDirectory}.
-     * @throws IOException If the resource cannot be copied.
-     */
-    private void copyClasspathResource(File outputDirectory,
-                                       String resourcePath,
-                                       String targetFileName) throws IOException
-    {
-        InputStream resourceStream = ClassLoader.getSystemResourceAsStream(resourcePath);
-        copyStream(resourceStream, new FileOutputStream(new File(outputDirectory, targetFileName)));
-    }
-
-
-    /**
-     * Copy a single named file to the output directory.
-     * @param outputDirectory The destination directory for the copied resource.
-     * @param filePath The path of the file.
-     * @param targetFileName The name of the file created in {@literal outputDirectory}.
-     * @throws IOException If the file cannot be copied.
-     */
-    private void copyFile(File outputDirectory,
-                          String filePath,
-                          String targetFileName) throws IOException
-    {
-        FileInputStream inputStream = new FileInputStream(new File(group.getRootDir(), filePath));
-        try
-        {
-            copyStream(inputStream, new FileOutputStream(new File(outputDirectory, targetFileName)));
-        }
-        finally
-        {
-            inputStream.close();
-        }
-    }
-
-
-    /**
-     * Helper method to copy the contents of a stream to a file.
-     * @param stream The stream to copy.
-     * @param target The target stream to write the stream contents to.
-     * @throws IOException If the stream cannot be copied.
-     */
-    private void copyStream(InputStream stream,
-                            OutputStream target) throws IOException
-    {
-        BufferedInputStream input = new BufferedInputStream(stream);
-        try
-        {
-            BufferedOutputStream output = new BufferedOutputStream(target);
-            try
-            {
-                int i = input.read();
-                while (i != -1)
-                {
-                    output.write(i);
-                    i = input.read();
-                }
-                output.flush();
-            }
-            finally
-            {
-                output.close();
-            }
-        }
-        finally
-        {
-            input.close();
-        }
-    }
-
-
-    /**
-     * Entry point for the publisher application.  Takes three arguments - the path to a file containing a list
-     * of feeds, the title to use for the generated output, and the maximum age (in hours) permitted for articles
-     * to be included.
+     * Entry point for the publisher application.  Takes two mandatory arguments - the path to a file containing a list
+     * of feeds and the title to use for the generated output, and optionally a third argument specifying templates
+     * to use in place of the defaults.
      */
     public static void main(String[] args) throws IOException
     {
-        if (args.length < 3 || args.length > 4)
+        if (args.length < 2 || args.length > 3)
         {
             printUsage();
         }
         else
         {
-            BufferedReader feedListReader = new BufferedReader(new FileReader(args[0]));
+            InputStream propertiesStream = Publisher.class.getClassLoader().getResourceAsStream("zeitgeist.properties");
             try
             {
-                List<URL> feeds = new LinkedList<URL>();
-                for (String line = feedListReader.readLine(); line != null; line = feedListReader.readLine())
-                {
-                    String url = line.trim();
-                    // Lines beginning with a hash are considered to be comments.
-                    if (!url.startsWith("#") && url.length() > 0)
-                    {
-                        feeds.add(new URL(url));
-                    }
-                }
-                double maxAgeHours = Double.parseDouble(args[2]);
+                Properties properties = new Properties();
+                properties.load(propertiesStream);
+                System.getProperties().putAll(properties);
+
+                List<URL> feeds = parseFeedList(args[0]);
+
+                long maxAgeHours = Long.parseLong(System.getProperty("zeitgeist.maxArticleAgeHours"));
                 Date cutoffDate = new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000));
                 List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
-                List<Topic> topics = new Zeitgeist(articles).getTopics();
+                List<Topic> topics = new Zeitgeist(articles,
+                                                   Integer.parseInt(System.getProperty("zeitgeist.minArticlesPerTopic")),
+                                                   Integer.parseInt(System.getProperty("zeitgeist.minSourcesPerTopic")),
+                                                   Integer.parseInt(System.getProperty("zeitgeist.minArticleRelevance"))).getTopics();
                 LOG.info(topics.size() + " topics identified.");
-                Publisher publisher = args.length > 3 ? new Publisher(new File(args[3])) : new Publisher();
+                Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
                 publisher.publish(topics, args[1], feeds.size(), articles.size(), new File("."));
             }
             finally
             {
-                feedListReader.close();
+                propertiesStream.close();
             }
         }
     }
 
 
+    private static List<URL> parseFeedList(String arg) throws IOException
+    {
+        List<URL> feeds = new LinkedList<URL>();
+        BufferedReader feedListReader = new BufferedReader(new FileReader(arg));
+        try
+        {
+            for (String line = feedListReader.readLine(); line != null; line = feedListReader.readLine())
+            {
+                String url = line.trim();
+                // Lines beginning with a hash are considered to be comments.
+                if (!url.startsWith("#") && !url.isEmpty())
+                {
+                    feeds.add(new URL(url));
+                }
+            }
+        }
+        finally
+        {
+            feedListReader.close();
+        }
+        return feeds;
+    }
+
+
     private static void printUsage()
     {
-        System.err.println("java -jar zeitgeist-publisher.jar <feedlist> <title> <maxage> [templatedir]");
+        System.err.println("java -jar zeitgeist-publisher.jar <feedlist> <title> [templatedir]");
         System.err.println();
         System.err.println("  <feedlist>    - Path to a file listing RSS/Atom feeds, one per line.");
         System.err.println("  <title>       - A title passed to the templates.");
-        System.err.println("  <maxage>      - The maximum age (in hours) of included articles.");
         System.err.println("  [templatedir] - Path to alternate templates to use in place of the defaults.");
         System.err.println();
         System.err.println("If no template directory is specified, default templates from the classpath are used.");

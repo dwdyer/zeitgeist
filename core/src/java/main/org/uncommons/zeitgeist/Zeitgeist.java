@@ -32,21 +32,26 @@ import org.grlea.log.SimpleLogger;
 public class Zeitgeist
 {
     private static final SimpleLogger LOG = new SimpleLogger(FeedDownloadTask.class);
-    private static final int MINIMUM_ARTICLES_PER_TOPIC = 4;
-    private static final int MINIMUM_SOURCES_PER_TOPIC = 3;
-    private static final int MINIMUM_ARTICLES_FOR_KEYWORD = 4; // Ignore obscure words.
-    private static final double MINIMUM_ARTICLE_RELEVANCE = 8;
 
     private final List<Article> articles;
+    private final int minArticlesPerTopic;
+    private final int minSourcesPerTopic;
+    private final double minArticleRelevance;
 
     /**
      * Create a Zeitgeist from the specified list of articles.  Typically the
      * list of articles is acquired from an {@link ArticleFetcher}.
      * @param articles A list of articles fetched from one or more feeds.
      */
-    public Zeitgeist(List<Article> articles)
+    public Zeitgeist(List<Article> articles,
+                     int minArticlesPerTopic,
+                     int minSourcesPerTopic,
+                     int minArticleRelevance)
     {
         this.articles = articles;
+        this.minArticlesPerTopic = minArticlesPerTopic;
+        this.minSourcesPerTopic = minSourcesPerTopic;
+        this.minArticleRelevance = minArticleRelevance;
     }
 
 
@@ -86,7 +91,7 @@ public class Zeitgeist
                     topicIndex = j;
                 }
             }
-            if (maxWeight >= MINIMUM_ARTICLE_RELEVANCE) // Don't include articles with only tenuous links to the main topic.
+            if (maxWeight >= minArticleRelevance) // Don't include articles with only tenuous links to the main topic.
             {
                 WeightedItem<Article> weightedArticle = new WeightedItem<Article>(maxWeight, articles.get(i));
                 int index = Collections.binarySearch(articlesByTopic.get(topicIndex),
@@ -105,7 +110,7 @@ public class Zeitgeist
         {
             Topic topic = new Topic(topicArticles);
             int sources = topic.countDistinctSources();
-            if (sources >= MINIMUM_SOURCES_PER_TOPIC && topicArticles.size() >= MINIMUM_ARTICLES_PER_TOPIC)
+            if (sources >= minSourcesPerTopic && topicArticles.size() >= minArticlesPerTopic)
             {
                 topics.add(topic);
             }
@@ -173,7 +178,7 @@ public class Zeitgeist
         for (Map.Entry<String, Integer> entry : globalWordCounts.entrySet())
         {
             // If a word doesn't occur in enough different articles, discard it.
-            if (entry.getValue() >= MINIMUM_ARTICLES_FOR_KEYWORD)
+            if (entry.getValue() >= minArticlesPerTopic)
             {
                 words.add(entry.getKey());
             }

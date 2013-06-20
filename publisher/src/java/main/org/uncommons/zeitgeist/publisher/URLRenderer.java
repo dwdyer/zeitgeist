@@ -6,7 +6,7 @@ import org.antlr.stringtemplate.AttributeRenderer;
  * A StringTemplate renderer that escapes ampersands in URLs.
  * @author Daniel Dyer
  */
-public class URLRenderer implements AttributeRenderer
+class URLRenderer implements AttributeRenderer
 {
     public String toString(Object o)
     {
