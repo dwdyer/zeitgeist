@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -338,43 +339,52 @@ public class Publisher
 
 
     /**
-     * Entry point for the publisher application.  Takes two mandatory arguments - the path to a file containing a list
-     * of feeds and the title to use for the generated output, and optionally a third argument specifying templates
-     * to use in place of the defaults.
+     * Entry point for the publisher application.  Accepts a single optional argument, which is the
+     * path to the properties file (if not specified defaults to "zeitgeist.properties" in the current
+     * working directory).
      */
     public static void main(String[] args) throws IOException
     {
-        if (args.length < 2 || args.length > 3)
-        {
-            printUsage();
-        }
-        else
-        {
-            InputStream propertiesStream = Publisher.class.getClassLoader().getResourceAsStream("zeitgeist.properties");
-            try
-            {
-                Properties properties = new Properties();
-                properties.load(propertiesStream);
-                System.getProperties().putAll(properties);
+        File propertiesFile = new File(args.length > 0 ? args[0] : "zeitgeist.properties");
+        Properties properties = loadProperties(propertiesFile);
 
-                List<URL> feeds = parseFeedList(args[0]);
+        List<URL> feeds = parseFeedList(properties.getProperty("zeitgeist.feedList"));
 
-                long maxAgeHours = Long.parseLong(System.getProperty("zeitgeist.maxArticleAgeHours"));
-                Date cutoffDate = new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000));
-                List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
-                List<Topic> topics = new Zeitgeist(articles,
-                                                   Integer.parseInt(System.getProperty("zeitgeist.minArticlesPerTopic")),
-                                                   Integer.parseInt(System.getProperty("zeitgeist.minSourcesPerTopic")),
-                                                   Integer.parseInt(System.getProperty("zeitgeist.minArticleRelevance"))).getTopics();
-                LOG.info(topics.size() + " topics identified.");
-                Publisher publisher = args.length > 2 ? new Publisher(new File(args[2])) : new Publisher();
-                publisher.publish(topics, args[1], feeds.size(), articles.size(), new File("."));
-            }
-            finally
-            {
-                propertiesStream.close();
-            }
+        long maxAgeHours = Long.parseLong(properties.getProperty("zeitgeist.maxArticleAgeHours"));
+        Date cutoffDate = new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000));
+        List<Article> articles = new ArticleFetcher().getArticles(feeds, cutoffDate);
+        List<Topic> topics = new Zeitgeist(articles,
+                                           Integer.parseInt(properties.getProperty("zeitgeist.minArticlesPerTopic")),
+                                           Integer.parseInt(properties.getProperty("zeitgeist.minSourcesPerTopic")),
+                                           Integer.parseInt(properties.getProperty("zeitgeist.minArticleRelevance"))).getTopics();
+        LOG.info(topics.size() + " topics identified.");
+        String templatesDir = properties.getProperty("zeitgeist.templatesDir");
+        Publisher publisher = templatesDir != null ? new Publisher(new File(templatesDir)) : new Publisher();
+        publisher.publish(topics,
+                          properties.getProperty("zeitgeist.title"),
+                          feeds.size(),
+                          articles.size(),
+                          new File("."));
+    }
+
+
+    /**
+     * Load properties from the specified file.
+     * @param propertiesFile The file from which to load property values.
+     */
+    private static Properties loadProperties(File propertiesFile) throws IOException
+    {
+        Properties properties = new Properties();
+        InputStream propertiesStream = new FileInputStream(propertiesFile);
+        try
+        {
+            properties.load(propertiesStream);
         }
+        finally
+        {
+            propertiesStream.close();
+        }
+        return properties;
     }
 
 
@@ -399,17 +409,5 @@ public class Publisher
             feedListReader.close();
         }
         return feeds;
-    }
-
-
-    private static void printUsage()
-    {
-        System.err.println("java -jar zeitgeist-publisher.jar <feedlist> <title> [templatedir]");
-        System.err.println();
-        System.err.println("  <feedlist>    - Path to a file listing RSS/Atom feeds, one per line.");
-        System.err.println("  <title>       - A title passed to the templates.");
-        System.err.println("  [templatedir] - Path to alternate templates to use in place of the defaults.");
-        System.err.println();
-        System.err.println("If no template directory is specified, default templates from the classpath are used.");
     }
 }

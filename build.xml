@@ -90,6 +90,8 @@
           depends="core, publisher"
           description="Generate the project distribution." >
     <uncommons:dist />
+    <!-- Copy default properties. -->
+    <copy file="${modules.dir}/publisher/src/conf/zeitgeist.properties" todir="${dist.dir}" />
   </target>
 
 

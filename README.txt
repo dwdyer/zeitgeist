@@ -31,10 +31,10 @@ GENERATING HTML OUTPUT
   headlines, complete with relevant images extracted from the feed articles.
   This application can be run as follows:
 
-      java -jar zeitgeist-publisher-1.2.jar feedlist.txt "Page Title"
+      java -jar zeitgeist-publisher-1.2.jar
 
-  The first argument is a text file that contains a list of feed URLs, one per
-  line, the second argument is the title to use for the generated page.
+  To over-ride the default configuration, the path to a properties file can be
+  specified as an optional command line argument.
 
   To get good results you should aim to have at least 20 different feeds that
   cover the same broad topics.
