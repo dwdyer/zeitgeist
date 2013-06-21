@@ -33,8 +33,9 @@ GENERATING HTML OUTPUT
 
       java -jar zeitgeist-publisher-1.2.jar
 
-  To over-ride the default configuration, the path to a properties file can be
-  specified as an optional command line argument.
+  By default this will look for a file called zeitgeist.properties in the
+  working directory.  Alternatively, you can specify the path to some other
+  properties file as a command line argument.
 
   To get good results you should aim to have at least 20 different feeds that
   cover the same broad topics.
