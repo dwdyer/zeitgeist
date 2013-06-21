@@ -36,6 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.grlea.log.SimpleLogger;
 import org.jdom.Element;
+import org.uncommons.zeitgeist.filters.ArticleFilter;
 
 /**
  * Callable for downloading a feed.
@@ -59,22 +60,31 @@ class FeedDownloadTask implements Callable<List<Article>>
 
     private final FeedFetcher fetcher;
     private final URL feedURL;
-    private final Date cutOffDate;
+    private final List<? extends ArticleFilter> filters;
     private final boolean includeInlineImages;
 
 
     FeedDownloadTask(FeedFetcher fetcher,
                      URL feedURL,
-                     Date cutOffDate,
+                     boolean includeInlineImages)
+    {
+        this(fetcher, feedURL, Collections.<ArticleFilter>emptyList(), includeInlineImages);
+    }
+
+
+    FeedDownloadTask(FeedFetcher fetcher,
+                     URL feedURL,
+                     List<? extends ArticleFilter> filters,
                      boolean includeInlineImages)
     {
         this.fetcher = fetcher;
         this.feedURL = feedURL;
-        this.cutOffDate = cutOffDate;
+        this.filters = filters;
         this.includeInlineImages = includeInlineImages;
     }
 
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Article> call() throws Exception
     {
@@ -92,26 +102,17 @@ class FeedDownloadTask implements Callable<List<Article>>
             {
                 URL articleURL = extractArticleURL(entry);
                 Date articleDate = entry.getUpdatedDate() == null ? entry.getPublishedDate() : entry.getUpdatedDate();
-
-                // If we don't know when the article was published then we don't know if it is relevant,
-                // so we omit it.
-                // This can be caused by the feed wrongly reporting that it is RSS version 0.91 and ROME
-                // therefore not even bothering to look for item dates.
-                if (articleDate == null)
+                Article article = new Article(FeedUtils.expandEntities(entry.getTitle().trim()),
+                                              extractContent(entry),
+                                              articleURL,
+                                              articleDate,
+                                              extractImages(entry, articleURL),
+                                              feed.getTitle(),
+                                              feedLogo,
+                                              feedIcon);
+                if (matchAllFilters(article))
                 {
-                    LOG.warn("Article has no publication date: " + articleURL);
-                }
-                // Don't include articles that were published before the cut-off date.
-                else if (!articleDate.before(cutOffDate))
-                {
-                    feedArticles.add(new Article(FeedUtils.expandEntities(entry.getTitle().trim()),
-                                                 extractContent(entry),
-                                                 articleURL,
-                                                 articleDate,
-                                                 extractImages(entry, articleURL),
-                                                 feed.getTitle(),
-                                                 feedLogo,
-                                                 feedIcon));
+                    feedArticles.add(article);
                 }
             }
         }
@@ -128,6 +129,19 @@ class FeedDownloadTask implements Callable<List<Article>>
             LOG.error("Failed fetching " + feedURL + ", " + ex.getMessage());
         }
         return feedArticles;
+    }
+
+
+    private boolean matchAllFilters(Article article)
+    {
+        for (ArticleFilter filter : filters)
+        {
+            if (!filter.keepArticle(article))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 

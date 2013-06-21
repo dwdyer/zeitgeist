@@ -11,6 +11,8 @@ import java.io.OutputStream;
 
 /**
  * Utility methods for working with stream and file resources.
+ *
+ * @author Daniel Dyer
  */
 final class StreamUtils
 {

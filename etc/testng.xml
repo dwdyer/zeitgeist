@@ -5,6 +5,7 @@
   <test name="Zeitgeist Core" >
     <packages>
       <package name="org.uncommons.zeitgeist" />
+      <package name="org.uncommons.zeitgeist.filters" />
     </packages>
   </test>
 

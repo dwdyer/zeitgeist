@@ -17,9 +17,11 @@ package org.uncommons.zeitgeist;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.testng.annotations.Test;
+import org.uncommons.zeitgeist.filters.ArticleFilter;
 
 /**
  * Unit test for the {@link ArticleFetcher} class.
@@ -33,7 +35,8 @@ public class ArticleFetcherTest
     public void testArticleFetching()
     {
         ArticleFetcher fetcher = new ArticleFetcher(new FileURLFeedFetcher());
-        List<Article> articles = fetcher.getArticles(Arrays.asList(SAMPLE_RSS_URL), new Date(0));
+        List<Article> articles = fetcher.getArticles(Arrays.asList(SAMPLE_RSS_URL),
+                                                     Collections.<ArticleFilter>emptyList());
         assert articles.size() == 10 : "Should be 10 articles, is " + articles.size();
     }
 }

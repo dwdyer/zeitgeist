@@ -17,12 +17,13 @@ package org.uncommons.zeitgeist;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for the article class.
+ * Unit test for the {@link Article} class.
  * @author Daniel Dyer
  */
 public class ArticleTest
@@ -30,17 +31,18 @@ public class ArticleTest
     @Test
     public void testTitleWordCounts()
     {
-        Article article = new Article("fish fish yeah", "", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("fish fish yeah", "", null, new Date(), Collections.<Image>emptyList(), "", null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
         assert wordCounts.get("fish") == 2 : "Count should be 2 is " + wordCounts.get("fish");
         assert wordCounts.get("yeah") == 1 : "Count should be 1 is " + wordCounts.get("yeah");
     }
 
+
     @Test
     public void testContentWordCounts()
     {
-        Article article = new Article("", "dog cat rabbit cat", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("", "dog cat rabbit cat", null, new Date(), Collections.<Image>emptyList(), "", null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 3 : "Should be 3 words, is " + wordCounts.size();
         assert wordCounts.get("dog") == 1 : "Count should be 1 is " + wordCounts.get("dog");
@@ -55,7 +57,7 @@ public class ArticleTest
     @Test
     public void testCombinedWordCounts()
     {
-        Article article = new Article("dog magic", "fish magic rabbit magic", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("dog magic", "fish magic rabbit magic", null, new Date(), Collections.<Image>emptyList(), "", null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 4 : "Should be 4 words, is " + wordCounts.size();
         assert wordCounts.get("dog") == 1 : "Count should be 1 is " + wordCounts.get("dog");
@@ -68,7 +70,7 @@ public class ArticleTest
     @Test
     public void testOmitLowValueWords()
     {
-        Article article = new Article("the title is a headline", "", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("the title is a headline", "", null, new Date(), Collections.<Image>emptyList(), "", null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
         assert !wordCounts.containsKey("the") : "Low value word 'the' should be omitted.";
@@ -80,24 +82,48 @@ public class ArticleTest
     @Test
     public void testWordsWithApostrophes()
     {
-        Article article = new Article("ronan o'gara", "", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("ronan o'gara", "", null, new Date(), Collections.<Image>emptyList(), "", null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         Reporter.log(wordCounts.keySet().toString());
         assert wordCounts.size() == 2 : "Should be 2 words, is " + wordCounts.size();
         assert wordCounts.containsKey("o'gara") : "Apostrophe word should be treated as one word.";
-
     }
 
 
     @Test
     public void testStripPossessiveApostrophes()
     {
-        Article article = new Article("steven gerrard's goal", "", null, new Date(), Collections.<Image>emptyList(), null, null, null);
+        Article article = new Article("steven gerrard's goal", "", null, new Date(), Collections.<Image>emptyList(), "", null, null);
         Map<String, Integer> wordCounts = article.getWordCounts();
         Reporter.log(wordCounts.keySet().toString());
         assert wordCounts.size() == 3 : "Should be 2 words, is " + wordCounts.size();
         assert wordCounts.containsKey("gerrard") : "Possessive apostrophe should be stripped.";
         assert !wordCounts.containsKey("gerrard's") : "Possessive apostrophe should be stripped.";
+    }
 
+
+    @Test
+    public void testIsNew()
+    {
+        Date now = new Date();
+        Article article = new Article("", "", null, now, Collections.<Image>emptyList(), "", null, null);
+        assert article.isNew() : "Recent article should be considered new.";
+    }
+
+
+    @Test
+    public void testIsOld()
+    {
+        Date longTimeAgo = new Date(0); // 1st January 1970;
+        Article article = new Article("", "", null, longTimeAgo, Collections.<Image>emptyList(), "", null, null);
+        assert !article.isNew() : "Old article should not be considered new.";
+    }
+
+
+    @Test
+    public void testIsNewWithoutDate()
+    {
+        Article article = new Article("", "", null, null, Collections.<Image>emptyList(), "", null, null);
+        assert !article.isNew() : "Article without date should not be considered new.";
     }
 }

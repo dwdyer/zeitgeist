@@ -46,4 +46,32 @@ public class TopicTest
         int sources = topic.countDistinctSources();
         assert sources == 3 : "Should be 3 distinct sources, is " + sources;
     }
+
+
+    @Test
+    public void testGetImages() throws MalformedURLException
+    {
+        Image image1 = new Image(null, null, 10);
+        Image image2 = new Image(null, null, 20);
+        Image image3 = new Image(null, null, 30);
+        Image image4 = new Image(null, null, 40);
+        List<Image> images1 = Arrays.asList(image1);
+        List<Image> images2 = Collections.emptyList();
+        List<Image> images3 = Arrays.asList(image2, image3, image4);
+        Article article1 = new Article("1", "1", null, null, images1, "A", null, null);
+        Article article2 = new Article("2", "2", null, null, images2, "B", null, null);
+        Article article3 = new Article("3", "3", null, null, images3, "C", null, null);
+        @SuppressWarnings("unchecked")
+        List<WeightedItem<Article>> articles = Arrays.asList(new WeightedItem<Article>(5, article1),
+                                                             new WeightedItem<Article>(4, article2),
+                                                             new WeightedItem<Article>(3, article3));
+        Topic topic = new Topic(articles);
+
+        List<Image> topicImages = topic.getImages();
+        assert topicImages.size() == 4 : "Wrong number of images for topic: " + topicImages.size();
+        assert topicImages.contains(image1) : "Missing image.";
+        assert topicImages.contains(image2) : "Missing image.";
+        assert topicImages.contains(image3) : "Missing image.";
+        assert topicImages.contains(image4) : "Missing image.";
+    }
 }

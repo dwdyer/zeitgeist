@@ -17,14 +17,13 @@ package org.uncommons.zeitgeist;
 
 import com.sun.syndication.fetcher.FeedFetcher;
 import com.sun.syndication.fetcher.impl.FeedFetcherCache;
-import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import com.sun.syndication.fetcher.impl.HashMapFeedInfoCache;
+import com.sun.syndication.fetcher.impl.HttpURLFeedFetcher;
 import com.sun.syndication.fetcher.impl.SyndFeedInfo;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -33,6 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.grlea.log.SimpleLogger;
+import org.uncommons.zeitgeist.filters.ArticleFilter;
 
 /**
  * Class for downloading articles from RSS/Atom feeds.
@@ -61,11 +61,11 @@ public class ArticleFetcher
      * or parsed, an error will be logged but there will be no exception and the other feeds will be processed
      * as normal.
      * @param feeds A list of URLs of RSS/Atom feeds to download.
-     * @param cutOffDate Only return articles published since this date/time.
+     * @param filters Only return articles that match all of these filters.
      * @return A list of articles extracted from the specified feed.  The articles will be grouped
      * by feed, in the order that the feeds were specified.
      */
-    public List<Article> getArticles(List<URL> feeds, Date cutOffDate)
+    public List<Article> getArticles(List<URL> feeds, List<? extends ArticleFilter> filters)
     {
         List<Article> articles = new LinkedList<Article>();
         try
@@ -75,10 +75,7 @@ public class ArticleFetcher
             List<Callable<List<Article>>> tasks = new ArrayList<Callable<List<Article>>>(feeds.size());
             for (final URL feedURL : feeds)
             {
-                tasks.add(new FeedDownloadTask(fetcher,
-                                               feedURL,
-                                               cutOffDate,
-                                               true));
+                tasks.add(new FeedDownloadTask(fetcher, feedURL, filters, true));
             }
 
             List<Future<List<Article>>> results = executor.invokeAll(tasks);

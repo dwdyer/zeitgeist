@@ -16,6 +16,7 @@
 package org.uncommons.zeitgeist;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
+import org.uncommons.zeitgeist.filters.ArticleFilter;
+import org.uncommons.zeitgeist.filters.DateFilter;
 
 /**
  * Unit test for the {@link FeedDownloadTask} class.
@@ -39,7 +42,6 @@ public class FeedDownloadTaskTest
         Reporter.log(SAMPLE_RSS_URL.toString());
         Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(),
                                                             SAMPLE_RSS_URL,
-                                                            new Date(0),
                                                             false);
         List<Article> articles = task.call();
         assert articles.size() == 10 : "Should be 10 articles, is " + articles.size();
@@ -50,11 +52,11 @@ public class FeedDownloadTaskTest
     public void testCutOffDate() throws Exception
     {
         Reporter.log(SAMPLE_RSS_URL.toString());
+        Date cutOffDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
+        ArticleFilter filter = new DateFilter(cutOffDate);
         Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(),
                                                             SAMPLE_RSS_URL,
-                                                            new GregorianCalendar(2010,
-                                                                                  Calendar.JANUARY,
-                                                                                  1).getTime(),
+                                                            Arrays.asList(filter),
                                                             false);
         List<Article> articles = task.call();
         // There are 10 articles in the feed, but only 3 from 2010.
