@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?><?xml-stylesheet type="text/css" media="screen" href="http://feeds.feedburner.com/~d/styles/itemcontent.css"?><rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
+
+<channel>
+	<title>New Adventures in Software</title>
+	
+	<link>http://blog.uncommons.org</link>
+	<description>Rants and opinion interspersed with awe-inspiring tales of heoric software engineering endeavours.</description>
+	<lastBuildDate>Thu, 28 Jan 2010 15:36:18 +0000</lastBuildDate>
+	<generator>http://wordpress.org/?v=2.9.1</generator>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+			<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://feeds.feedburner.com/NewAdventuresInSoftware" /><feedburner:info uri="newadventuresinsoftware" /><atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com" /><feedburner:feedFlare href="http://add.my.yahoo.com/rss?url=http%3A%2F%2Ffeeds.feedburner.com%2FNewAdventuresInSoftware" src="http://us.i1.yimg.com/us.yimg.com/i/us/my/addtomyyahoo4.gif">Subscribe with My Yahoo!</feedburner:feedFlare><feedburner:feedFlare href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http%3A%2F%2Ffeeds.feedburner.com%2FNewAdventuresInSoftware" src="http://www.newsgator.com/images/ngsub1.gif">Subscribe with NewsGator</feedburner:feedFlare><feedburner:feedFlare href="http://feeds.my.aol.com/add.jsp?url=http%3A%2F%2Ffeeds.feedburner.com%2FNewAdventuresInSoftware" src="http://o.aolcdn.com/favorites.my.aol.com/webmaster/ffclient/webroot/locale/en-US/images/myAOLButtonSmall.gif">Subscribe with My AOL</feedburner:feedFlare><feedburner:feedFlare href="http://www.bloglines.com/sub/http://feeds.feedburner.com/NewAdventuresInSoftware" src="http://www.bloglines.com/images/sub_modern11.gif">Subscribe with Bloglines</feedburner:feedFlare><feedburner:feedFlare href="http://www.netvibes.com/subscribe.php?url=http%3A%2F%2Ffeeds.feedburner.com%2FNewAdventuresInSoftware" src="http://www.netvibes.com/img/add2netvibes.gif">Subscribe with Netvibes</feedburner:feedFlare><feedburner:feedFlare href="http://fusion.google.com/add?feedurl=http%3A%2F%2Ffeeds.feedburner.com%2FNewAdventuresInSoftware" src="http://buttons.googlesyndication.com/fusion/add.gif">Subscribe with Google</feedburner:feedFlare><feedburner:feedFlare href="http://www.pageflakes.com/subscribe.aspx?url=http%3A%2F%2Ffeeds.feedburner.com%2FNewAdventuresInSoftware" src="http://www.pageflakes.com/ImageFile.ashx?instanceId=Static_4&amp;fileName=ATP_blu_91x17.gif">Subscribe with Pageflakes</feedburner:feedFlare><item>
+		<title>Open Source Graphic Design – New Watchmaker Framework Logo</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/o3GsKCoYfHg/</link>
+		<comments>http://blog.uncommons.org/2010/01/11/open-source-graphic-design-new-watchmaker-framework-logo/#comments</comments>
+		<pubDate>Mon, 11 Jan 2010 22:37:42 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Evolutionary Computation]]></category>
+		<category><![CDATA[The Internet]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=798</guid>
+		<description><![CDATA[A while ago I created a new website for my main Open Source project, the Watchmaker Framework for Evolutionary Computation.  While the new website was a definite improvement over the previous effort, it was still lacking something. It wasn&#8217;t distinctive. What I really needed was a logo, something that visually identified the project. But how [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2010/01/11/open-source-graphic-design-new-watchmaker-framework-logo/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2010/01/11/open-source-graphic-design-new-watchmaker-framework-logo/</feedburner:origLink></item>
+		<item>
+		<title>Watchmaker Framework 0.7.1 – Evolution Strategies</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/IiFMkRTrfCU/</link>
+		<comments>http://blog.uncommons.org/2010/01/09/watchmaker-framework-0-7-1-evolution-strategies/#comments</comments>
+		<pubDate>Sat, 09 Jan 2010 20:30:39 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Evolutionary Computation]]></category>
+		<category><![CDATA[Java]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=793</guid>
+		<description><![CDATA[The Watchmaker Framework for Evolutionary Computation has reached version 0.7.1.  This is an incremental release that refines a couple of the changes made in the substantial 0.7.0 update.  It also adds support for Evolution Strategies to complement the existing support for generational and steady-state evolutionary/genetic algorithms.
+In addition, the (still incomplete) user manual has a new [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2010/01/09/watchmaker-framework-0-7-1-evolution-strategies/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2010/01/09/watchmaker-framework-0-7-1-evolution-strategies/</feedburner:origLink></item>
+		<item>
+		<title>Jack Nicholson, Software Developer</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/W8O2DWMkrdI/</link>
+		<comments>http://blog.uncommons.org/2010/01/06/jack-nicholson-software-developer/#comments</comments>
+		<pubDate>Wed, 06 Jan 2010 01:30:08 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Software Development]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=784</guid>
+		<description><![CDATA[
+Jack&#8217;s new career in software development was going pretty well, but he didn&#8217;t appreciate the daily stand-up meetings.
+]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2010/01/06/jack-nicholson-software-developer/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2010/01/06/jack-nicholson-software-developer/</feedburner:origLink></item>
+		<item>
+		<title>New Adventures in Software – Top 10 Most Popular Articles of 2009</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/USTVIEz5K-w/</link>
+		<comments>http://blog.uncommons.org/2009/12/31/new-adventures-in-software-top-10-most-popular-articles-of-2009/#comments</comments>
+		<pubDate>Thu, 31 Dec 2009 14:44:31 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[The Internet]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=773</guid>
+		<description><![CDATA[The end of the year is here and, as is traditional among bloggers and mainstream media alike, I&#8217;ve lazily compiled a top 10 list to mark the occasion without having to exert myself. So here it is, according to Google Analytics, the top 10 articles of 2009 from this sporadically updated blog.
+When I checked the [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/12/31/new-adventures-in-software-top-10-most-popular-articles-of-2009/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/12/31/new-adventures-in-software-top-10-most-popular-articles-of-2009/</feedburner:origLink></item>
+		<item>
+		<title>Watchmaker 0.7.0 – Island models, steady-state evolution and more</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/XcblycBVwgE/</link>
+		<comments>http://blog.uncommons.org/2009/12/15/watchmaker-0-7-0-island-models-steady-state-evolution-and-more/#comments</comments>
+		<pubDate>Tue, 15 Dec 2009 01:44:52 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Evolutionary Computation]]></category>
+		<category><![CDATA[Java]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=764</guid>
+		<description><![CDATA[The Watchmaker Framework for Evolutionary Computation has reached version 0.7.0. If you&#8217;re new here, Watchmaker is a Java library for implementing evolutionary/genetic algorithms. This release is the most substantial update for some time.
+Backwards-Incompatibilities
+Firstly, I&#8217;ve refactored the evolution engine so that it is not as tightly tied to the standard generational model of evolution. What this [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/12/15/watchmaker-0-7-0-island-models-steady-state-evolution-and-more/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/12/15/watchmaker-0-7-0-island-models-steady-state-evolution-and-more/</feedburner:origLink></item>
+		<item>
+		<title>How much data are you willing to lose?</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/oDB1EQ-0LWI/</link>
+		<comments>http://blog.uncommons.org/2009/12/14/how-much-data-are-you-willing-to-lose/#comments</comments>
+		<pubDate>Mon, 14 Dec 2009 15:35:26 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Hardware]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=759</guid>
+		<description><![CDATA[Following the unfortunate demise of Jeff Atwood and Phil Haack&#8217;s blogs, the resultant schadenfreude on Reddit, and Jeff&#8217;s subsequent discussion of StackOverflow&#8217;s back-up process, I&#8217;m going to share with you everything that I know about back-up procedures. This won&#8217;t be a long post, I&#8217;m not a sysadmin.
+You might keep frequent on-site back-ups to reduce the [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/12/14/how-much-data-are-you-willing-to-lose/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/12/14/how-much-data-are-you-willing-to-lose/</feedburner:origLink></item>
+		<item>
+		<title>Using ReportNG with Gradle</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/lBWaD6-5-T8/</link>
+		<comments>http://blog.uncommons.org/2009/12/09/using-reportng-with-gradle/#comments</comments>
+		<pubDate>Wed, 09 Dec 2009 22:39:47 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Java]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=753</guid>
+		<description><![CDATA[Tomek Kaczanowski has written a blog post showing how to use ReportNG with Gradle (an alternative build system for Java/Groovy/Scala). I&#8217;ve never used Gradle but it seems to have two things in its favour.  Firstly, it uses Groovy syntax rather than the cumbersome XML employed by Ant. Secondly, it&#8217;s not Maven. Maybe I should try [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/12/09/using-reportng-with-gradle/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/12/09/using-reportng-with-gradle/</feedburner:origLink></item>
+		<item>
+		<title>New Watchmaker Framework Website / Development Roadmap</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/e9lhSpaMHbY/</link>
+		<comments>http://blog.uncommons.org/2009/12/02/new-watchmaker-framework-website-development-roadmap/#comments</comments>
+		<pubDate>Wed, 02 Dec 2009 00:31:30 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Evolutionary Computation]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=725</guid>
+		<description><![CDATA[The Watchmaker Framework for Evolutionary Computation has a new website at http://watchmaker.uncommons.org. The Java.net web hosting is slow and restrictive, so I&#8217;ve decided to self-host the project pages.
+The project will continue to use the other Java.net tools such as Subversion, Issuezilla and the project forum for the foreseeable future, though I am weighing up the [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/12/02/new-watchmaker-framework-website-development-roadmap/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/12/02/new-watchmaker-framework-website-development-roadmap/</feedburner:origLink></item>
+		<item>
+		<title>Zeitgeist 1.0 – An Intelligent RSS News Aggregator</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/y1l2u0UA-3E/</link>
+		<comments>http://blog.uncommons.org/2009/11/26/zeitgeist-1-0-an-intelligent-rss-news-aggregator/#comments</comments>
+		<pubDate>Thu, 26 Nov 2009 20:44:15 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Java]]></category>
+		<category><![CDATA[Software Development]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=718</guid>
+		<description><![CDATA[I recently signed-up for GitHub. Compared to Java.net or Sourceforge, it provides a much lower barrier of entry for code hosting.  There&#8217;s no need to wait an indeterminate period of time for somebody to approve your project, you just upload it. And because it&#8217;s a DVCS, it&#8217;s easy for other people to fork your projects [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/11/26/zeitgeist-1-0-an-intelligent-rss-news-aggregator/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/11/26/zeitgeist-1-0-an-intelligent-rss-news-aggregator/</feedburner:origLink></item>
+		<item>
+		<title>ReportNG 1.0 Final Released</title>
+		<link>http://feedproxy.google.com/~r/NewAdventuresInSoftware/~3/i8Auf9vXhso/</link>
+		<comments>http://blog.uncommons.org/2009/11/02/reportng-1-0-final-released/#comments</comments>
+		<pubDate>Mon, 02 Nov 2009 23:56:24 +0000</pubDate>
+		<dc:creator>Dan</dc:creator>
+				<category><![CDATA[Java]]></category>
+
+		<guid isPermaLink="false">http://blog.uncommons.org/?p=710</guid>
+		<description><![CDATA[When I released version 0.9.9 of ReportNG last week, I didn&#8217;t call it version 1.0 because I thought I&#8217;d probably have to fix some problem caused by the changes I&#8217;d made. I was right. It turns out that I broke the one tiny piece of JavaScript that the HTML reports use. Well that&#8217;s fixed now [...]]]></description>
+		<wfw:commentRss>http://blog.uncommons.org/2009/11/02/reportng-1-0-final-released/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<feedburner:origLink>http://blog.uncommons.org/2009/11/02/reportng-1-0-final-released/</feedburner:origLink></item>
+	</channel>
+</rss><!-- Dynamic Page Served (once) in 0.337 seconds -->

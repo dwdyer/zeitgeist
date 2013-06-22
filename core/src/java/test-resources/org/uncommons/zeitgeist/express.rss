@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?>
+<?xml-stylesheet type="text/css" media="screen" href="http://feeds.feedburner.com/~d/styles/itemcontent.css"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
+  <channel>
+    <title>Daily Express :: Football Feed</title>
+    <link>http://www.dailyexpress.co.uk</link>
+    <description>Simply The Best 7 Days A Week</description>
+    <language>en-gb</language>
+    <image>
+      <link>http://www.dailyexpress.co.uk</link>
+      <url>http://cdn.images.dailyexpress.co.uk/img/logorss.gif</url>
+      <title>Daily Express</title>
+    </image>
+    <pubDate>Sat, 22 Jun 2013 01:40:14 +0100</pubDate>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <generator>CakePHP</generator>
+    <managingEditor>news@dailyexpress.co.uk</managingEditor>
+    <webMaster>news@dailyexpress.co.uk</webMaster>
+    <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://feeds.feedburner.com/daily-express-football-news"/>
+    <feedburner:info uri="daily-express-football-news"/>
+    <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/"/>
+    <item>
+      <title><![CDATA[Liverpool agree deal for Sunderland shot stopper Simon Mignolet]]></title>
+      <link>http://feedproxy.google.com/~r/daily-express-football-news/~3/xLyL0a1oSQ0/Liverpool-agree-deal-for-Sunderland-shot-stopper-Simon-Mignolet</link>
+      <description>&lt;a href="http://www.express.co.uk/sport/football/409324/Liverpool-agree-deal-for-Sunderland-shot-stopper-Simon-Mignolet"&gt;&lt;img src="http://images.dailyexpress.co.uk/img/dynamic/67/590x/409324_1.jpg"/&gt;&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;LIVERPOOL have continued their summer rebuilding programme by agreeing a deal for Sunderland shot stopper Simon Mignolet.&lt;img src="http://feeds.feedburner.com/~r/daily-express-football-news/~4/xLyL0a1oSQ0" height="1" width="1"/&gt;</description>
+      <comments>http://www.express.co.uk/sport/football/409324/Liverpool-agree-deal-for-Sunderland-shot-stopper-Simon-Mignolet#comments</comments>
+      <pubDate>Fri, 21 Jun 2013 19:26:00 +0100</pubDate>
+      <guid isPermaLink="false">http://www.express.co.uk/sport/football/409324/Liverpool-agree-deal-for-Sunderland-shot-stopper-Simon-Mignolet</guid>
+      <feedburner:origLink>http://www.express.co.uk/sport/football/409324/Liverpool-agree-deal-for-Sunderland-shot-stopper-Simon-Mignolet</feedburner:origLink>
+    </item>
+  </channel>
+</rss>

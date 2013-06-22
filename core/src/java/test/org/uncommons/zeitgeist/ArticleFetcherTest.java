@@ -18,8 +18,8 @@ package org.uncommons.zeitgeist;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 import org.uncommons.zeitgeist.filters.ArticleFilter;
 
@@ -29,13 +29,14 @@ import org.uncommons.zeitgeist.filters.ArticleFilter;
  */
 public class ArticleFetcherTest
 {
-    private static final URL SAMPLE_RSS_URL = FeedDownloadTaskTest.class.getClassLoader().getResource("org/uncommons/zeitgeist/test.rss");
-
     @Test
     public void testArticleFetching()
     {
+        URL rssURL = FeedDownloadTaskTest.class.getResource("newadventuresinsoftware.rss");
+        Reporter.log(rssURL.toString());
+
         ArticleFetcher fetcher = new ArticleFetcher(new FileURLFeedFetcher());
-        List<Article> articles = fetcher.getArticles(Arrays.asList(SAMPLE_RSS_URL),
+        List<Article> articles = fetcher.getArticles(Arrays.asList(rssURL),
                                                      Collections.<ArticleFilter>emptyList());
         assert articles.size() == 10 : "Should be 10 articles, is " + articles.size();
     }

@@ -33,16 +33,13 @@ import org.uncommons.zeitgeist.filters.DateFilter;
  */
 public class FeedDownloadTaskTest
 {
-    private static final URL SAMPLE_RSS_URL = FeedDownloadTaskTest.class.getClassLoader().getResource("org/uncommons/zeitgeist/test.rss");
-
-
     @Test
     public void testArticleExtraction() throws Exception
     {
-        Reporter.log(SAMPLE_RSS_URL.toString());
-        Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(),
-                                                            SAMPLE_RSS_URL,
-                                                            false);
+        URL rssURL = FeedDownloadTaskTest.class.getResource("newadventuresinsoftware.rss");
+        Reporter.log(rssURL.toString());
+
+        Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(), rssURL, false);
         List<Article> articles = task.call();
         assert articles.size() == 10 : "Should be 10 articles, is " + articles.size();
     }
@@ -51,15 +48,66 @@ public class FeedDownloadTaskTest
     @Test
     public void testCutOffDate() throws Exception
     {
-        Reporter.log(SAMPLE_RSS_URL.toString());
+        URL rssURL = FeedDownloadTaskTest.class.getResource("newadventuresinsoftware.rss");
+        Reporter.log(rssURL.toString());
+
         Date cutOffDate = new GregorianCalendar(2010, Calendar.JANUARY, 1).getTime();
         ArticleFilter filter = new DateFilter(cutOffDate);
         Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(),
-                                                            SAMPLE_RSS_URL,
+                                                            rssURL,
                                                             Arrays.asList(filter),
                                                             false);
         List<Article> articles = task.call();
         // There are 10 articles in the feed, but only 3 from 2010.
         assert articles.size() == 3 : "Should be 3 articles, is " + articles.size();
+    }
+
+
+    @Test
+    public void testExtractImagesFromEnclosures() throws Exception
+    {
+        URL rssURL = FeedDownloadTaskTest.class.getResource("telegraph.rss");
+        Reporter.log(rssURL.toString());
+
+        Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(), rssURL, false);
+        List<Article> articles = task.call();
+        assert articles.size() == 1 : "Should be 1 article, is " + articles.size();
+        List<Image> images = articles.get(0).getImages();
+        assert images.size() == 1 : "Should be 1 image, is " + images.size();
+    }
+
+
+    @Test
+    public void testExtractImagesFromYahooMediaTags() throws Exception
+    {
+        URL rssURL = FeedDownloadTaskTest.class.getResource("guardian.rss");
+        Reporter.log(rssURL.toString());
+
+        Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(), rssURL, false);
+        List<Article> articles = task.call();
+        assert articles.size() == 1 : "Should be 1 article, is " + articles.size();
+        List<Image> images = articles.get(0).getImages();
+        assert images.size() == 2 : "Should be 2 images, is " + images.size();
+
+        // Images should be sorted in descending order of size.
+        assert images.get(0).getWidth() == 460 : "Wrong width: " + images.get(0).getWidth();
+        assert images.get(1).getWidth() == 140 : "Wrong width: " + images.get(1).getWidth();
+    }
+
+
+    /**
+     * Test extraction of images from mark-up in the feed entry body text.
+     */
+    @Test
+    public void testExtractEmbeddedImages() throws Exception
+    {
+        URL rssURL = FeedDownloadTaskTest.class.getResource("express.rss");
+        Reporter.log(rssURL.toString());
+
+        Callable<List<Article>> task = new FeedDownloadTask(new FileURLFeedFetcher(), rssURL, true);
+        List<Article> articles = task.call();
+        assert articles.size() == 1 : "Should be 1 article, is " + articles.size();
+        List<Image> images = articles.get(0).getImages();
+        assert images.size() == 1 : "Should be 1 image, is " + images.size();
     }
 }

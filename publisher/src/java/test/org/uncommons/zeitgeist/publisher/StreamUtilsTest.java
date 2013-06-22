@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 /**

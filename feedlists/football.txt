@@ -19,7 +19,7 @@ http://theworldgame.sbs.com.au/rss/news/
 http://rss.thisislondon.co.uk/feed/thisislondon/football
 http://www.people.co.uk/sport/football/news/rss.xml
 http://www.givemefootball.com/rss.ashx?c=1
-http://www.mirrorfootball.co.uk/news/rss.xml
+http://www.mirror.co.uk/sport/football/rss.xml
 http://www.dailymail.co.uk/sport/football/index.rss
 http://www.fifa.com/rss/index.xml
 http://www.football.co.uk/news/rss.xml
