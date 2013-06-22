@@ -50,6 +50,7 @@ import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.WeightedItem;
 import org.uncommons.zeitgeist.Zeitgeist;
 import org.uncommons.zeitgeist.filters.DateFilter;
+import org.uncommons.zeitgeist.filters.HeadlineRegexFilter;
 
 /**
  * Simple HTML publisher for a set of topics.
@@ -354,7 +355,9 @@ public class Publisher
 
         long maxAgeHours = Long.parseLong(properties.getProperty("zeitgeist.maxArticleAgeHours"));
         Date cutoffDate = new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000));
-        List<Article> articles = new ArticleFetcher().getArticles(feeds, Arrays.asList(new DateFilter(cutoffDate)));
+        List<Article> articles = new ArticleFetcher().getArticles(feeds,
+                                                                  Arrays.asList(new DateFilter(cutoffDate),
+                                                                                new HeadlineRegexFilter(properties.getProperty("zeitgeist.headlineFilter"))));
         List<Topic> topics = new Zeitgeist(articles,
                                            Integer.parseInt(properties.getProperty("zeitgeist.minArticlesPerTopic")),
                                            Integer.parseInt(properties.getProperty("zeitgeist.minSourcesPerTopic")),
