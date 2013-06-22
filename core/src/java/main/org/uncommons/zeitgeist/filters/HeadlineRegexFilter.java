@@ -5,6 +5,7 @@ import org.grlea.log.SimpleLogger;
 import org.uncommons.zeitgeist.Article;
 
 /**
+ * Filter that excludes articles with headlines that match a given regular expression.
  * @author Daniel Dyer
  */
 public class HeadlineRegexFilter implements ArticleFilter
@@ -24,7 +25,7 @@ public class HeadlineRegexFilter implements ArticleFilter
     {
         if (pattern.matcher(article.getHeadline()).matches())
         {
-            LOG.warn("Headline blocked by filter: " + article.getArticleURL());
+            LOG.info("Headline blocked by filter: " + article.getArticleURL());
             return false;
         }
         return true;

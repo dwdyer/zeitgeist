@@ -4,8 +4,6 @@ http://www.independent.co.uk/sport/football/premier-league/rss
 http://www.independent.co.uk/sport/football/news-and-comment/rss
 http://feeds.guardian.co.uk/theguardian/football/rss
 http://www.skysports.com/rss/0,20514,11095,00.xml
-http://mf.feeds.reuters.com/reuters/UKFootballNews
-http://mf.feeds.reuters.com/reuters/UKEuropeanFootballNews
 http://rss.cnn.com/rss/edition_football.rss
 http://espnfc.com/rss/news?section=soccernetfrontpage
 http://www.scotsman.com/cmlink/1.957065
@@ -16,9 +14,6 @@ http://www.uefa.com/rssfeed/news/rss.xml
 http://www.express.co.uk/posts/rss/67/football
 http://www.tribalfootball.com/rss.xml
 http://theworldgame.sbs.com.au/rss/news/
-http://rss.thisislondon.co.uk/feed/thisislondon/football
-http://www.people.co.uk/sport/football/news/rss.xml
-http://www.givemefootball.com/rss.ashx?c=1
 http://www.mirror.co.uk/sport/football/rss.xml
 http://www.dailymail.co.uk/sport/football/index.rss
 http://www.fifa.com/rss/index.xml
@@ -27,6 +22,9 @@ http://www.caughtoffside.com/feed/
 http://feeds.feedburner.com/soccerlens
 http://www.soccernews.com/feed/
 http://www.dailyrecord.co.uk/sport/football/rss.xml
+http://todaysfootballnews.com/feed
+http://www.footymad.net/rss/clubnews.asp
+http://fourfourtwo.com/rss/
 # The Premier League feed has some missing publication dates.
 http://www.premierleague.com/en-gb/news/newsfeed.rss
 # The RTE feed has publication dates but because it claims to be RSS 0.91, ROME doesn't parse them.

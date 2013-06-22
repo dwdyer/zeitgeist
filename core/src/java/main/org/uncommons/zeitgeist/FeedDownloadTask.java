@@ -115,6 +115,10 @@ class FeedDownloadTask implements Callable<List<Article>>
                     feedArticles.add(article);
                 }
             }
+            if (feedArticles.isEmpty())
+            {
+                LOG.warn("No relevant articles in feed: " + feedURL);
+            }
         }
         catch (FetcherException ex)
         {
