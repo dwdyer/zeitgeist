@@ -35,6 +35,7 @@ public class Zeitgeist
 
     private final List<Article> articles;
     private final int minArticlesPerTopic;
+    private final int maxArticlesPerTopic;
     private final int minSourcesPerTopic;
     private final double minArticleRelevance;
 
@@ -45,11 +46,21 @@ public class Zeitgeist
      */
     public Zeitgeist(List<Article> articles,
                      int minArticlesPerTopic,
+                     int maxArticlesPerTopic,
                      int minSourcesPerTopic,
                      int minArticleRelevance)
     {
+        if (minArticlesPerTopic > maxArticlesPerTopic)
+        {
+            throw new IllegalArgumentException("Minimum articles per topic must be less than or equal to maximum articles per topic.");
+        }
+        if (minSourcesPerTopic > maxArticlesPerTopic)
+        {
+            throw new IllegalArgumentException("Minimum sources per topic must be less than or equal to maximum articles per topic.");
+        }
         this.articles = articles;
         this.minArticlesPerTopic = minArticlesPerTopic;
+        this.maxArticlesPerTopic = maxArticlesPerTopic;
         this.minSourcesPerTopic = minSourcesPerTopic;
         this.minArticleRelevance = minArticleRelevance;
     }
@@ -59,6 +70,10 @@ public class Zeitgeist
     {
         Matrix matrix = makeMatrix(articles);
         int topicCount = (int) Math.ceil(Math.log(articles.size()) * Math.log(matrix.getColumnCount()));
+        if (topicCount == 0 && !articles.isEmpty())
+        {
+            topicCount = 1;
+        }
         LOG.debug("Estimating number of topics is " + topicCount);
         List<Matrix> factors = matrix.factorise(topicCount);
         return extractTopics(articles, factors.get(0), factors.get(1));
@@ -108,7 +123,7 @@ public class Zeitgeist
         List<Topic> topics = new ArrayList<Topic>();
         for (List<WeightedItem<Article>> topicArticles : articlesByTopic)
         {
-            Topic topic = new Topic(topicArticles);
+            Topic topic = new Topic(topicArticles.subList(0, Math.min(topicArticles.size(), maxArticlesPerTopic)));
             int sources = topic.countDistinctSources();
             if (sources >= minSourcesPerTopic && topicArticles.size() >= minArticlesPerTopic)
             {

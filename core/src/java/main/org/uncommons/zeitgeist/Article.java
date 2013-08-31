@@ -46,7 +46,7 @@ public class Article
             for (String word = wordReader.readLine(); word != null; word = wordReader.readLine())
             {
                 String trimmed = word.trim();
-                if (trimmed.length() > 0)
+                if (!trimmed.isEmpty())
                 {
                     LOW_VALUE_WORDS.add(trimmed);
                 }

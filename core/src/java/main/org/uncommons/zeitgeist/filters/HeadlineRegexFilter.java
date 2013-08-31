@@ -25,7 +25,7 @@ public class HeadlineRegexFilter implements ArticleFilter
     {
         if (pattern.matcher(article.getHeadline()).matches())
         {
-            LOG.info("Headline blocked by filter: " + article.getArticleURL());
+            LOG.info("Headline blocked by filter: " + article.getHeadline() + '|' + article.getFeedTitle());
             return false;
         }
         return true;

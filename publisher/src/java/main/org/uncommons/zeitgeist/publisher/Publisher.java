@@ -30,7 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -49,6 +49,7 @@ import org.uncommons.zeitgeist.Image;
 import org.uncommons.zeitgeist.Topic;
 import org.uncommons.zeitgeist.WeightedItem;
 import org.uncommons.zeitgeist.Zeitgeist;
+import org.uncommons.zeitgeist.filters.ArticleFilter;
 import org.uncommons.zeitgeist.filters.DateFilter;
 import org.uncommons.zeitgeist.filters.HeadlineRegexFilter;
 
@@ -353,13 +354,18 @@ public class Publisher
 
         List<URL> feeds = parseFeedList(properties.getProperty("zeitgeist.feedList"));
 
+        List<ArticleFilter> filters = new ArrayList<ArticleFilter>(2);
         long maxAgeHours = Long.parseLong(properties.getProperty("zeitgeist.maxArticleAgeHours"));
-        Date cutoffDate = new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000));
-        List<Article> articles = new ArticleFetcher().getArticles(feeds,
-                                                                  Arrays.asList(new DateFilter(cutoffDate),
-                                                                                new HeadlineRegexFilter(properties.getProperty("zeitgeist.headlineFilter"))));
+        filters.add(new DateFilter(new Date(System.currentTimeMillis() - Math.round(maxAgeHours * 3600000))));
+        String regex = properties.getProperty("zeitgeist.headlineFilter");
+        if (regex != null)
+        {
+            filters.add(new HeadlineRegexFilter(regex));
+        }
+        List<Article> articles = new ArticleFetcher().getArticles(feeds, filters);
         List<Topic> topics = new Zeitgeist(articles,
                                            Integer.parseInt(properties.getProperty("zeitgeist.minArticlesPerTopic")),
+                                           Integer.parseInt(properties.getProperty("zeitgeist.maxArticlesPerTopic")),
                                            Integer.parseInt(properties.getProperty("zeitgeist.minSourcesPerTopic")),
                                            Integer.parseInt(properties.getProperty("zeitgeist.minArticleRelevance"))).getTopics();
         LOG.info(topics.size() + " topics identified.");

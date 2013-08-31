@@ -9,7 +9,6 @@ http://espnfc.com/rss/news?section=soccernetfrontpage
 http://www.scotsman.com/cmlink/1.957065
 http://www.football365.com/premier-league/rss
 http://www.goal.com/en/feeds/news?fmt=rss
-http://www.thesun.co.uk/sol/homepage/sport/football/rss/
 http://www.uefa.com/rssfeed/news/rss.xml
 http://www.express.co.uk/posts/rss/67/football
 http://www.tribalfootball.com/rss.xml
@@ -24,8 +23,11 @@ http://www.soccernews.com/feed/
 http://www.dailyrecord.co.uk/sport/football/rss.xml
 http://todaysfootballnews.com/feed
 http://www.footymad.net/rss/clubnews.asp
-http://fourfourtwo.com/rss/
+http://www.scmp.com/rss/40/feed
+http://rss.nzherald.co.nz/rss/xml/nzhrsscid_000500842.xml
 # The Premier League feed has some missing publication dates.
 http://www.premierleague.com/en-gb/news/newsfeed.rss
 # The RTE feed has publication dates but because it claims to be RSS 0.91, ROME doesn't parse them.
 #http://www.rte.ie/rss/soccer.xml
+#The FourFourTwo/Planet Football Feed includes only a couple of words for each article.
+#http://fourfourtwo.com/rss/
