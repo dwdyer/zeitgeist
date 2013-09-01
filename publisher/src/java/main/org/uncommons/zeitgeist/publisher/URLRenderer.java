@@ -1,6 +1,7 @@
 package org.uncommons.zeitgeist.publisher;
 
-import org.antlr.stringtemplate.AttributeRenderer;
+import java.util.Locale;
+import org.stringtemplate.v4.AttributeRenderer;
 
 /**
  * A StringTemplate renderer that escapes ampersands in URLs.
@@ -8,14 +9,9 @@ import org.antlr.stringtemplate.AttributeRenderer;
  */
 class URLRenderer implements AttributeRenderer
 {
-    public String toString(Object o)
+    @Override
+    public String toString(Object o, String s, Locale locale)
     {
         return o.toString().replaceAll("&","&amp;");
-    }
-
-
-    public String toString(Object o, String s)
-    {
-        return toString(o);
     }
 }

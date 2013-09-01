@@ -1,0 +1,68 @@
+delimiters "$", "$"
+
+picture(picture) ::= <<
+    <div class="picture">
+      <a href="$picture.articleURL$"><img src="$picture.cachedFileName$"/></a><br />
+      <a href="$picture.articleURL$" class="credit">$picture.imageCredit;format="xml-encode"$</a>
+    </div>
+>>
+
+
+link(link) ::= <<
+    <img src="$link.item.feedIcon.cachedFileName$" class="icon" onerror="this.style.visibility='hidden'"
+         alt="$link.item.feedTitle$" title="$link.item.feedTitle;format="xml-encode"$"/>
+    <a href="$link.item.articleURL$">$link.item.headline;format="xml-encode"$</a><br /><!-- $link.weight$ -->
+>>
+
+
+headline(article) ::= <<
+    <h2>
+      <a href="$article.item.articleURL$">$article.item.headline;format="xml-encode"$</a><!-- $article.weight$ -->
+      $if(article.item.feedLogo)$<a href="$article.item.feedLogo.articleURL$"><img
+         src="$article.item.feedLogo.imageURL$" alt="$article.item.feedTitle;format="xml-encode"$"
+         title="$article.item.feedTitle;format="xml-encode"$" class="logo" onerror="this.style.display='none'"/></a>$endif$
+    </h2>
+>>
+
+
+topic(topic) ::= <<
+    <div class="topic">
+      $first(topic.articles):headline()$
+      $first(topic.images):picture()$
+      <div class="links">
+        $rest(topic.articles):link()$
+      </div>
+    </div>
+>>
+
+
+news(topics, title, dateTime, feedCount, articleCount) ::= <<
+    <?xml version="1.0" encoding="utf-8" ?>
+    <html>
+      <head>
+        <title>$title;format="xml-encode"$</title>
+        <link href="zeitgeist.css" rel="stylesheet" type="text/css" />
+      </head>
+      <body>
+        <h1>$title;format="xml-encode"$</h1>
+        <p class="datetime">$dateTime;format="EEEE d MMMM yyyy / HH:mm z"$</p>
+        <p class="about">
+          This page was constructed by <a href="http://zeitgeist.uncommons.org">automated analysis</a> of
+          <b>$articleCount$</b> articles from <b>$feedCount$</b> news sources. No humans were involved in
+          the selection and classification of these headlines.
+        </p>
+        $topics:topic()$
+      </body>
+    </html>
+>>
+
+
+snippet(topics, title, dateTime, feedCount, articleCount) ::= <<
+    <div id="snippet">
+      $first(topics):{topic|
+        $first(topic.images):picture()$
+        <strong><big>$first(topic.articles):link()$</big></strong>
+      }$
+      $rest(topics):{topic|$first(topic.articles):link()$}$
+    </div>
+>>

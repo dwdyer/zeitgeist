@@ -13,7 +13,7 @@ public class DateRendererTest
     public void testFormatSupplied()
     {
         Date date = new Date(0);
-        String string = new DateRenderer().toString(date, "dd/MM/yyyy");
+        String string = new DateRenderer().toString(date, "dd/MM/yyyy", null);
         assert "01/01/1970".equals(string) : "Incorrect format: " + string;
     }
 }

@@ -17,7 +17,8 @@ package org.uncommons.zeitgeist.publisher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.antlr.stringtemplate.AttributeRenderer;
+import java.util.Locale;
+import org.stringtemplate.v4.AttributeRenderer;
 
 /**
  * A StringTemplate renderer that uses the format specification provided by the template.
@@ -25,13 +26,8 @@ import org.antlr.stringtemplate.AttributeRenderer;
  */
 class DateRenderer implements AttributeRenderer
 {
-    public String toString(Object object)
-    {
-        return object.toString();
-    }
-
-
-    public String toString(Object object, String formatString)
+    @Override
+    public String toString(Object object, String formatString, Locale locale)
     {
         SimpleDateFormat format = new SimpleDateFormat(formatString);
         return format.format((Date) object);

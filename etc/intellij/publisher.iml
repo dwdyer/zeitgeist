@@ -13,18 +13,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="core" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../publisher/lib/runtime/stringtemplate.jar!/" />
-          <root url="jar://$MODULE_DIR$/../../publisher/lib/runtime/antlr-2.7.7.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="SimpleLog" level="project" />
     <orderEntry type="library" name="TestNG" level="project" />
+    <orderEntry type="library" name="StringTemplate" level="project" />
   </component>
 </module>
 

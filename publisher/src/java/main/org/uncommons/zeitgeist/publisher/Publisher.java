@@ -40,9 +40,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
-import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
 import org.grlea.log.SimpleLogger;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupDir;
+import org.stringtemplate.v4.STGroupFile;
 import org.uncommons.zeitgeist.Article;
 import org.uncommons.zeitgeist.ArticleFetcher;
 import org.uncommons.zeitgeist.Image;
@@ -66,7 +68,7 @@ public class Publisher
                                                                    Pattern.CASE_INSENSITIVE);
     private static final int TIMEOUT = 30000;
 
-    private final StringTemplateGroup group;
+    private final STGroup group;
 
 
     /**
@@ -75,7 +77,7 @@ public class Publisher
      */
     public Publisher()
     {
-        this.group = new StringTemplateGroup("zeitgeist");
+        this.group = new STGroupFile("zeitgeist.stg");
     }
 
 
@@ -89,7 +91,7 @@ public class Publisher
         {
             throw new IllegalArgumentException("Template path must be a directory.");
         }
-        this.group = new StringTemplateGroup("zeitgeist", templateDir.getAbsolutePath());
+        this.group = new STGroupDir(templateDir.getAbsolutePath());
     }
 
 
@@ -109,28 +111,27 @@ public class Publisher
     {
         group.registerRenderer(Date.class, new DateRenderer());
         group.registerRenderer(URL.class, new URLRenderer());
-        group.registerRenderer(String.class, new XMLStringRenderer());
 
         cacheImages(topics, outputDir);
         cacheIcons(topics, outputDir);
 
         // Publish HTML.
-        StringTemplate htmlTemplate = group.getInstanceOf("news");
+        ST htmlTemplate = group.getInstanceOf("news");
         publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("index.html"));
-        if (group.getRootDir() != null)
+        if (group instanceof STGroupDir)
         {
-            StreamUtils.copyFile(outputDir, new File(group.getRootDir(), "zeitgeist.css"), "zeitgeist.css");
+            StreamUtils.copyFile(outputDir,
+                                 new File(((STGroupDir) group).groupDirName, "zeitgeist.css"), "zeitgeist.css");
         }
         else
         {
-
             StreamUtils.copyClasspathResource(outputDir, "zeitgeist.css", "zeitgeist.css");
         }
 
         if (group.isDefined("snippet"))
         {
             List<Topic> snippetTopics = topics.subList(0, Math.min(5, topics.size())); // Include no more than 5 topics.
-            StringTemplate syndicateTemplate = group.getInstanceOf("snippet");
+            ST syndicateTemplate = group.getInstanceOf("snippet");
             publishTemplate(snippetTopics,
                             title,
                             feedCount,
@@ -145,19 +146,19 @@ public class Publisher
                                  String title,
                                  int feedCount,
                                  int articleCount,
-                                 StringTemplate template,
+                                 ST template,
                                  File outputFile) throws IOException
     {
         Date date = new Date();
-        template.setAttribute("topics", topics);
-        template.setAttribute("title", title);
-        template.setAttribute("dateTime", date);
-        template.setAttribute("feedCount", feedCount);
-        template.setAttribute("articleCount", articleCount);
+        template.add("topics", topics);
+        template.add("title", title);
+        template.add("dateTime", date);
+        template.add("feedCount", feedCount);
+        template.add("articleCount", articleCount);
         Writer writer = new OutputStreamWriter(new FileOutputStream(outputFile), ENCODING);
         try
         {
-            writer.write(template.toString());
+            writer.write(template.render());
             writer.flush();
         }
         finally

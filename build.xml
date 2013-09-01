@@ -68,7 +68,7 @@
     <uncommons:compile module="core" />
     <uncommons:jar module="core"
                    jarfile="${ant.project.name}-core-${version}.jar"
-                   classpath="lib/rome-1.0.jar lib/rome-fetcher-1.0.jar lib/jdom.jar lib/simple-log.jar lib/morpha-stemmer-1.0.4.jar"
+                   classpath="lib/rome-1.0.jar lib/rome-fetcher-1.0.jar lib/jdom.jar lib/simple-log.jar"
                    mainclass="org.uncommons.zeitgeist.Zeitgeist" />
   </target>
 
@@ -80,7 +80,7 @@
     <uncommons:compile module="publisher" />
     <uncommons:jar module="publisher"
                    jarfile="${ant.project.name}-publisher-${version}.jar"
-                   classpath="${ant.project.name}-core-${version}.jar lib/stringtemplate.jar lib/antlr-2.7.7.jar lib/simple-log.jar"
+                   classpath="${ant.project.name}-core-${version}.jar lib/ST-4.0.7.jar lib/antlr-3.5-complete.jar lib/simple-log.jar"
                    mainclass="org.uncommons.zeitgeist.publisher.Publisher" />
   </target>
 

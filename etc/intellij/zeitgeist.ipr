@@ -824,6 +824,14 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="StringTemplate">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../publisher/lib/runtime/antlr-3.5-complete.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../publisher/lib/runtime/ST-4.0.7.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="TestNG">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../lib/compiletime/testng/testng-5.10-jdk15.jar!/" />
