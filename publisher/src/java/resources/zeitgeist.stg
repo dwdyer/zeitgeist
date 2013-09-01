@@ -41,7 +41,26 @@ news(topics, title, dateTime, feedCount, articleCount) ::= <<
     <html>
       <head>
         <title>$title;format="xml-encode"$</title>
-        <link href="zeitgeist.css" rel="stylesheet" type="text/css" />
+        <style>
+          body {font-family: Lucida Sans Unicode, Lucida Grande, sans-serif; font-size: 62.5%; line-height: 2em; margin: 2em;}
+          a {color: #0077cc; text-decoration: none;}
+          a:hover {color: #004499;}
+          a img {border: 0;}
+          h1 {font-size: 4em; font-family: Palatino Linotype, Palatino, serif; font-weight: bold; margin-top: 0;}
+          h2 {font-size: 3em; font-family: Palatino Linotype, Palatino, serif; line-height: 1.3333em; margin-bottom: .3333em;}
+          h2 a {color: #333333; font-variant: small-caps;}
+          p {font-size: 1.5em; margin-bottom: 1.3333em;}
+
+          .datetime {font-size: 1.2em; margin-top: -1.6667em; margin-bottom: 1.6667em;}
+          .about {color: #666666;}
+          .topic {clear: both; margin-top: 2em; margin-bottom: 2em;}
+          .links {display: table-cell; font-size: 1.5em; padding-left: 1em; padding-bottom: .25em;}
+          .picture {float: left; margin-bottom: 2em; max-width: 200px;}
+          .picture img {max-width: 100%}
+          .credit {font-size: 1em;}
+          .logo {max-height: 30px; max-width: 150px; margin-left: .5em; vertical-align: middle;}
+          .icon {width: 16px; height: 16px; vertical-align: bottom;}
+        </style>
       </head>
       <body>
         <h1>$title;format="xml-encode"$</h1>
@@ -57,7 +76,7 @@ news(topics, title, dateTime, feedCount, articleCount) ::= <<
 >>
 
 
-snippet(topics, title, dateTime, feedCount, articleCount) ::= <<
+snippet(topics) ::= <<
     <div id="snippet">
       $first(topics):{topic|
         $first(topic.images):picture()$

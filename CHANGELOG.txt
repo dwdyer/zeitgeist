@@ -28,6 +28,10 @@ Changes in version 1.2
 
 * Added filter to exclude articles where headlines match a certain regex.
 
+* Upgraded to StringTemplate 4.0.7.
+
+* Templates are now specified by a StringTemplate group file (.stg).
+
 
 Changes in version 1.1
 ----------------------

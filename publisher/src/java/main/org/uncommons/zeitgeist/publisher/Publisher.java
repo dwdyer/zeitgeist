@@ -43,7 +43,6 @@ import javax.imageio.ImageIO;
 import org.grlea.log.SimpleLogger;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupDir;
 import org.stringtemplate.v4.STGroupFile;
 import org.uncommons.zeitgeist.Article;
 import org.uncommons.zeitgeist.ArticleFetcher;
@@ -87,11 +86,7 @@ public class Publisher
      */
     public Publisher(File templateDir)
     {
-        if (!templateDir.isDirectory())
-        {
-            throw new IllegalArgumentException("Template path must be a directory.");
-        }
-        this.group = new STGroupDir(templateDir.getAbsolutePath());
+        this.group = new STGroupFile(templateDir.getAbsolutePath());
     }
 
 
@@ -117,44 +112,25 @@ public class Publisher
 
         // Publish HTML.
         ST htmlTemplate = group.getInstanceOf("news");
-        publishTemplate(topics, title, feedCount, articleCount, htmlTemplate, new File("index.html"));
-        if (group instanceof STGroupDir)
-        {
-            StreamUtils.copyFile(outputDir,
-                                 new File(((STGroupDir) group).groupDirName, "zeitgeist.css"), "zeitgeist.css");
-        }
-        else
-        {
-            StreamUtils.copyClasspathResource(outputDir, "zeitgeist.css", "zeitgeist.css");
-        }
+        htmlTemplate.add("topics", topics);
+        htmlTemplate.add("title", title);
+        htmlTemplate.add("dateTime", new Date());
+        htmlTemplate.add("feedCount", feedCount);
+        htmlTemplate.add("articleCount", articleCount);
+        publishTemplate(htmlTemplate, new File("index.html"));
 
         if (group.isDefined("snippet"))
         {
             List<Topic> snippetTopics = topics.subList(0, Math.min(5, topics.size())); // Include no more than 5 topics.
             ST syndicateTemplate = group.getInstanceOf("snippet");
-            publishTemplate(snippetTopics,
-                            title,
-                            feedCount,
-                            articleCount,
-                            syndicateTemplate,
-                            new File("snippet.html"));
+            syndicateTemplate.add("topics", snippetTopics);
+            publishTemplate(syndicateTemplate, new File("snippet.html"));
         }
     }
 
 
-    private void publishTemplate(List<Topic> topics,
-                                 String title,
-                                 int feedCount,
-                                 int articleCount,
-                                 ST template,
-                                 File outputFile) throws IOException
+    private void publishTemplate(ST template, File outputFile) throws IOException
     {
-        Date date = new Date();
-        template.add("topics", topics);
-        template.add("title", title);
-        template.add("dateTime", date);
-        template.add("feedCount", feedCount);
-        template.add("articleCount", articleCount);
         Writer writer = new OutputStreamWriter(new FileOutputStream(outputFile), ENCODING);
         try
         {
@@ -370,8 +346,8 @@ public class Publisher
                                            Integer.parseInt(properties.getProperty("zeitgeist.minSourcesPerTopic")),
                                            Integer.parseInt(properties.getProperty("zeitgeist.minArticleRelevance"))).getTopics();
         LOG.info(topics.size() + " topics identified.");
-        String templatesDir = properties.getProperty("zeitgeist.templatesDir");
-        Publisher publisher = templatesDir != null ? new Publisher(new File(templatesDir)) : new Publisher();
+        String templatesFile = properties.getProperty("zeitgeist.templatesFile");
+        Publisher publisher = templatesFile != null ? new Publisher(new File(templatesFile)) : new Publisher();
         publisher.publish(topics,
                           properties.getProperty("zeitgeist.title"),
                           feeds.size(),
